@@ -1,4 +1,4 @@
-import logo from "../../assets/images/logo.png";
+import logo from "@assets/images/logo.png";
 import { useNavigate } from "react-router-dom"
 
 import countryPhoneCode from "@data/country-phone-code.json"
@@ -12,111 +12,102 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Alert from '@mui/material/Alert';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import service from "@services/config";
 
 function Signup() {
   
   const navigate = useNavigate()
-  
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    internationalDialingCode: 34,
-    localPhoneNumber: "",
-    password: "",
-    confirmPassword: ""
-  })
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
-  
-  // function countNonNullProperties(obj) {
-  //   let count = 0;
-  //   for (let key in obj) {
-  //     if (obj[key] !== null) {
-  //       count++;
-  //     }
-  //   }
-  //   return count;
-  // }
-  
+  const [ email, setEmail ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ firstName, setFirstName ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ lastName, setLastName ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ phoneCode, setPhoneCode ] = useState({value: 34, error: null, hasUserInteracted: true}) // starts as true as there is default value
+  const [ phoneNumber, setPhoneNumber ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ password, setPassword ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ confirmPassword, setConfirmPassword ] = useState({value: "", error: null, hasUserInteracted: false})
+
+  const [ showPassword, setShowPassword] = useState(false);
+  const [ serverError, setServerError] = useState();
+  const [ canSubmit, setCanSubmit ] = useState(false)
+
+  useEffect(() => {
+    const allFormStates = [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword]
+
+    const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
+    const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
+
+    if (allStatesInteracted && allStatesWithoutErrors) {
+      if (canSubmit === false) setCanSubmit(true)
+    } else {
+      if (canSubmit === true) setCanSubmit(false)
+    }
+  }, [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword])
+
+  const checkError = (inputValue, formDataState, isRequired, regexTest, errorMessage) => {
+    const clone = {...formDataState} 
+    if (isRequired && !inputValue) {
+      clone.error = "Campo obligatorio"
+    } else if(!regexTest.test(inputValue)) {
+      clone.error = errorMessage
+    } else {
+      clone.error = null
+    }
+    clone.value = inputValue
+    clone.userInteracted = true; // when it is first changed it will always display error
+    return clone
+  }
+
   const handleEmail = (e) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if (!e.target.value) {
-      setErrors({...errors, email: "Campo obligatorio"})
-    } else if(!regex.test(e.target.value)) {
-      setErrors({...errors, email: "Correo electrónico con formato incorrecto"})
-    } else {
-      setErrors({...errors, email: null})
-    }
-    setFormData({...formData, email: e.target.value});
+    const updatedstate = checkError(e.target.value, email, true, regex, "Correo electrónico con formato incorrecto")
+    setEmail(updatedstate);
   };
 
   const handleFirstName = (e) => {
-    const regex = /^[a-zA-Z ]{2,20}$/;
-    if (!e.target.value) {
-      setErrors({...errors, firstName: "Campo obligatorio"})
-    } else if(!regex.test(e.target.value)) {
-      setErrors({...errors, firstName: "Nombre debe tener solo letras, espacios y de 2 a 20 caracteres"})
-    } else {
-      setErrors({...errors, firstName: null})
-    }
-    setFormData({...formData, firstName: e.target.value});  
+    const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/; 
+    const updatedstate = checkError(e.target.value, email, true, regex, "Nombre debe tener solo letras, espacios y de 2 a 20 caracteres")
+    setFirstName(updatedstate);
   };
 
   const handleLastName = (e) => {
-    const regex = /^[a-zA-Z ]{2,20}$/;
-    if (!e.target.value) {
-      setErrors({...errors, lastName: "Campo obligatorio"})
-    } else if(!regex.test(e.target.value)) {
-      setErrors({...errors, lastName: "Apellido debe tener solo letras, espacios y de 2 a 20 caracteres"})
-    } else {
-      setErrors({...errors, lastName: null})
-    }
-    setFormData({...formData, lastName: e.target.value});  
+    const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/;
+    const updatedstate = checkError(e.target.value, email, true, regex, "Apellido debe tener solo letras, espacios y de 2 a 20 caracteres")
+    setLastName(updatedstate);
   };
 
-  const handleInternationalDialingCode = (e) => {
-    setFormData({...formData, internationalDialingCode: e.target.value});
+  const handlePhoneCode = (e) => {
+    // no error verification
+    setPhoneCode({...phoneCode, value: e.target.value})
   };
 
-  const handleLocalPhoneNumber = (e) => {
+  const handlePhoneNumber = (e) => {
     const regex = /^[0-9]{4,20}$/;
-    if (!e.target.value) {
-      setErrors({...errors, localPhoneNumber: "Campo obligatorio"})
-    } else if(!regex.test(e.target.value)) {
-      setErrors({...errors, localPhoneNumber: "Número telefónico solo debe contener dígitos numericos y de 4 a 20 dígitos"})
-    } else {
-      setErrors({...errors, localPhoneNumber: null})
-    }
-    setFormData({...formData, localPhoneNumber: e.target.value});
+    const updatedstate = checkError(e.target.value, email, true, regex, "Número telefónico solo debe contener dígitos numericos y de 4 a 20 dígitos")
+    setPhoneNumber(updatedstate);
   };
 
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-    if (!e.target.value) {
-      setErrors({...errors, password: "Campo obligatorio"})
-    } else if(!regex.test(e.target.value)) {
-      setErrors({...errors, password: "Contraseña debe tener al menos 6 caractéres, un número, una minúscula y una mayúscula"})
-    } else {
-      setErrors({...errors, password: null})
-    }
-    setFormData({...formData, password: e.target.value});
+    const updatedstate = checkError(e.target.value, password, true, regex, "Contraseña debe tener al menos 6 caractéres, un número, una minúscula y una mayúscula")
+    setPassword(updatedstate);
   };
 
   const handleConfirmPassword = (e) => {
     console.log(e.target.value)
+    const clone = {...confirmPassword}
     if (!e.target.value) {
-      setErrors({...errors, confirmPassword: "Campo obligatorio"})
-    } else if (e.target.value !== formData.password) {
-      setErrors({...errors, confirmPassword: "Campos de contraseña no concuerdan"})
+      clone.error =  "Campo obligatorio"
+    } else if (e.target.value !== password.value) {
+      clone.error = "Campos de contraseña no concuerdan"
     } else {
-      setErrors({...errors, confirmPassword: null})
+      clone.error = null
     }
-    setFormData({...formData, confirmPassword: e.target.value});
+    clone.value = e.target.value
+    clone.hasUserInteracted = true
+    setConfirmPassword(clone);
   };
 
   const handleSubmit = async (e) => {
@@ -124,12 +115,36 @@ function Signup() {
 
     try {
 
-      await service.post("/auth/signup", formData)
+      await service.post("/auth/signup", {
+        email: email.value, 
+        firstName: firstName.value, 
+        lastName: lastName.value, 
+        phoneCode: phoneCode.value, 
+        phoneNumber: phoneNumber.value, 
+        password: password.value
+      })
+
       navigate("/login")
 
     } catch (error) {
       console.log(error)
-      navigate("/server-error")
+      const errorCode = error?.response?.status
+      const errorMessage = error?.response?.data?.errorMessage
+      const errorField = error?.response?.data?.errorField
+      if (errorCode === 400) {
+        setServerError(errorMessage)
+        if (errorField === "email") {
+          setEmail({...email, error: errorMessage})
+        } else if (errorField === "phoneNumber") {
+          setPhoneNumber({...phoneNumber, error: errorMessage})
+        } else if (errorField === "fullName") {
+          setFirstName({...firstName, error: errorMessage})
+          setLastName({...lastName, error: errorMessage})
+        }
+        setTimeout(() => setServerError(null), 5000)
+      } else {
+        navigate("/server-error")
+      }
     }
 
   }
@@ -148,34 +163,34 @@ function Signup() {
         <TextField
           label="Correo Electronico"
           variant="outlined"
-          value={formData.email}
+          value={email.value}
           onChange={handleEmail}
           margin="normal"
           required
-          error={errors.email}
-          helperText={errors.email}
+          error={email.hasUserInteracted && email.error !== null} // can display and any error exists
+          helperText={email.error}
         />
 
         <TextField
           label="Nombre"
           variant="outlined"
-          value={formData.firstName}
+          value={firstName.value}
           onChange={handleFirstName}
           margin="normal"
           required
-          error={errors.firstName}
-          helperText={errors.firstName}
+          error={firstName.hasUserInteracted && firstName.error !== null}
+          helperText={firstName.error}
         />
 
         <TextField
           label="Apellido"
           variant="outlined"
-          value={formData.lastName}
+          value={lastName.value}
           onChange={handleLastName}
           margin="normal"
           required
-          error={errors.lastName}
-          helperText={errors.lastName}
+          error={lastName.hasUserInteracted && lastName.error !== null}
+          helperText={lastName.error}
         />
 
         <Box sx={{ marginTop: '8px', marginBottom: '8px' }}>
@@ -183,8 +198,8 @@ function Signup() {
             select
             label="Código"
             variant="outlined"
-            value={formData.internationalDialingCode}
-            onChange={handleInternationalDialingCode}
+            value={phoneCode.value}
+            onChange={handlePhoneCode}
             sx={{ width: '45%' }}
             required
           >
@@ -196,12 +211,12 @@ function Signup() {
           <TextField
             label="Número de Móvil"
             variant="outlined"
-            value={formData.localPhoneNumber}
-            onChange={handleLocalPhoneNumber}
+            value={phoneNumber.value}
+            onChange={handlePhoneNumber}
             sx={{ width: '55%' }}
             required
-            error={errors.localPhoneNumber}
-            helperText={errors.localPhoneNumber}
+            error={phoneNumber.hasUserInteracted && phoneNumber.error !== null}
+            helperText={phoneNumber.error}
           />
         </Box>
 
@@ -209,12 +224,12 @@ function Signup() {
           label="Contraseña"
           type={showPassword ? "text" : "password"}
           variant="outlined"
-          value={formData.password}
+          value={password.value}
           onChange={handlePassword}
           margin="normal"
           required
-          error={errors.password}
-          helperText={errors.password}
+          error={password.hasUserInteracted && password.error !== null}
+          helperText={password.error}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -235,12 +250,12 @@ function Signup() {
           label="Confirmar Contraseña"
           type={showPassword ? "text" : "password"}
           variant="outlined"
-          value={formData.confirmPassword}
+          value={confirmPassword.value}
           onChange={handleConfirmPassword}
           margin="normal"
           required
-          error={errors.confirmPassword}
-          helperText={errors.confirmPassword}
+          error={confirmPassword.hasUserInteracted && confirmPassword.error !== null}
+          helperText={confirmPassword.error}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end" >
@@ -260,8 +275,11 @@ function Signup() {
         <Button 
           variant="contained" 
           type="submit"
-
+          disabled={!canSubmit}
         >registrarse</Button>
+
+          {serverError && <Alert severity="error">{serverError}</Alert>}
+
       </Box>
     </Box>
   );
