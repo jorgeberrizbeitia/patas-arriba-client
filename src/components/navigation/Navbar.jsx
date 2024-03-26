@@ -18,15 +18,25 @@ import LoginIcon from "@mui/icons-material/Login";
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "@context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+
+  const navigate = useNavigate()
+  const { authenticateUser } = useContext(AuthContext)
+
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => setOpen(newOpen);
 
-  const handleLogout = () => {
-    console.log("handle logout here");
+  const handleLogout = async () => {
+    
+    localStorage.removeItem("authToken")
+    await authenticateUser()
+    navigate("/")
+
   };
 
   return (

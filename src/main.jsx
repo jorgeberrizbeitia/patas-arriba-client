@@ -6,6 +6,7 @@ import './index.css'
 import { BrowserRouter } from "react-router-dom"
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { AuthWrapper } from './context/auth.context'
 
 const theme = createTheme({
   palette: {
@@ -43,10 +44,12 @@ import '@fontsource/roboto/700.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <AuthWrapper>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthWrapper>
   // </React.StrictMode>,
 )

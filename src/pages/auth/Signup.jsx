@@ -17,6 +17,8 @@ import Alert from '@mui/material/Alert';
 import { useEffect, useState } from "react";
 import service from "@services/config";
 
+import validateField from "@utils/validateField";
+
 function Signup() {
   
   const navigate = useNavigate()
@@ -46,35 +48,22 @@ function Signup() {
     }
   }, [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword])
 
-  const checkError = (inputValue, formDataState, isRequired, regexTest, errorMessage) => {
-    const clone = {...formDataState} 
-    if (isRequired && !inputValue) {
-      clone.error = "Campo obligatorio"
-    } else if(!regexTest.test(inputValue)) {
-      clone.error = errorMessage
-    } else {
-      clone.error = null
-    }
-    clone.value = inputValue
-    clone.userInteracted = true; // when it is first changed it will always display error
-    return clone
-  }
-
   const handleEmail = (e) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const updatedstate = checkError(e.target.value, email, true, regex, "Correo electrónico con formato incorrecto")
+    const updatedstate = validateField(e.target.value, email, true, regex, "Correo electrónico con formato incorrecto")
+    console.log(updatedstate)
     setEmail(updatedstate);
   };
 
   const handleFirstName = (e) => {
     const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/; 
-    const updatedstate = checkError(e.target.value, email, true, regex, "Nombre debe tener solo letras, espacios y de 2 a 20 caracteres")
+    const updatedstate = validateField(e.target.value, email, true, regex, "Nombre debe tener solo letras, espacios y de 2 a 20 caracteres")
     setFirstName(updatedstate);
   };
 
   const handleLastName = (e) => {
     const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/;
-    const updatedstate = checkError(e.target.value, email, true, regex, "Apellido debe tener solo letras, espacios y de 2 a 20 caracteres")
+    const updatedstate = validateField(e.target.value, email, true, regex, "Apellido debe tener solo letras, espacios y de 2 a 20 caracteres")
     setLastName(updatedstate);
   };
 
@@ -85,13 +74,13 @@ function Signup() {
 
   const handlePhoneNumber = (e) => {
     const regex = /^[0-9]{4,20}$/;
-    const updatedstate = checkError(e.target.value, email, true, regex, "Número telefónico solo debe contener dígitos numericos y de 4 a 20 dígitos")
+    const updatedstate = validateField(e.target.value, email, true, regex, "Número telefónico solo debe contener dígitos numericos y de 4 a 20 dígitos")
     setPhoneNumber(updatedstate);
   };
 
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-    const updatedstate = checkError(e.target.value, password, true, regex, "Contraseña debe tener al menos 6 caractéres, un número, una minúscula y una mayúscula")
+    const updatedstate = validateField(e.target.value, password, true, regex, "Contraseña debe tener al menos 6 caractéres, un número, una minúscula y una mayúscula")
     setPassword(updatedstate);
   };
 
