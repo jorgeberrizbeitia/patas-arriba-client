@@ -1,7 +1,7 @@
 import logo from "@assets/images/logo.png"
 import { useState, useEffect, useContext } from "react";
 import validateField from "@utils/validateField";
-import service from "@services/config"
+import service from "@service/config"
 import { useNavigate } from "react-router-dom"
 import { AuthContext } from "@context/auth.context";
 

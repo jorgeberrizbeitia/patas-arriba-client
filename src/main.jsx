@@ -10,7 +10,6 @@ import { AuthWrapper } from './context/auth.context'
 
 const theme = createTheme({
   palette: {
-    // type: "light",
     primary: {
       main: '#EFB665', // Base color
       lighter: '#F4CC95', // Lighter tone
@@ -18,6 +17,10 @@ const theme = createTheme({
       lighterSaturation: '#F7E4B0', // Lighter saturation
       darkerSaturation: '#D6A637', // Darker saturation
       contrast: '#856329', // Contrast tone
+    },
+    text: {
+      primary: '#173A5E',
+      secondary: '#46505A',
     },
     error: {
       main: '#E74C3C', // Danger color

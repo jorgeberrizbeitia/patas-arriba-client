@@ -1,5 +1,5 @@
 import logo from "@assets/images/logo.png";
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import countryPhoneCode from "@data/country-phone-code.json"
 
@@ -15,7 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 
 import { useEffect, useState } from "react";
-import service from "@services/config";
+import service from "@service/config";
 
 import validateField from "@utils/validateField";
 
@@ -270,6 +270,9 @@ function Signup() {
           {serverError && <Alert severity="error">{serverError}</Alert>}
 
       </Box>
+
+      <Link to="/login">Si ya tienes cuenta accede aqui</Link>
+
     </Box>
   );
 }

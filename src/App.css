@@ -4,3 +4,8 @@
   padding: 2rem;
   text-align: center;
 }
+
+a:visited {
+  /* weird but with mui and rect-router-dom links */
+  color: #EFB665
+}

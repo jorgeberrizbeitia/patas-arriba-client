@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import service from "@services/config";
+import service from "@service/config";
 
 // 1. componente que transmite el contexto
 const AuthContext = createContext()

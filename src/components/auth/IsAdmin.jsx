@@ -7,7 +7,7 @@ function IsAdmin(props) {
 
   const { loggedUser } = useContext(AuthContext)
 
-  if (loggedUser.role === "admin") {
+  if (loggedUser && loggedUser.role === "admin") {
     return props.children
   } else {
     return <Navigate to="/login"/>
