@@ -1,13 +1,14 @@
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
-function NoCarGroupNeeded() {
+function NoCarGroupNeeded({joinEvent}) {
   return (
     <>
       <Alert severity="info">
         Si cambias de opinion, luego podras buscar coches disponibles
       </Alert>
-      <Button sx={{ margin: "30px" }} variant="contained">
+      <Button sx={{ margin: "30px" }} variant="contained" onClick={() => joinEvent()}>
+        {/* //* IMPORTANT: above onClick needs to be () => joinEvent() without arguments */}
         Unirse al evento y volver a detalles!
       </Button>
     </>

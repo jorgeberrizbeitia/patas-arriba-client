@@ -37,6 +37,8 @@ function EventDetails() {
 
   const getEventDetails = async () => {
 
+    if (!isLoading) setIsLoading(true)
+
     try {
       
       const response = await service.get(`/event/${eventId}`)
@@ -82,7 +84,7 @@ function EventDetails() {
       </Card>
 
       {event.participants.some((e) => e._id == loggedUserId) ? (
-        <EventParticipantCard />
+        <EventParticipantCard getEventDetails={getEventDetails}/>
       ) : (
       <Box sx={{margin: 10}}>
         <Link to={`/event/${event._id}/join`}>
@@ -90,6 +92,7 @@ function EventDetails() {
         </Link>
       </Box>
       )}
+
 
     </Container>
   )
