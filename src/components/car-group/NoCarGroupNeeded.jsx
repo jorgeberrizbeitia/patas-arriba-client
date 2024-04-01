@@ -8,7 +8,7 @@ function NoCarGroupNeeded({joinEvent}) {
         Si cambias de opinion, luego podras buscar coches disponibles
       </Alert>
       <Button sx={{ margin: "30px" }} variant="contained" onClick={() => joinEvent()}>
-        {/* //* IMPORTANT: above onClick needs to be () => joinEvent() without arguments */}
+        {/* //* IMPORTANT: above onClick needs to be () => joinEvent() without arguments. See joinEvent function */}
         Unirse al evento y volver a detalles!
       </Button>
     </>

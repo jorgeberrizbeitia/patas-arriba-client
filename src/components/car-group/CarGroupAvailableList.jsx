@@ -12,12 +12,13 @@ import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import CarGroupCard from "./CarGroupCard";
 
-function CarGroupAvailableList() {
+function CarGroupAvailableList({joinEvent}) {
 
   const { eventId } = useParams()
 
   const [ isLoading, setIsLoading ] = useState(true)
   const [ carGroups, setCarGroups ] = useState(null)
+  const [ selectedCarGroupId, setSelectedCarGroupId ] = useState(null)
 
   useEffect(() => {
     getCarGroups()
@@ -43,19 +44,33 @@ function CarGroupAvailableList() {
   if (isLoading) {
     return <Loading />
   }
-
+  
   return (
     <Container>
       
-      {carGroups.length === 0 && <>
+      {carGroups.length === 0 ? <>
         <Alert severity="warning">No hay coches disponibles por los momentos, puede unirse al evento y buscar coches luego</Alert>
         <Button 
             sx={{margin: "30px"}}
             variant="contained"
-          >Unirse al evento y volver a detalles!</Button>
+          >Unirse al evento!</Button>
+      </> : <>
+        <Typography variant="h5">Coches Disponibles:</Typography>
+        {carGroups.map((eachCarGroup) => <CarGroupCard 
+            key={eachCarGroup._id} 
+            eachCarGroup={eachCarGroup} 
+            setSelectedCarGroupId={setSelectedCarGroupId} 
+            selectedCarGroupId={selectedCarGroupId}/>
+        )}
+        <Alert severity="info">Si ningun coche te conviene, puedes unirte al evento sin elegir coche y buscar uno disponible luego</Alert>
+        <Button 
+            sx={{margin: "30px"}}
+            variant="contained"
+            onClick={() => joinEvent(null, selectedCarGroupId)}
+            // NOTE: joinEvent always with null as first argument here, so it only takes second as car group id to join
+          >Unirse al evento{selectedCarGroupId && " con el coche elegido"}!</Button>
       </>}
-
-      {carGroups.map((eachCarGroup) => <CarGroupCard key={eachCarGroup._id} eachCarGroup={eachCarGroup}/>)}
+      
 
     </Container>
   )

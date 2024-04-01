@@ -24,7 +24,7 @@ function EventJoin() {
   // settings: 0-not-yet-selected, 1-user-has-car, 2-user-needs-car-ride, 3-user-forever-alone
 
   const joinEvent = async (createdCarGroup, joinedCarGroupId) => {
-
+    console.log(createdCarGroup, joinedCarGroupId)
     try {
       
       // 1. user joins event

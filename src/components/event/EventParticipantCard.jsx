@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 import { useParams } from "react-router-dom";
 
 import service from "@service/config"
@@ -34,7 +34,7 @@ function EventParticipantCard({getEventDetails}) {
       <Button color="error"onClick={() => setShowAreYouSureButtons(!showAreYouSureButtons)}>Salir del evento</Button>
       {showAreYouSureButtons && (
         <Card raised sx={{}}>
-          <Typography>Estas seguro que deseas salir?</Typography>
+          <Alert severity="warning">Estas seguro que deseas salir? Si tienes un grupo de coche creado, esto eliminará el grupo.</Alert>
           <Button color="error" onClick={handleLeaveEvent}>Si</Button>
           <Button color="primary"onClick={() => setShowAreYouSureButtons(false)}>No</Button>
         </Card>
