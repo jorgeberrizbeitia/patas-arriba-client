@@ -21,6 +21,7 @@ import OwnProfile from './pages/profile/OwnProfile'
 import UserList from './pages/profile/UserList'
 import EventMessages from './pages/message/EventMessages'
 import CarGroupMessages from './pages/message/CarGroupMessages'
+import EventCreate from './pages/event/EventCreate'
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login" element={<IsAnon> <Login /> </IsAnon>}/>
 
         <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
+        <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
         <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
         <Route path="/event/:eventId/join" element={  <IsPrivate> <EventJoin /> </IsPrivate>  }/>
         <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
@@ -47,7 +49,6 @@ function App() {
         <Route path="/message/:eventId/event" element={ <IsPrivate> <EventMessages /> </IsPrivate> }/>
         <Route path="/message/:carGroupId/car-group" element={ <IsPrivate> <CarGroupMessages /> </IsPrivate> }/>
         
-
         <Route path="/server-error" element={<ServerError />}/>
         <Route path="*" element={<NotFound />}/>
 

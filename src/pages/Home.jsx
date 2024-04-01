@@ -27,10 +27,6 @@ function Home() {
 
       )}
 
-
-      
-      
-
     </Box>
   )
 }

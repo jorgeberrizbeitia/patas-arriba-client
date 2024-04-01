@@ -8,7 +8,10 @@ const validateField = (inputValue, formDataState, isRequired, regexTest, errorMe
     clone.error = null
   }
   clone.value = inputValue
-  clone.hasUserInteracted = true; // when it is first changed it will always display error
+  if (!clone.hasUserInteracted) {
+    // handling touch on first user interaction
+    clone.hasUserInteracted = true; 
+  }
   return clone
 }
 

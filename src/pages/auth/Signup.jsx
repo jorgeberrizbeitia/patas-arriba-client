@@ -36,6 +36,8 @@ function Signup() {
   const [ canSubmit, setCanSubmit ] = useState(false)
 
   useEffect(() => {
+    // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
+    
     const allFormStates = [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)

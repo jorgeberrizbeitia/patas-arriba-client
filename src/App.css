@@ -14,3 +14,9 @@ a:visited {
   /* weird bug with mui adding a small margin-left on some Icons */
   margin: 0 !important;
 }
+
+hr {
+  margin: 20px;
+  border: none;
+  border-top: 1px solid #EFB665;
+}

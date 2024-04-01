@@ -13,6 +13,7 @@ import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 
 import Loading from "@components/ui/Loading";
 

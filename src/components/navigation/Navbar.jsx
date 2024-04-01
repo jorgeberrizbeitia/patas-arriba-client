@@ -7,6 +7,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import EventIcon from '@mui/icons-material/Event';
+import CloseIcon from '@mui/icons-material/Close';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import capitalizeAll from "@utils/capitalizeAll";
+import GroupIcon from '@mui/icons-material/Group';
+import Chip from '@mui/material/Chip';
 
 import { Link } from "react-router-dom";
 
@@ -21,11 +31,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useState, useContext } from "react";
 import { AuthContext } from "@context/auth.context";
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 function Navbar() {
 
   const navigate = useNavigate()
-  const { authenticateUser } = useContext(AuthContext)
+  const { authenticateUser, isLoggedIn, loggedUserRole, ownProfile} = useContext(AuthContext)
 
   const [open, setOpen] = useState(false);
 
@@ -41,59 +52,120 @@ function Navbar() {
 
   return (
     <nav>
-      <Button onClick={toggleDrawer(true)}>
-        {open ? <MenuOpenIcon /> : <MenuIcon />}
-      </Button>
+      <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Button onClick={toggleDrawer(true)}>
+          {open ? <MenuOpenIcon /> : <MenuIcon />}
+        </Button>
+        {isLoggedIn && <>
+          <Box>
+            <Typography variant="caption">{capitalizeAll(ownProfile.firstName)}</Typography>
+            {loggedUserRole === "admin" && <Typography variant="caption">, Admin</Typography>}
+            <Tooltip title="Ver Perfil">
+                <IconButton onClick={() => navigate("/profile/own")}>
+                <Avatar sx={{ width: 24, height: 24 }} alt="foto-perfil" src={ownProfile.profilePic} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </>}
+        
+      </Box>
       <Drawer open={open} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}
           role="presentation"
           onClick={toggleDrawer(false)}
         >
-          <List>
-            <ListItem disablePadding>
-              <Link to="/" style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Home"} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          </List>
 
           <List>
             <ListItem disablePadding>
-              <Link
-                to="/signup"
-                style={{ textDecoration: "none", color: "inherit", width: "100%" }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>
-                    <LockOpenIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Registro"} />
-                </ListItemButton>
-              </Link>
+              <ListItemButton onClick={toggleDrawer(false)}>
+                <ListItemIcon>
+                  <CloseIcon />
+                </ListItemIcon>
+              </ListItemButton>
             </ListItem>
           </List>
 
+          <Divider />
+
           <List>
             <ListItem disablePadding>
-              <Link
-                to="/login"
-                style={{ textDecoration: "none", color: "inherit", width: "100%" }}
-              >
-                <ListItemButton>
+              <ListItemButton onClick={() => navigate("/")}>
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Home"} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+
+          {!isLoggedIn && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/signup")}>
+                <ListItemIcon>
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Registro"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
+          {!isLoggedIn && <List>
+            <ListItem disablePadding>
+                <ListItemButton onClick={() => navigate("/login")}>
                   <ListItemIcon>
                     <LoginIcon />
                   </ListItemIcon>
                   <ListItemText primary={"Acceso"} />
                 </ListItemButton>
-              </Link>
             </ListItem>
-          </List>
+          </List>}
+
+          {isLoggedIn && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/profile/own")}>
+                <ListItemIcon>
+                  <AccountBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Tu Perfil"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
+          {isLoggedIn && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/event")}>
+                <ListItemIcon>
+                  <EventIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Eventos"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
+          {loggedUserRole === "admin" && <Divider><Chip label="Admin" size="small" /></Divider>}
+
+          {loggedUserRole === "admin" && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/event/create")}>
+                <ListItemIcon>
+                  <AddBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Crear Evento"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
+          {loggedUserRole === "admin" && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/profile")}>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Ver Usuarios"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
 
           <Divider />
 
@@ -113,16 +185,16 @@ function Navbar() {
             </ListItem>
           </List>
 
-          <Divider />
+          {isLoggedIn && <Divider />}
 
-          <ListItem disablePadding>
+          {isLoggedIn && <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
               <ListItemText primary={"Cerrar Sesión"} />
             </ListItemButton>
-          </ListItem>
+          </ListItem>}
         </Box>
       </Drawer>
     </nav>

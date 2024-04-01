@@ -38,6 +38,8 @@ function Login() {
   };
 
   useEffect(() => {
+    // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
+    
     const allFormStates = [email, password]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)

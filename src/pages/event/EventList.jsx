@@ -8,7 +8,6 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -42,10 +41,10 @@ function EventList() {
   return (
     <Container>
       <Typography variant="h4"gutterBottom>Todos los Eventos</Typography>
-      <Box sx={{display:"flex", justifyContent: "space-between"}}>
+      {/* <Box sx={{display:"flex", justifyContent: "space-between"}}>
         <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
         <Button onClick={() => getEvents()} disabled={isLoading}><RefreshIcon /></Button>
-      </Box>
+      </Box> */}
       <Box>
         {isLoading ? <Loading /> : events.map((event) => <EventCard key={event._id} event={event}/>)}
         {!isLoading && events.length === 0 && <Typography>No hay eventos</Typography>}

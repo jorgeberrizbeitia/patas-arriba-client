@@ -17,6 +17,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import CardHeader from "@mui/material/CardHeader";
+import Divider from "@mui/material/Divider";
 
 import { AuthContext } from "@context/auth.context"
 import EventParticipantCard from "../../components/event/EventParticipantCard";
@@ -93,7 +94,7 @@ function EventDetails() {
       {event.participants.some((e) => e._id == loggedUserId) ? (
         <EventParticipantCard getEventDetails={getEventDetails}/>
       ) : (
-      <Box sx={{margin: 10}}>
+      <Box>
         <Link to={`/event/${event._id}/join`}>
           <Button size="large" variant="contained">Unirse al evento!</Button>
         </Link>

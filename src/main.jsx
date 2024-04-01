@@ -47,12 +47,12 @@ import '@fontsource/roboto/700.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-    <AuthWrapper>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <AuthWrapper>
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </ThemeProvider>
-    </AuthWrapper>
+      </AuthWrapper>
+    </ThemeProvider>
   // </React.StrictMode>,
 )

@@ -5,9 +5,9 @@ import { Navigate } from "react-router-dom"
 
 function IsAdmin(props) {
 
-  const { loggedUser } = useContext(AuthContext)
+  const { loggedUserRole, isLoggedIn } = useContext(AuthContext)
 
-  if (loggedUser && loggedUser.role === "admin") {
+  if (isLoggedIn && loggedUserRole === "admin") {
     return props.children
   } else {
     return <Navigate to="/login"/>

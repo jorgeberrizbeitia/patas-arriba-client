@@ -41,11 +41,11 @@ function UpcomingEventsList() {
 
   return (
     <Container>
-      <Typography variant="h4"gutterBottom>Próximos eventos</Typography>
-      <Box sx={{display:"flex", justifyContent: "space-between"}}>
+      <Typography variant="h4"gutterBottom>Próximos Eventos</Typography>
+      {/* <Box sx={{display:"flex", justifyContent: "space-between"}}>
         <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
         <Button onClick={() => getUpcomingEvents()} disabled={isLoading}><RefreshIcon/></Button>
-      </Box>
+      </Box> */}
       <Box>
         {isLoading ? <Loading /> : upcomingEvents.map((event) => <EventCard key={event._id} event={event}/>)}
         {!isLoading && upcomingEvents.length === 0 && <Typography>No hay próximos eventos</Typography>}

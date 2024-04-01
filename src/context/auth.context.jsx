@@ -1,6 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import service from "@service/config";
 
+import Loading from "@components/ui/Loading";
+
 // 1. componente que transmite el contexto
 const AuthContext = createContext()
 
@@ -11,6 +13,7 @@ function AuthWrapper(props) {
   const [ loggedUserId, setLoggedUserId ] = useState(null)
   const [ loggedUserRole, setLoggedUserRole ] = useState(null)
   const [ isAuthenticating, setIsAuthenticating ] = useState(true)
+  const [ ownProfile, setOwnProfile ] = useState(null) // for user profile
 
   const authenticateUser = async () => {
     const storedToken = localStorage.getItem("authToken")
@@ -20,31 +23,54 @@ function AuthWrapper(props) {
       setLoggedUserId(null)
       setLoggedUserRole(null)
       setIsAuthenticating(false)
+      setOwnProfile(null)
       return
     }
 
     try {
       setIsAuthenticating(true)
       const response = await service.get("/auth/verify")
+      const responseOwnProfile = await service.get("/profile/own")
       
       setIsLoggedIn(true)
       setLoggedUserId(response.data.payload._id)
       setLoggedUserRole(response.data.payload.role)
-      setIsAuthenticating(false)
+      setOwnProfile(responseOwnProfile.data)
+      setTimeout(() => setIsAuthenticating(false), 700)
     } catch (error) {
       console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)
-      setIsAuthenticating(false)
+      setOwnProfile(null)
+      setTimeout(() => setIsAuthenticating(false), 700)
     }
+  }
+
+  const getUpdatedOwnProfile = async() => {
+
+    setIsAuthenticating(true)
+
+    try {
+
+      const response = await service.get("/profile/own")
+
+      setOwnProfile(response.data)
+      setTimeout(() => setIsAuthenticating(false), 700)
+    } catch (error) {
+      setOwnProfile(response.data)
+      setTimeout(() => setIsAuthenticating(false), 700)
+    }
+
   }
 
   const passedContext = {
     isLoggedIn,
     loggedUserId,
     loggedUserRole,
-    authenticateUser
+    authenticateUser,
+    ownProfile,
+    getUpdatedOwnProfile
   }
 
   useEffect(() => {
@@ -52,7 +78,7 @@ function AuthWrapper(props) {
   }, [])
 
   if (isAuthenticating) {
-    return <h2>...authenticating</h2>
+    return <Loading />
   }
 
   return (
