@@ -42,10 +42,12 @@ function EventDetails() {
     try {
       
       const response = await service.get(`/event/${eventId}`)
+
       console.log(response.data)
       console.log(loggedUserId)
 
       setEvent(response.data)
+
       setTimeout(() => setIsLoading(false), 700)
 
     } catch (error) {
@@ -65,23 +67,28 @@ function EventDetails() {
         <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
       </Box>
 
-      <Card sx={{height: 120, marginTop: 3}}>
+      <Card sx={{height: 160, marginTop: 3}}>
         <CardHeader title={event.title}/>
-        <CardContent sx={{display: "flex", justifyContent: "space-around"}}>
-          <Typography variant="body">Fecha: {new Date(event.date).toDateString()}</Typography>
-          <Typography variant="body">Participantes: {event.participants.length}</Typography>
+        <CardContent sx={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
+          <Typography variant="body2">Fecha: {new Date(event.date).toDateString()}</Typography>
+          <Typography variant="body2">Hora: {event.time}</Typography>
+          <Typography variant="body2">Participantes: {event.participants.length}</Typography>
           {/* //todo when clicking on participants, open a modal with list */}
         </CardContent>
       </Card>
 
+      <hr />
+
       <Card sx={{height: 200, marginTop: 3}}>
-        <Typography variant="h5">{event.location}</Typography>
+        <Typography variant="h5">Lugar: {event.location}</Typography>
         <CardMedia
           component="img"
           image={mapExample}
           alt="mapa-ubicación"
         />
       </Card>
+
+      <hr />
 
       {event.participants.some((e) => e._id == loggedUserId) ? (
         <EventParticipantCard getEventDetails={getEventDetails}/>

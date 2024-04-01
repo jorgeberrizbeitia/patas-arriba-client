@@ -17,7 +17,6 @@ import capitalizeAll from "@utils/capitalizeAll"
 
 function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId}) {
 
-  const theme = useTheme();
   console.log(eachCarGroup)
 
   const {pickupLocation, pickupCoordinates, roomAvailable, pickupTime, owner} = eachCarGroup

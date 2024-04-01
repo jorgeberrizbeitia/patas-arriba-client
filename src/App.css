@@ -9,3 +9,8 @@ a:visited {
   /* weird but with mui and rect-router-dom links */
   color: #EFB665
 }
+
+.remove-margin {
+  /* weird bug with mui adding a small margin-left on some Icons */
+  margin: 0 !important;
+}
