@@ -1,5 +1,5 @@
 import logo from "@assets/images/logo.png";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import countryPhoneCode from "@data/country-phone-code.json"
 
@@ -18,17 +18,22 @@ import { useEffect, useState } from "react";
 import service from "@service/config";
 
 import validateField from "@utils/validateField";
+import CardHeader from '@mui/material/CardHeader'
+import Avatar from '@mui/material/Avatar'
 
-function EventCreate() {
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+function EventEditForm({event}) {
   
   const navigate = useNavigate()
 
-  const [ title, setTitle ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ location, setLocation ] = useState({value: "", error: null, hasUserInteracted: false})
-  // const [ coordinates, setCoordinates ] = useState({value: [], error: null, hasUserInteracted: false}) //! pending leaflet implementation
-  const [ date, setDate ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ time, setTime ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ category, setCategory ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ title, setTitle ] = useState({value: event.title, error: null, hasUserInteracted: true})
+  const [ location, setLocation ] = useState({value: event.location, error: null, hasUserInteracted: true})
+  // const [ coordinates, setCoordinates ] = useState({value: event.coordinates, error: null, hasUserInteracted: true}) //! pending leaflet implementation
+  const [ date, setDate ] = useState({value: event.date, error: null, hasUserInteracted: true})
+  const [ time, setTime ] = useState({value: event.time, error: null, hasUserInteracted: true})
+  const [ category, setCategory ] = useState({value: event.category, error: null, hasUserInteracted: true})
+  //? NOTE. no need for hasUserInteracted on edit, however, validate fields function adds it
 
   const [ serverError, setServerError] = useState();
   const [ canSubmit, setCanSubmit ] = useState(false)
@@ -68,6 +73,7 @@ function EventCreate() {
   const handleTime = (e) => {
     //todo validate date format
     const updatedstate = validateField(e.target.value, location, true)
+    console.log(updatedstate)
     setTime(updatedstate)
   };
 
@@ -81,7 +87,7 @@ function EventCreate() {
 
     try {
 
-      await service.post("/event", {
+      await service.put(`/event/${event._id}`, {
         title: title.value, 
         location: location.value, 
         date: date.value, 
@@ -89,7 +95,7 @@ function EventCreate() {
         category: category.value, 
 
       })
-      navigate("/")
+      navigate(`/event/${event._id}`)
     } catch (error) {
       navigate("/server-error")
     }
@@ -97,17 +103,13 @@ function EventCreate() {
   }
 
   return (
-    <Box  display="flex" flexDirection="column" alignItems="center">
 
-      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
-
-        <Typography variant="h4" gutterBottom>
-          Crear Evento
-        </Typography>
+      <Box component="form" fullWidth noValidate autoComplete="on" display="flex" flexDirection="column" alignItems="center" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
 
         <TextField
           label="Título"
           variant="outlined"
+          fullWidth
           value={title.value}
           onChange={handleTitle}
           margin="normal"
@@ -119,6 +121,7 @@ function EventCreate() {
         <TextField
           label="Lugar"
           variant="outlined"
+          fullWidth
           value={location.value}
           onChange={handleLocation}
           margin="normal"
@@ -130,7 +133,9 @@ function EventCreate() {
         <TextField
           label="Fecha"
           variant="outlined"
-          value={date.value}
+          fullWidth
+          value={new Date(date.value).toISOString().split('T')[0]}
+          //* input requires specific format YYYY-MM-DD
           onChange={handleDate}
           margin="normal"
           type="date"
@@ -143,6 +148,7 @@ function EventCreate() {
         <TextField
           label="Hora"
           variant="outlined"
+          fullWidth
           value={time.value}
           onChange={handleTime}
           margin="normal"
@@ -158,6 +164,7 @@ function EventCreate() {
             select
             label="categoria"
             variant="outlined"
+            fullWidth
             value={category.value}
             onChange={handleCategory}
             required
@@ -173,14 +180,13 @@ function EventCreate() {
           variant="contained" 
           type="submit"
           disabled={!canSubmit}
-        >Crear Evento</Button>
+        >Editar Evento</Button>
 
-          {serverError && <Alert severity="error">{serverError}</Alert>}
+        {serverError && <Alert severity="error">{serverError}</Alert>}
 
       </Box>
 
-    </Box>
   );
 }
 
-export default EventCreate;
+export default EventEditForm;

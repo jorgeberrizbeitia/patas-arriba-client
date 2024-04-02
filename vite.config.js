@@ -14,6 +14,9 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "src/pages"),
       "@service": path.resolve(__dirname, "src/service"),
       "@utils": path.resolve(__dirname, "src/utils"),
+      
+      '@mui/material': path.resolve(__dirname, "node_modules/@mui/material"),
+      '@mui/icons-material': path.resolve(__dirname, "node_modules/@mui/icons-material"),
     }
   }
 })

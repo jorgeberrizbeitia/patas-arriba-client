@@ -21,10 +21,13 @@ import Divider from "@mui/material/Divider";
 
 import { AuthContext } from "@context/auth.context"
 import EventParticipantCard from "../../components/event/EventParticipantCard";
+import IconButton from "@mui/material/IconButton";
+
+import EventMessageBoard from "@components/messages/EventMessageBoard";
 
 function EventDetails() {
 
-  const { loggedUserId } = useContext(AuthContext)
+  const { loggedUserId, loggedUserRole } = useContext(AuthContext)
 
   const { eventId } = useParams()
   const navigate = useNavigate()
@@ -38,7 +41,7 @@ function EventDetails() {
 
   const getEventDetails = async () => {
 
-    if (!isLoading) setIsLoading(true)
+    // if (!isLoading) setIsLoading(true)
 
     try {
       
@@ -65,8 +68,12 @@ function EventDetails() {
     <Container>
 
       <Box sx={{display:"flex", justifyContent: "space-between"}}>
-        <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
+        <IconButton onClick={() => navigate('/event')}><ArrowBackIcon/></IconButton>
       </Box>
+
+      {loggedUserRole === "admin" && <Button onClick={() => navigate(`/event/${eventId}/edit`)} variant="contained" color="warning">Admin: Modificar Evento</Button>}
+
+      {event.status === "cancelled" && <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>}
 
       <Card sx={{height: 160, marginTop: 3}}>
         <CardHeader title={event.title}/>
@@ -91,8 +98,12 @@ function EventDetails() {
 
       <hr />
 
-      {event.participants.some((e) => e._id == loggedUserId) ? (
+      {event.participants.some((e) => e._id == loggedUserId) ? (<>
         <EventParticipantCard getEventDetails={getEventDetails}/>
+        {/* //todo separate elements in EventParticipantCard here */}
+        <hr />
+        <EventMessageBoard type="event" eventOrCarGroup={event}/>
+      </>
       ) : (
       <Box>
         <Link to={`/event/${event._id}/join`}>
@@ -100,7 +111,6 @@ function EventDetails() {
         </Link>
       </Box>
       )}
-
 
     </Container>
   )

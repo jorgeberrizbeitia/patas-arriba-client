@@ -9,6 +9,7 @@ import Chip from "@mui/material/Chip";
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
+import CornerChip from '@components/ui/CornerChip';
 
 function EventCard({event}) {
 
@@ -16,14 +17,26 @@ function EventCard({event}) {
 
   //todo change styles if: isUpcoming, isJoined, isCancelled 
 
-  const eventDate = new Date(event.date)
-  const today = new Date()
+  const eventDateStartOfDay = new Date(event.date)
+  eventDateStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  const todayStartOfDay = new Date()
+  todayStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  console.log(todayStartOfDay, eventDateStartOfDay)
 
   return (
-    <Card raised sx={{ minHeight: "250px", mt: "20px" }}>
-      { eventDate > today && <Chip sx={{m: 1}} label="Próximo Evento" color="primary"/> }
-      { event.participants.includes(loggedUserId) && <Chip sx={{m: 1}} label="Te has apuntado!" color="success" />}
-      <CardHeader title={event.title} />
+    <Card raised sx={{ minHeight: "250px", mt: "20px", position: 'relative' }}>
+      {/* { eventDateStartOfDay > todayStartOfDay && <Chip sx={{m: 1}} label="Próximo Evento" color="primary"/> } */}
+      {/* { eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString() && <Chip sx={{m: 1}} label="Hoy!" color="info"/> } */}
+      {/* { event.participants.includes(loggedUserId) && <Chip sx={{m: 1}} label="Ya te has apuntado!" color="success" />} */}
+      
+      { event.participants.includes(loggedUserId) && <CornerChip label="Apuntado" color="#2ECC71" side={"right"} />}
+      { event.status === "cancelled" && <CornerChip label="Cancelado" color="#E74C3C" side={"right"}/> }
+      { eventDateStartOfDay > todayStartOfDay && <CornerChip label="Próximo" color="#EFB665" side={"left"}/> }
+      { eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString() && <CornerChip label="Es Hoy" color="#3498DB" side={"left"}/> }
+
+      {/* //todo find out how to use mui color palette */}
+
+      <CardHeader title={event.title} sx={{pl: 10, pr: 10}}/>
       <CardContent>
         <Typography variant="body2" color="text.secondary" gutterBottom>
           Lugar: {event.location}

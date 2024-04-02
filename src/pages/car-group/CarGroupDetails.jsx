@@ -12,7 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
 import profilePicExample from "@assets/images/profile-pic-example.jpg"
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ChatIcon from '@mui/icons-material/Chat';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -33,11 +33,14 @@ import capitalizeAll from "@utils/capitalizeAll"
 import { useNavigate, useParams } from 'react-router-dom';
 
 import service from "@service/config"
-import ProfileCard from '../../components/profile/ProfileCard';
+import ProfileCard from '@components/profile/ProfileCard';
+import { AuthContext } from '@context/auth.context';
+import EventMessageBoard from '@components/messages/EventMessageBoard';
 
 function CarGroupDetails() {
 
   const navigate = useNavigate()
+  const { loggedUserId } = useContext(AuthContext)
 
   const { carGroupId } = useParams()
 
@@ -94,7 +97,7 @@ function CarGroupDetails() {
             // </Tooltip>
           }
           
-          title={`Coche de ${capitalizeAll(owner.firstName)} ${capitalizeAll(owner.lastName)[0]}.`}
+          title={owner._id == loggedUserId ? "Tu coche" : `Coche de ${capitalizeAll(owner.firstName)}`}
         />
         <CardContent>
           <Box>
@@ -176,7 +179,7 @@ function CarGroupDetails() {
         </Collapse>
       </Card>
 
-      {/* //todo Message Board here */}
+      <EventMessageBoard type="car-group" eventOrCarGroup={carGroup}/>
 
     </Container>
   )

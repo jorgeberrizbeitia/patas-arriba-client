@@ -17,6 +17,7 @@ import Divider from '@mui/material/Divider';
 
 import Loading from "@components/ui/Loading";
 
+
 import service from "@service/config"
 import { AuthContext } from "@context/auth.context"
 
@@ -38,12 +39,19 @@ function EventParticipantCard({getEventDetails}) {
   }, [])
 
   const getCarGroupsList = async () => {
+    setIsLoading(true)
 
-    const response = await service.get(`/car-group/list/${eventId}`)
-    console.log(response.data)
-    setCarGroups(response.data)
-
-    setTimeout(() => setIsLoading(false), 700)
+    try {
+      const response = await service.get(`/car-group/list/${eventId}`)
+      console.log(response.data)
+      setCarGroups(response.data)
+  
+      setTimeout(() => setIsLoading(false), 700)
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
   }
 
   const handleLeaveEvent = async () => {
@@ -64,7 +72,7 @@ function EventParticipantCard({getEventDetails}) {
   }
 
   const myCarGroup = carGroups.find((eachCarGroup) => {
-    return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner == loggedUserId
+    return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
   })
 
   return (
@@ -79,7 +87,7 @@ function EventParticipantCard({getEventDetails}) {
           <Card>
           <CardHeader
             avatar={<DirectionsCarIcon />}
-            title={`Coche de ${capitalizeAll(myCarGroup.owner.firstName)}`}
+            title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${capitalizeAll(myCarGroup.owner.firstName)}`}
             action={
               <IconButton 
                 sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} 
@@ -106,6 +114,7 @@ function EventParticipantCard({getEventDetails}) {
           <Button color="primary"onClick={() => setShowAreYouSureButtons(false)}>No</Button>
         </Card>
       )}
+
 
     </Container>
   )

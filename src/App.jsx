@@ -22,6 +22,7 @@ import UserList from './pages/profile/UserList'
 import EventMessages from './pages/message/EventMessages'
 import CarGroupMessages from './pages/message/CarGroupMessages'
 import EventCreate from './pages/event/EventCreate'
+import EventEdit from './pages/event/EventEdit'
 
 
 function App() {
@@ -33,22 +34,29 @@ function App() {
       
       <Routes>
 
+        {/* //* public routes */}
         <Route path="/" element={<Home />}/>
 
+        {/* //* anon routes */}
         <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>
         <Route path="/login" element={<IsAnon> <Login /> </IsAnon>}/>
 
-        <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
+        {/* //* admin routes */}
         <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
+        <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
+        <Route path="/profile" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
+
+        {/* //* private routes */}
+        <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
         <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
         <Route path="/event/:eventId/join" element={  <IsPrivate> <EventJoin /> </IsPrivate>  }/>
         <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
-        <Route path="/profile" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
         <Route path="/profile/own" element={ <IsPrivate> <OwnProfile /> </IsPrivate> }/>
         <Route path="/profile/:userId" element={ <IsPrivate> <Profile /> </IsPrivate> }/>
         <Route path="/message/:eventId/event" element={ <IsPrivate> <EventMessages /> </IsPrivate> }/>
         <Route path="/message/:carGroupId/car-group" element={ <IsPrivate> <CarGroupMessages /> </IsPrivate> }/>
         
+        {/* //* error routes */}
         <Route path="/server-error" element={<ServerError />}/>
         <Route path="*" element={<NotFound />}/>
 
