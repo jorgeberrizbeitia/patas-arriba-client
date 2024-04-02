@@ -26,6 +26,7 @@ import Avatar from '@mui/material/Avatar'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import EventEditForm from "@components/event/EventEditForm";
 import EventEditStatus from "@components/event/EventEditStatus";
+import EventDelete from "@components/event/EventDelete";
 
 
 
@@ -90,7 +91,7 @@ function EventEdit() {
       <Box display="flex" flexDirection="column" alignItems="center">
         {editType === 1 && <EventEditForm event={event}/>}
         {editType === 2 && <EventEditStatus event={event}/>}
-        {editType === 3 && <EventEditForm event={event}/>}
+        {editType === 3 && <EventDelete event={event}/>}
       </Box>
 
 
