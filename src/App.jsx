@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import Home from '@pages/Home'
+import About from '@pages/About'
 import Signup from '@pages/auth/Signup'
 import Login from '@pages/auth/Login'
 import ServerError from '@pages/error/ServerError'
@@ -36,6 +37,7 @@ function App() {
 
         {/* //* public routes */}
         <Route path="/" element={<Home />}/>
+        <Route path="/about" element={<About />}/>
 
         {/* //* anon routes */}
         <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>

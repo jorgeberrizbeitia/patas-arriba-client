@@ -57,30 +57,13 @@ function AuthWrapper(props) {
     }
   }
 
-  const getUpdatedOwnProfile = async() => {
-
-    setIsAuthenticating(true)
-
-    try {
-
-      const response = await service.get("/profile/own")
-
-      setOwnProfile(response.data)
-      setTimeout(() => setIsAuthenticating(false), 700)
-    } catch (error) {
-      setOwnProfile(response.data)
-      setTimeout(() => setIsAuthenticating(false), 700)
-    }
-
-  }
-
   const passedContext = {
     isLoggedIn,
     loggedUserId,
     loggedUserRole,
     authenticateUser,
     ownProfile,
-    getUpdatedOwnProfile
+    setOwnProfile
   }
 
   useEffect(() => {

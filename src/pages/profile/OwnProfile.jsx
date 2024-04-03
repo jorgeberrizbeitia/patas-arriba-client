@@ -8,12 +8,17 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { AuthContext } from "../../context/auth.context";
 import capitalizeAll from "@utils/capitalizeAll";
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit';
+import UpdateSingleField from "@components/profile/UpdateSingleField";
 
 function OwnProfile() {
 
   const { ownProfile } = useContext(AuthContext)
 
-  const { profilePic, username, fullName, phoneCode, phoneNumber } = ownProfile
+  const [propertyToEdit, setPropertyToEdit] = useState(null)
+
+  const { email, profilePic, username, fullName, phoneCode, phoneNumber, createdAt } = ownProfile
 
   return (
     <Box p={4}>
@@ -26,19 +31,54 @@ function OwnProfile() {
         </Grid>
         {/* Profile Information */}
         <Grid item xs={12} md={8}>
+
+          <Typography variant="h5" gutterBottom>
+            <span>Correo: </span>
+            <span>{email}</span>
+          </Typography>
+
           <Typography variant="h4" gutterBottom>
-            {username}
+            <span>Usuario: </span>
+            <span>{username}</span>
+            <IconButton color={"warning"} onClick={() => setPropertyToEdit("username")}>
+              <EditIcon />
+            </IconButton>
+            { propertyToEdit === "username" && <>
+              <UpdateSingleField 
+                value={username} 
+                setPropertyToEdit={setPropertyToEdit} 
+                propertyToEdit={propertyToEdit} 
+              />
+            </>}
           </Typography>
+
+          <hr />
+
           <Typography variant="h3" gutterBottom>
-            {capitalizeAll(fullName)}
+            <span>Nombre: </span>
+            <span>{capitalizeAll(fullName)}</span>
+            <IconButton color={"warning"} onClick={() => setPropertyToEdit("fullName")}>
+              <EditIcon />
+            </IconButton>
+            { propertyToEdit === "fullName" && <>
+              <UpdateSingleField 
+                value={fullName} 
+                setPropertyToEdit={setPropertyToEdit} 
+                propertyToEdit={propertyToEdit} 
+              />
+            </>}
           </Typography>
+
           <Typography variant="body1" gutterBottom>
-            Phone Number:
+            <span>Telefono: </span>
+            <span>+{phoneCode} {phoneNumber}</span>
           </Typography>
-          <Typography variant="body1" gutterBottom>
-            +{phoneCode} {phoneNumber}
+
+          <Typography variant="body1">
+            <span>Desde: </span>
+            <span>{new Date(createdAt).toDateString()}</span>
           </Typography>
-          {/* Add more profile information here if needed */}
+
         </Grid>
       </Grid>
     </Box>
