@@ -24,8 +24,8 @@ function Signup() {
   const navigate = useNavigate()
 
   const [ email, setEmail ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ firstName, setFirstName ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ lastName, setLastName ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ username, setUsername ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ fullName, setFullName ] = useState({value: "", error: null, hasUserInteracted: false})
   const [ phoneCode, setPhoneCode ] = useState({value: 34, error: null, hasUserInteracted: true}) // starts as true as there is default value
   const [ phoneNumber, setPhoneNumber ] = useState({value: "", error: null, hasUserInteracted: false})
   const [ password, setPassword ] = useState({value: "", error: null, hasUserInteracted: false})
@@ -38,7 +38,7 @@ function Signup() {
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
     
-    const allFormStates = [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword]
+    const allFormStates = [email, username, fullName, phoneCode, phoneNumber, password, confirmPassword]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
     const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
@@ -48,25 +48,26 @@ function Signup() {
     } else {
       if (canSubmit === true) setCanSubmit(false)
     }
-  }, [email, firstName, lastName, phoneCode, phoneNumber, password, confirmPassword])
+  }, [email, username, fullName, phoneCode, phoneNumber, password, confirmPassword])
 
   const handleEmail = (e) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const updatedstate = validateField(e.target.value, email, true, regex, "Correo electrónico con formato incorrecto")
+    const updatedstate = validateField(e.target.value, email, true, regex, "Formato incorrecto")
     console.log(updatedstate)
     setEmail(updatedstate);
   };
 
-  const handleFirstName = (e) => {
-    const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/; 
-    const updatedstate = validateField(e.target.value, email, true, regex, "Nombre debe tener solo letras, espacios y de 2 a 20 caracteres")
-    setFirstName(updatedstate);
+  const handleUsername = (e) => {
+    const regex = /^[^\s]{3,15}$/; 
+    e.target.value = e.target.value.replace(" ", "") // removes all empty spaces
+    const updatedstate = validateField(e.target.value, username, true, regex, "No debe tener espacios y de 3 a 15 characteres")
+    setUsername(updatedstate);
   };
 
-  const handleLastName = (e) => {
-    const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{1,20}$/;
-    const updatedstate = validateField(e.target.value, email, true, regex, "Apellido debe tener solo letras, espacios y de 2 a 20 caracteres")
-    setLastName(updatedstate);
+  const handleFullName = (e) => {
+    const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{3,30}$/;
+    const updatedstate = validateField(e.target.value, fullName, true, regex, "Solo letras, espacios y de 3 a 30 caracteres")
+    setFullName(updatedstate);
   };
 
   const handlePhoneCode = (e) => {
@@ -75,14 +76,15 @@ function Signup() {
   };
 
   const handlePhoneNumber = (e) => {
-    const regex = /^[0-9]{4,20}$/;
-    const updatedstate = validateField(e.target.value, email, true, regex, "Número telefónico solo debe contener dígitos numericos y de 4 a 20 dígitos")
+    const regex = /^[0-9]{7,15}$/;
+    e.target.value = e.target.value.replace(/\D/g, ''); // removes all non-digits
+    const updatedstate = validateField(e.target.value, phoneNumber, true, regex, "Solo dígitos numericos y de 7 a 15 dígitos")
     setPhoneNumber(updatedstate);
   };
 
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-    const updatedstate = validateField(e.target.value, password, true, regex, "Contraseña debe tener al menos 6 caractéres, un número, una minúscula y una mayúscula")
+    const updatedstate = validateField(e.target.value, password, true, regex, "Al menos 6 caractéres, un número, una minúscula y una mayúscula")
     setPassword(updatedstate);
   };
 
@@ -108,8 +110,8 @@ function Signup() {
 
       await service.post("/auth/signup", {
         email: email.value, 
-        firstName: firstName.value, 
-        lastName: lastName.value, 
+        username: username.value, 
+        fullName: fullName.value, 
         phoneCode: phoneCode.value, 
         phoneNumber: phoneNumber.value, 
         password: password.value
@@ -124,13 +126,13 @@ function Signup() {
       const errorField = error?.response?.data?.errorField
       if (errorCode === 400) {
         setServerError(errorMessage)
+        //* error handling for unique properties below
         if (errorField === "email") {
           setEmail({...email, error: errorMessage})
         } else if (errorField === "phoneNumber") {
           setPhoneNumber({...phoneNumber, error: errorMessage})
-        } else if (errorField === "fullName") {
-          setFirstName({...firstName, error: errorMessage})
-          setLastName({...lastName, error: errorMessage})
+        } else if (errorField === "username") {
+          setUsername({...username, error: errorMessage})
         }
         setTimeout(() => setServerError(null), 5000)
       } else {
@@ -145,7 +147,7 @@ function Signup() {
 
       <img src={logo} alt="logo" width={"300px"} />
 
-      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
+      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{width:"100%", maxWidth: "600px"}}>
 
         <Typography variant="h4" gutterBottom>
           Registro
@@ -156,6 +158,7 @@ function Signup() {
           variant="outlined"
           value={email.value}
           onChange={handleEmail}
+          fullWidth
           margin="normal"
           required
           error={email.hasUserInteracted && email.error !== null} // can display and any error exists
@@ -163,25 +166,27 @@ function Signup() {
         />
 
         <TextField
-          label="Nombre"
+          label="Nombre de Usuario"
           variant="outlined"
-          value={firstName.value}
-          onChange={handleFirstName}
+          value={username.value}
+          onChange={handleUsername}
+          fullWidth
           margin="normal"
           required
-          error={firstName.hasUserInteracted && firstName.error !== null}
-          helperText={firstName.error}
+          error={username.hasUserInteracted && username.error !== null}
+          helperText={username.error}
         />
 
         <TextField
-          label="Apellido"
+          label="Nombre Completo"
           variant="outlined"
-          value={lastName.value}
-          onChange={handleLastName}
+          value={fullName.value}
+          onChange={handleFullName}
+          fullWidth
           margin="normal"
           required
-          error={lastName.hasUserInteracted && lastName.error !== null}
-          helperText={lastName.error}
+          error={fullName.hasUserInteracted && fullName.error !== null}
+          helperText={fullName.error}
         />
 
         <Box sx={{ marginTop: '8px', marginBottom: '8px' }}>
@@ -189,6 +194,7 @@ function Signup() {
             select
             label="Código"
             variant="outlined"
+            fullWidth
             value={phoneCode.value}
             onChange={handlePhoneCode}
             sx={{ width: '45%' }}
@@ -202,6 +208,7 @@ function Signup() {
           <TextField
             label="Número de Móvil"
             variant="outlined"
+            fullWidth
             value={phoneNumber.value}
             onChange={handlePhoneNumber}
             sx={{ width: '55%' }}
@@ -215,6 +222,7 @@ function Signup() {
           label="Contraseña"
           type={showPassword ? "text" : "password"}
           variant="outlined"
+          fullWidth
           value={password.value}
           onChange={handlePassword}
           margin="normal"
@@ -245,6 +253,7 @@ function Signup() {
           onChange={handleConfirmPassword}
           margin="normal"
           required
+          fullWidth
           error={confirmPassword.hasUserInteracted && confirmPassword.error !== null}
           helperText={confirmPassword.error}
           InputProps={{

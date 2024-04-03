@@ -7,12 +7,13 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { AuthContext } from "../../context/auth.context";
+import capitalizeAll from "@utils/capitalizeAll";
 
 function OwnProfile() {
 
   const { ownProfile } = useContext(AuthContext)
 
-  const { profilePic, firstName, lastName, phoneCode, phoneNumber } = ownProfile
+  const { profilePic, username, fullName, phoneCode, phoneNumber } = ownProfile
 
   return (
     <Box p={4}>
@@ -20,13 +21,16 @@ function OwnProfile() {
         {/* Profile Picture */}
         <Grid item xs={12} md={4}>
           <Box display="flex" justifyContent="center">
-            <Avatar src={profilePic} alt={`${firstName} ${lastName}`} sx={{ width: 200, height: 200 }} />
+            <Avatar src={profilePic} alt={username} sx={{ width: 200, height: 200 }} />
           </Box>
         </Grid>
         {/* Profile Information */}
         <Grid item xs={12} md={8}>
           <Typography variant="h4" gutterBottom>
-            {`${firstName} ${lastName}`}
+            {username}
+          </Typography>
+          <Typography variant="h3" gutterBottom>
+            {capitalizeAll(fullName)}
           </Typography>
           <Typography variant="body1" gutterBottom>
             Phone Number:

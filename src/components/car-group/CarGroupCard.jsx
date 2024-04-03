@@ -30,9 +30,9 @@ function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId})
     <Card>
       <CardHeader
         avatar={
-          <Tooltip title={`${capitalizeAll(owner.firstName)} ${capitalizeAll(owner.lastName)}.`}>
+          <Tooltip title={owner.username}>
             <Avatar sx={{ bgcolor: "primary" }}>
-              {`${capitalizeAll(owner.firstName)[0]}${capitalizeAll(owner.lastName)[0]}`}
+              {owner.username}
             </Avatar>
           </Tooltip>
         }

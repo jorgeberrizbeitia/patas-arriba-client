@@ -20,16 +20,16 @@ function Login() {
   const navigate = useNavigate()
   const { authenticateUser } = useContext(AuthContext)
 
-  const [ email, setEmail ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ credential, setCredential ] = useState({value: "", error: null, hasUserInteracted: false})
   const [ password, setPassword ] = useState({value: "", error: null, hasUserInteracted: false})
 
   const [ showPassword, setShowPassword] = useState(false);
   const [ serverError, setServerError] = useState();
   const [ canSubmit, setCanSubmit ] = useState(false)
 
-  const handleEmail = (e) => {
-    const updatedstate = validateField(e.target.value, email, true)
-    setEmail(updatedstate);
+  const handleCredential = (e) => {
+    const updatedstate = validateField(e.target.value, credential, true)
+    setCredential(updatedstate);
   };
 
   const handlePassword = (e) => {
@@ -40,7 +40,7 @@ function Login() {
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
     
-    const allFormStates = [email, password]
+    const allFormStates = [credential, password]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
     const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
@@ -50,7 +50,7 @@ function Login() {
     } else {
       if (canSubmit === true) setCanSubmit(false)
     }
-  }, [email, password])
+  }, [credential, password])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -58,7 +58,7 @@ function Login() {
     try {
 
       const response = await service.post("/auth/login", {
-        email: email.value, 
+        credential: credential.value, 
         password: password.value
       })
 
@@ -75,8 +75,8 @@ function Login() {
       const errorField = error?.response?.data?.errorField
       if (errorCode === 400 || errorCode === 401) {
         setServerError(errorMessage)
-        if (errorField === "email") {
-          setEmail({...email, error: errorMessage})
+        if (errorField === "credential") {
+          setCredential({...credential, error: errorMessage})
         } else if (errorField === "password") {
           setPassword({...password, error: errorMessage})
         }
@@ -93,21 +93,22 @@ function Login() {
 
       <img src={logo} alt="logo" width={"300px"} />
 
-      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
+      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{width:"100%", maxWidth: "600px"}}>
 
         <Typography variant="h4" gutterBottom>
           Acceso
         </Typography>
 
         <TextField
-          label="Correo Electronico"
+          label="Correo Electronico o Nombre de Usuario"
           variant="outlined"
-          value={email.value}
-          onChange={handleEmail}
+          value={credential.value}
+          onChange={handleCredential}
+          sx={{width: "100%"}}
           margin="normal"
           required
-          error={email.hasUserInteracted && email.error !== null} // can display and any error exists
-          helperText={email.error}
+          error={credential.hasUserInteracted && credential.error !== null} // can display and any error exists
+          helperText={credential.error}
         />
 
         <TextField
@@ -117,6 +118,7 @@ function Login() {
           value={password.value}
           onChange={handlePassword}
           margin="normal"
+          fullWidth
           required
           error={password.hasUserInteracted && password.error !== null}
           helperText={password.error}

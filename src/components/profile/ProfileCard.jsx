@@ -6,13 +6,13 @@ import CardHeader from "@mui/material/CardHeader"
 
 function ProfileCard({profile}) {
 
-  const { profilePic, firstName, lastName, phoneCode, phoneNumber } = profile
+  const { profilePic, username, phoneCode, phoneNumber } = profile
 
   return <CardHeader 
   avatar={
     <Avatar src={profilePic} alt="foto-perfil"/>
   }
-  title={`${capitalizeAll(firstName)} ${capitalizeAll(lastName)}`}
+  title={username}
   subheader={`${phoneCode} ${phoneNumber}`}
   />
 }

@@ -87,7 +87,7 @@ function EventParticipantCard({getEventDetails}) {
           <Card>
           <CardHeader
             avatar={<DirectionsCarIcon />}
-            title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${capitalizeAll(myCarGroup.owner.firstName)}`}
+            title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}
             action={
               <IconButton 
                 sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} 

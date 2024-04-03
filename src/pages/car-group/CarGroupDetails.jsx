@@ -90,14 +90,14 @@ function CarGroupDetails() {
         <CardHeader
           avatar={
             <DirectionsCarIcon />
-            // <Tooltip title={`${capitalizeAll(owner.firstName)} ${capitalizeAll(owner.lastName)}.`}>
+            // <Tooltip title={owner.username}>
             //   <Avatar sx={{ bgcolor: "primary" }}>
-            //     {`${capitalizeAll(owner.firstName)[0]}${capitalizeAll(owner.lastName)[0]}`}
+            //     {owner.username}
             //   </Avatar>
             // </Tooltip>
           }
           
-          title={owner._id == loggedUserId ? "Tu coche" : `Coche de ${capitalizeAll(owner.firstName)}`}
+          title={owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}
         />
         <CardContent>
           <Box>

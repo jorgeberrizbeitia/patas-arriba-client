@@ -1,17 +1,10 @@
-import logo from "@assets/images/logo.png";
-import { Link, useNavigate } from "react-router-dom"
-
-import countryPhoneCode from "@data/country-phone-code.json"
+import { useNavigate } from "react-router-dom"
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Alert from '@mui/material/Alert';
 
 import { useEffect, useState } from "react";
@@ -99,7 +92,7 @@ function EventCreate() {
   return (
     <Box  display="flex" flexDirection="column" alignItems="center">
 
-      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
+      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{width:"100%", maxWidth: "600px"}}>
 
         <Typography variant="h4" gutterBottom>
           Crear Evento
@@ -109,6 +102,7 @@ function EventCreate() {
           label="Título"
           variant="outlined"
           value={title.value}
+          fullWidth
           onChange={handleTitle}
           margin="normal"
           required
@@ -121,6 +115,7 @@ function EventCreate() {
           variant="outlined"
           value={location.value}
           onChange={handleLocation}
+          fullWidth
           margin="normal"
           required
           error={location.hasUserInteracted && location.error !== null}
@@ -132,6 +127,7 @@ function EventCreate() {
           variant="outlined"
           value={date.value}
           onChange={handleDate}
+          fullWidth
           margin="normal"
           type="date"
           required
@@ -145,6 +141,7 @@ function EventCreate() {
           variant="outlined"
           value={time.value}
           onChange={handleTime}
+          fullWidth
           margin="normal"
           type="time"
           required
@@ -160,6 +157,7 @@ function EventCreate() {
             variant="outlined"
             value={category.value}
             onChange={handleCategory}
+            fullWidth
             required
             InputLabelProps={{ shrink: true }}
           >

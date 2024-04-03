@@ -58,7 +58,7 @@ function Navbar() {
         </Button>
         {isLoggedIn && <>
           <Box>
-            <Typography variant="caption">{capitalizeAll(ownProfile.firstName)}</Typography>
+            <Typography variant="caption">{ownProfile.username}</Typography>
             {loggedUserRole === "admin" && <Typography variant="caption">, Admin</Typography>}
             <Tooltip title="Ver Perfil">
                 <IconButton onClick={() => navigate("/profile/own")}>

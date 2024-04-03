@@ -56,7 +56,7 @@ function EventMessageBoard({eventOrCarGroup, type}) {
     setIsSending(true)
     try {
       
-      const response = await service.get(`/event/${event._id}`)
+      const response = await service.get(`/${type}/${eventOrCarGroup._id}`)
       setMessages(response.data.messages)
       setIsSending(false)
 
@@ -72,15 +72,16 @@ function EventMessageBoard({eventOrCarGroup, type}) {
       <Typography variant="h5" gutterBottom>
         Mensajes del {type === "event" ? "Evento" : "Coche"}
       </Typography>
-        <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden" }}>
+        <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'primary.lighterSaturation', borderRadius: 1 }}>
           {messages.map(({text, sender, createdAt}, index) => {
 
             const isSender = sender._id == loggedUserId
             const isAdmin = sender.role === "admin"
+            const carOwner = type === "car-group" && sender._id === eventOrCarGroup.owner._id
 
             return (
-            <>
-              <ListItem key={index}>
+            <Box key={index}>
+              <ListItem>
                 {!isSender && 
                   <ListItemAvatar>
                     <Avatar src={sender.profilePic} alt="foto-perfil" />
@@ -90,7 +91,9 @@ function EventMessageBoard({eventOrCarGroup, type}) {
                   <ListItemText
                     primary={
                       <Typography variant="body2" color={isSender ? "#2ECC71" : "#3498DB"}>
-                        {isSender ? "Tú" : sender.firstName}{isAdmin && <span style={{color: "#F39C12"}}>, admin</span>}
+                        <span>{isSender ? "Tú" : sender.username}</span>
+                        {isAdmin && <span style={{color: "#F39C12"}}>, admin</span>}
+                        {carOwner && <span style={{color: "#F39C12"}}>, dueño de coche</span>}
                       </Typography>
                     }
                     sx={{ wordBreak: 'break-word' }}
@@ -98,10 +101,10 @@ function EventMessageBoard({eventOrCarGroup, type}) {
                   <Typography variant="caption" color="textSecondary">
                     {new Date(createdAt).toLocaleString()}
                   </Typography>
-                  </Box>
-                </ListItem>
+                </Box>
+              </ListItem>
               <Divider variant="inset" component="li" />
-            </>
+            </Box>
           )})}
         </List>
 
