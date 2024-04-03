@@ -5,24 +5,25 @@ import IconButton from '@mui/material/IconButton'
 import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography'
+import UserIcon from "./UserIcon";
 
 
-function ProfileCard({profile}) {
+function UserCard({user}) {
 
   const navigate = useNavigate()
 
-  const { profilePic, username, role, _id } = profile
+  const { _id, username, role, icon, iconColor, } = user
 
   const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
 
   return <Card raised>
       <CardHeader 
       avatar={
-        <Avatar src={profilePic} alt="foto-perfil"/>
+        <UserIcon user={user} size="small"/>
       }
       title={username}
       subheader={<Typography variant="caption" color={color}>{role}</Typography>}
-      action={<IconButton onClick={() => navigate(`/profile/${_id}`)}>
+      action={<IconButton onClick={() => navigate(`/user/${_id}`)}>
         <ReadMoreIcon />
         <Typography variant="icon">Ver más</Typography>
       </IconButton>}
@@ -30,4 +31,4 @@ function ProfileCard({profile}) {
   </Card>
 }
 
-export default ProfileCard
+export default UserCard

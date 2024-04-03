@@ -14,6 +14,7 @@ import Alert from '@mui/material/Alert';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import UserIcon from '@components/user/UserIcon';
 
 function EventMessageBoard({eventOrCarGroup, type}) {
 
@@ -84,7 +85,7 @@ function EventMessageBoard({eventOrCarGroup, type}) {
               <ListItem>
                 {!isSender && 
                   <ListItemAvatar>
-                    <Avatar src={sender.profilePic} alt="foto-perfil" />
+                    <UserIcon user={sender} size="small"/>
                   </ListItemAvatar>
                 }
                 <Box sx={{width: "100%", textAlign: isSender ? "right" : "left"}}>

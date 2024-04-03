@@ -17,13 +17,16 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import CardHeader from "@mui/material/CardHeader";
-import Divider from "@mui/material/Divider";
 
 import { AuthContext } from "@context/auth.context"
 import EventParticipantCard from "../../components/event/EventParticipantCard";
 import IconButton from "@mui/material/IconButton";
 
 import EventMessageBoard from "@components/messages/EventMessageBoard";
+import EditIcon from '@mui/icons-material/Edit';
+import PetsIcon from '@mui/icons-material/Pets';
+
+
 
 function EventDetails() {
 
@@ -71,12 +74,20 @@ function EventDetails() {
         <IconButton onClick={() => navigate('/event')}><ArrowBackIcon/></IconButton>
       </Box>
 
-      {loggedUserRole === "admin" && <Button onClick={() => navigate(`/event/${eventId}/edit`)} variant="contained" color="warning">Admin: Modificar Evento</Button>}
-
       {event.status === "cancelled" && <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>}
 
-      <Card sx={{height: 160, marginTop: 3}}>
-        <CardHeader title={event.title}/>
+      <Card sx={{ marginTop: 3}}>
+        <CardHeader 
+          title={event.title}
+          avatar={loggedUserRole === "admin" && <PetsIcon />}
+          action={loggedUserRole === "admin" && <IconButton 
+            onClick={() => navigate(`/event/${eventId}/edit`)} 
+            color="primary"
+          >
+            <EditIcon/>
+            <Typography variant="icon">editar</Typography>
+          </IconButton>}
+        />
         <CardContent sx={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
           <Typography variant="body2">Fecha: {new Date(event.date).toDateString()}</Typography>
           <Typography variant="body2">Hora: {event.time}</Typography>

@@ -49,7 +49,9 @@ function UpcomingEventsList() {
       <Box>
         {isLoading ? <Loading /> : upcomingEvents.map((event) => <EventCard key={event._id} event={event}/>)}
         {!isLoading && upcomingEvents.length === 0 && <Typography>No hay próximos eventos</Typography>}
-        {/* //! test if it works */}
+        
+        <hr />
+
         {!isLoading && <Link to="/event"><Button>Ver más eventos antiguos</Button></Link> }
       </Box>
     </Container>

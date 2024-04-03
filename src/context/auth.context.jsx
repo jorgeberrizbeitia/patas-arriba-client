@@ -12,8 +12,9 @@ function AuthWrapper(props) {
   const [ isLoggedIn, setIsLoggedIn ] = useState(false)
   const [ loggedUserId, setLoggedUserId ] = useState(null)
   const [ loggedUserRole, setLoggedUserRole ] = useState(null)
+  //todo maybe above 2 states are not needed since we have loggedUser
   const [ isAuthenticating, setIsAuthenticating ] = useState(true)
-  const [ ownProfile, setOwnProfile ] = useState(null) // for user profile
+  const [ loggedUser, setLoggedUser ] = useState(null) // all user info
 
   const authenticateUser = async () => {
     const storedToken = localStorage.getItem("authToken")
@@ -22,37 +23,37 @@ function AuthWrapper(props) {
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)
-      setOwnProfile(null)
+      setLoggedUser(null)
       setTimeout(() => setIsAuthenticating(false), 700)
       return
     }
 
     try {
       setIsAuthenticating(true)
-      const response = await service.get("/auth/verify")
-      const responseOwnProfile = await service.get("/profile/own")
-      if (!responseOwnProfile.data) {
+      const responsePayload = await service.get("/auth/verify")
+      const responseOwnUserDetails = await service.get("/user/own")
+      if (!responseOwnUserDetails.data) {
         //* user was deleted after creating a Token
         localStorage.removeItem("authToken")
         setIsLoggedIn(false)
         setLoggedUserId(null)
         setLoggedUserRole(null)
-        setOwnProfile(null)
+        setLoggedUser(null)
         setTimeout(() => setIsAuthenticating(false), 700)
         return
       }
       
       setIsLoggedIn(true)
-      setLoggedUserId(response.data.payload._id)
-      setLoggedUserRole(response.data.payload.role)
-      setOwnProfile(responseOwnProfile.data)
+      setLoggedUserId(responsePayload.data.payload._id)
+      setLoggedUserRole(responsePayload.data.payload.role)
+      setLoggedUser(responseOwnUserDetails.data)
       setTimeout(() => setIsAuthenticating(false), 700)
     } catch (error) {
       console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)
-      setOwnProfile(null)
+      setLoggedUser(null)
       setTimeout(() => setIsAuthenticating(false), 700)
     }
   }
@@ -62,8 +63,8 @@ function AuthWrapper(props) {
     loggedUserId,
     loggedUserRole,
     authenticateUser,
-    ownProfile,
-    setOwnProfile
+    loggedUser,
+    setLoggedUser
   }
 
   useEffect(() => {

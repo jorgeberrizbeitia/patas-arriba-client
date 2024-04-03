@@ -1,4 +1,4 @@
-import ProfileCard from '@components/profile/ProfileCard'
+import UserCard from '@components/user/UserCard'
 import Loading from '@components/ui/Loading'
 import Container from '@mui/material/Container'
 import service from '@service/config'
@@ -18,7 +18,7 @@ function UserList() {
 
     try {
       
-      const response = await service.get("/profile")
+      const response = await service.get("/user")
       setUsers(response.data)
       setTimeout(() => setIsLoading(false), 700)
 
@@ -34,11 +34,11 @@ function UserList() {
 
   const pendingUsers = users
   .filter((eachUser) => eachUser.role === "pending")
-  .map((eachUser) => <ProfileCard key={eachUser._id} profile={eachUser}/>)
+  .map((eachUser) => <UserCard key={eachUser._id} user={eachUser}/>)
 
   const allowedUsers = users
   .filter((eachUser) => eachUser.role !== "pending")
-  .map((eachUser) => <ProfileCard key={eachUser._id} profile={eachUser}/>)
+  .map((eachUser) => <UserCard key={eachUser._id} user={eachUser}/>)
 
   return (
     <Container maxWidth="xs">

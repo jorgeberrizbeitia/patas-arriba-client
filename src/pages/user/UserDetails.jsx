@@ -13,16 +13,16 @@ import capitalizeAll from '@utils/capitalizeAll'
 import Typography from '@mui/material/Typography'
 import { AuthContext } from '@context/auth.context'
 import CardMedia from '@mui/material/CardMedia'
-import placeholderProfilePic from "@assets/images/placeholder-profile-pic.png"
+import UserIcon from '@components/user/UserIcon'
 
-
-function Profile() {
+function UserDetails() {
 
   const { loggedUserRole } = useContext(AuthContext)
 
   const { userId } = useParams()
 
   const [user, setUser] = useState()
+
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function Profile() {
   const getUserDetails = async () => {
     try {
       
-      const response = await service.get(`/profile/${userId}`)
+      const response = await service.get(`/user/${userId}`)
 
       setUser(response.data)
       setTimeout(() => setIsLoading(false), 700)
@@ -42,15 +42,11 @@ function Profile() {
     }
   }
 
-  const handleImageError = (e) => {
-    e.target.src = placeholderProfilePic; // Replace with your placeholder image URL
-  };
-
   const handleAllowUser = async () => {
     setIsLoading(true)
     try {
       
-      const response = await service.patch(`/profile/${userId}/user-role-validation`)
+      const response = await service.patch(`/user/${userId}/user-role-validation`)
       setUser(response.data) // the updated user
       setTimeout(() => setIsLoading(false), 700)
 
@@ -64,22 +60,20 @@ function Profile() {
     return <Loading />
   }
 
-  const { username, email, profilePic, fullName, phoneCode, phoneNumber, createdAt, role } = user
+  const { username, email, icon, iconColor, fullName, phoneCode, phoneNumber, createdAt, role } = user
 
   return (
     <Container maxWidth="xs">
       
       <Card>
         <CardHeader
+          avatar={<UserIcon size="medium" user={user}/>}
           title={username}
           subheader={capitalizeAll(fullName)}
         />
-        <CardMedia 
-          component="img"
-          height="250px" 
-          image={profilePic || placeholderProfilePic} 
-          onError={handleImageError}
-        />
+
+        <hr />
+
         <CardContent sx={{display: "flex", flexDirection: "column"}}>
           <Typography variant="body">
             {email}
@@ -93,6 +87,8 @@ function Profile() {
           <Typography variant="body">
             Desde: {new Date(createdAt).toDateString()}
           </Typography>
+
+          <hr />
           {loggedUserRole === "admin" && <>
 
             {role === "pending" ? 
@@ -119,4 +115,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default UserDetails

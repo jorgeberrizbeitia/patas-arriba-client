@@ -17,9 +17,9 @@ import IsAdmin from './components/auth/IsAdmin'
 import EventJoin from './pages/event/EventJoin'
 import EventList from './pages/event/EventList'
 import CarGroupDetails from './pages/car-group/CarGroupDetails'
-import Profile from './pages/profile/Profile'
-import OwnProfile from './pages/profile/OwnProfile'
-import UserList from './pages/profile/UserList'
+import UserDetails from './pages/user/UserDetails'
+import OwnUserDetails from './pages/user/OwnUserDetails'
+import UserList from './pages/user/UserList'
 import EventMessages from './pages/message/EventMessages'
 import CarGroupMessages from './pages/message/CarGroupMessages'
 import EventCreate from './pages/event/EventCreate'
@@ -46,15 +46,15 @@ function App() {
         {/* //* admin routes */}
         <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
         <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
-        <Route path="/profile" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
+        <Route path="/user" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
 
         {/* //* private routes */}
         <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
         <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
         <Route path="/event/:eventId/join" element={  <IsPrivate> <EventJoin /> </IsPrivate>  }/>
         <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
-        <Route path="/profile/own" element={ <IsPrivate> <OwnProfile /> </IsPrivate> }/>
-        <Route path="/profile/:userId" element={ <IsPrivate> <Profile /> </IsPrivate> }/>
+        <Route path="/user/own" element={ <IsPrivate> <OwnUserDetails /> </IsPrivate> }/>
+        <Route path="/user/:userId" element={ <IsPrivate> <UserDetails /> </IsPrivate> }/>
         <Route path="/message/:eventId/event" element={ <IsPrivate> <EventMessages /> </IsPrivate> }/>
         <Route path="/message/:carGroupId/car-group" element={ <IsPrivate> <CarGroupMessages /> </IsPrivate> }/>
         

@@ -32,11 +32,12 @@ import { useState, useContext } from "react";
 import { AuthContext } from "@context/auth.context";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import UserIcon from "@components/user/UserIcon";
 
 function Navbar() {
 
   const navigate = useNavigate()
-  const { authenticateUser, isLoggedIn, loggedUserRole, ownProfile} = useContext(AuthContext)
+  const { authenticateUser, isLoggedIn, loggedUserRole, loggedUser} = useContext(AuthContext)
 
   const [open, setOpen] = useState(false);
 
@@ -58,11 +59,11 @@ function Navbar() {
         </Button>
         {isLoggedIn && <>
           <Box>
-            <Typography variant="caption">{ownProfile.username}</Typography>
+            <Typography variant="caption">{loggedUser.username}</Typography>
             {loggedUserRole === "admin" && <Typography variant="caption">, Admin</Typography>}
             <Tooltip title="Ver Perfil">
-                <IconButton onClick={() => navigate("/profile/own")}>
-                <Avatar sx={{ width: 24, height: 24 }} alt="foto-perfil" src={ownProfile.profilePic} />
+                <IconButton onClick={() => navigate("/user/own")}>
+                <UserIcon size="small" user={loggedUser}/>
               </IconButton>
             </Tooltip>
           </Box>
@@ -123,7 +124,7 @@ function Navbar() {
 
           {isLoggedIn && <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/profile/own")}>
+              <ListItemButton onClick={() => navigate("/user/own")}>
                 <ListItemIcon>
                   <AccountBoxIcon />
                 </ListItemIcon>
@@ -158,7 +159,7 @@ function Navbar() {
 
           {loggedUserRole === "admin" && <List>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/profile")}>
+              <ListItemButton onClick={() => navigate("/user")}>
                 <ListItemIcon>
                   <GroupIcon />
                 </ListItemIcon>

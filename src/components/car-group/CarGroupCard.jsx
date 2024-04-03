@@ -9,7 +9,6 @@ import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
 import CheckIcon from '@mui/icons-material/Check';
-import profilePicExample from "@assets/images/profile-pic-example.jpg"
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 

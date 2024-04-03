@@ -73,15 +73,15 @@ function EventEdit() {
 
       <Box  display="flex" flexDirection="row" justifyContent="space-evenly">
 
-        <Button onClick={() => setEditType(1)} variant={editType === 1 ? "contained" : "outlined"} color="info" sx={{width: 80, height: 80}}>
+        <Button onClick={() => setEditType(1)} variant={editType === 1 ? "contained" : "outlined"} color="info" sx={{width: "25%", height: 80}}>
           Editar info
         </Button>
 
-        <Button onClick={() => setEditType(2)} variant={editType === 2 ? "contained" : "outlined"} color="primary" sx={{width: 80, height: 80}}>
+        <Button onClick={() => setEditType(2)} variant={editType === 2 ? "contained" : "outlined"} color="primary" sx={{width: "25%", height: 80}}>
           Cambiar Estado
         </Button>
 
-        <Button onClick={() => setEditType(3)} variant={editType === 3 ? "contained" : "outlined"} color="error" sx={{width: 80, height: 80}}>
+        <Button onClick={() => setEditType(3)} variant={editType === 3 ? "contained" : "outlined"} color="error" sx={{width: "25%", height: 80}}>
           Borrar
         </Button>
       </Box>

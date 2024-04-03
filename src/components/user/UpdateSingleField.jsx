@@ -13,7 +13,7 @@ import Alert from '@mui/material/Alert';
 
 function UpdateSingleField({value, setPropertyToEdit, propertyToEdit}) {
 
-  const { setOwnProfile } = useContext(AuthContext)
+  const { loggedUser, setLoggedUser } = useContext(AuthContext)
 
   const [ input, setInput ] = useState({value: value, error: null})
   const [ isUpdating, setIsUpdating ] = useState(false)
@@ -22,9 +22,9 @@ function UpdateSingleField({value, setPropertyToEdit, propertyToEdit}) {
     setIsUpdating(true)
 
     try {
-      const response = await service.patch(`/profile/${propertyToEdit}`, {[propertyToEdit]: input.value})
+      const response = await service.patch(`/user/${propertyToEdit}`, {[propertyToEdit]: input.value})
       setTimeout(() => {
-        setOwnProfile(response.data)
+        setLoggedUser(response.data)
         setIsUpdating(false)
         setPropertyToEdit(null)
       }, 700)

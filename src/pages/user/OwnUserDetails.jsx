@@ -1,8 +1,4 @@
-import { useContext, useEffect, useState } from "react"
-import Loading from "@components/ui/Loading"
-import service from "@service/config"
-
-import Avatar from '@mui/material/Avatar';
+import { useContext, useState } from "react"
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -10,32 +6,32 @@ import { AuthContext } from "../../context/auth.context";
 import capitalizeAll from "@utils/capitalizeAll";
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit';
-import UpdateSingleField from "@components/profile/UpdateSingleField";
+import UpdateSingleField from "@components/user/UpdateSingleField";
+import UpdateUserIcon from "@components/user/UpdateUserIcon";
+import UserIcon from "@components/user/UserIcon";
 
-function OwnProfile() {
+function OwnUserDetails() {
 
-  const { ownProfile } = useContext(AuthContext)
+  const { loggedUser } = useContext(AuthContext)
 
   const [propertyToEdit, setPropertyToEdit] = useState(null)
 
-  const { email, profilePic, username, fullName, phoneCode, phoneNumber, createdAt } = ownProfile
+  const { email, icon, iconColor, username, fullName, phoneCode, phoneNumber, createdAt } = loggedUser
 
   return (
     <Box p={4}>
       <Grid container spacing={4}>
-        {/* Profile Picture */}
-        <Grid item xs={12} md={4}>
-          <Box display="flex" justifyContent="center">
-            <Avatar src={profilePic} alt={username} sx={{ width: 200, height: 200 }} />
-          </Box>
+        <Grid item xs={12} md={4} display="flex" flexDirection="column" alignItems="center">
+          <UserIcon size="big" user={loggedUser}/>
+          <IconButton color={"warning"} onClick={() => setPropertyToEdit("icon")}>
+            <EditIcon />
+          </IconButton>
+          {propertyToEdit === "icon" && <UpdateUserIcon setPropertyToEdit={setPropertyToEdit} />}
         </Grid>
-        {/* Profile Information */}
+
         <Grid item xs={12} md={8}>
 
-          <Typography variant="h5" gutterBottom>
-            <span>Correo: </span>
-            <span>{email}</span>
-          </Typography>
+
 
           <Typography variant="h4" gutterBottom>
             <span>Usuario: </span>
@@ -52,8 +48,6 @@ function OwnProfile() {
             </>}
           </Typography>
 
-          <hr />
-
           <Typography variant="h3" gutterBottom>
             <span>Nombre: </span>
             <span>{capitalizeAll(fullName)}</span>
@@ -69,10 +63,21 @@ function OwnProfile() {
             </>}
           </Typography>
 
+          <hr />
+
+          <Typography variant="h5" gutterBottom>
+            <span>Correo: </span>
+            <span>{email}</span>
+            {/* //todo update email  */}
+          </Typography>
+
           <Typography variant="body1" gutterBottom>
             <span>Telefono: </span>
             <span>+{phoneCode} {phoneNumber}</span>
+            {/* //todo update phone number  */}
           </Typography>
+
+          <hr />
 
           <Typography variant="body1">
             <span>Desde: </span>
@@ -85,4 +90,4 @@ function OwnProfile() {
   )
 }
 
-export default OwnProfile
+export default OwnUserDetails
