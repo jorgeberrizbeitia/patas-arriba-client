@@ -11,19 +11,19 @@ import { AuthWrapper } from './context/auth.context'
 const theme = createTheme({
   typography: {
     h1: {
-      fontSize: '2.5rem', 
-    },
-    h2: {
       fontSize: '2rem', 
     },
+    h2: {
+      fontSize: '1.8rem', 
+    },
     h3: {
-      fontSize: '1.75rem', 
+      fontSize: '1.6rem', 
     },
     h4: {
-      fontSize: '1.5rem', 
+      fontSize: '1.4rem', 
     },
     h5: {
-      fontSize: '1.25rem', 
+      fontSize: '1.2rem', 
     },
     h6: {
       fontSize: '1rem', 
@@ -49,6 +49,9 @@ const theme = createTheme({
     button: {
       fontSize: '0.875rem',
     },
+    icon: {
+      fontSize: '0.5rem', 
+    }
   },
   palette: {
     primary: {

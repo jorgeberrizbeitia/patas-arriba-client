@@ -197,6 +197,8 @@ function Navbar() {
           </ListItem>}
         </Box>
       </Drawer>
+
+      <hr />
     </nav>
   );
 }
