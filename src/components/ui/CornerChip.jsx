@@ -16,10 +16,10 @@ function CornerChip({label, color, side}) {
       left={side === "left" ? -65 : "default"}
       bottom={side === "left" ? "default" : rightSideBottom}
       right={side === "left" ? "default" : -70}
-      padding={6}
-      paddingBottom={side === "left" ? 0.3 : 6}
-      paddingTop={side === "left" ? 6 : 0}
-      backgroundColor={color}
+      p={6}
+      pb={side === "left" ? 0.3 : 6}
+      pt={side === "left" ? 6 : 0}
+      bgcolor={color}
       sx={{transform: "rotate(-45deg)"}}
     >
       <Typography

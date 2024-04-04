@@ -68,7 +68,8 @@ function CarGroupSearch () {
         <Button 
             sx={{margin: "30px"}}
             variant="contained"
-          >Unirse al evento!</Button>
+            onClick={() => navigate(`/event/${eventId}`)}
+          >Volver</Button>
       </> : <>
         <Typography variant="h5" gutterBottom>Coches disponibles</Typography>
         {carGroups.map((eachCarGroup) => 

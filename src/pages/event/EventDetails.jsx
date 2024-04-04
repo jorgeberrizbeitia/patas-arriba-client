@@ -22,7 +22,6 @@ import CardMedia from '@mui/material/CardMedia';
 import CardHeader from "@mui/material/CardHeader";
 
 import { AuthContext } from "@context/auth.context"
-import EventParticipantCard from "../../components/event/EventParticipantCard";
 import IconButton from "@mui/material/IconButton";
 
 import EventMessageBoard from "@components/messages/EventMessageBoard";
@@ -33,6 +32,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Collapse from '@mui/material/Collapse';
 import EventCard from "@components/event/EventCard";
 import Alert from '@mui/material/Alert';
+import EventMapCard from "@components/event/EventMapCard";
+import EventParticipantsCard from "./EventParticipantsCard";
+import EventLeaveButton from "./EventLeaveButton";
+import EventCarGroupInfoCard from "./EventCarGroupInfoCard";
 
 
 
@@ -44,10 +47,7 @@ function EventDetails() {
 
   const [ isLoading, setIsLoading ] = useState(true);
   const [ event, setEvent ] = useState(null)
-  const [ showMap, setShowMap ] = useState(false)
-  const [ showParticipants, setShowParticipants ] = useState(false)
-  const [ showAreYouSureButtons, setShowAreYouSureButtons ] = useState(false)
-
+  const [ eventCarGroups, setEventCarGroups ] = useState(null)
 
   useEffect(() => {
     getEventDetails()
@@ -59,8 +59,10 @@ function EventDetails() {
 
     try {
       
-      const response = await service.get(`/event/${eventId}`)
-      setEvent(response.data)
+      const responseEvent = await service.get(`/event/${eventId}`)
+      const responseCarGroups = await service.get(`/car-group/list/${eventId}`)
+      setEvent(responseEvent.data)
+      setEventCarGroups(responseCarGroups.data)
 
       setTimeout(() => setIsLoading(false), 700)
 
@@ -99,9 +101,13 @@ function EventDetails() {
   }
 
   const hasUserJoined = event.participants.some((e) => e._id == loggedUserId)
+  const myCarGroup = eventCarGroups.find((eachCarGroup) => {
+    return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
+  })
+  const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.members), 0)
 
   return (
-    <Container>
+    <>
 
       <GoBack to={`/event`}/> 
 
@@ -111,81 +117,39 @@ function EventDetails() {
       <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>
       <hr />
       </>}
+
+      {event.status === "closed" && <>
+      <Typography variant="h3" color="warning.main" gutterBottom>Este evento ya no acepta nuevos participantes</Typography>
+      <hr />
+      </>}
       
-      <EventCard event={event} fromDetails/>
+      <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
       <hr />
 
-      {hasUserJoined && <Typography variant="h5" color="info.main">¡Estas apuntado a este evento!</Typography>}
       {!hasUserJoined && <Box>
-        <Button size="large" variant="contained" onClick={handleJoinEvent}>Unirse al evento!</Button>
+        <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled"}>
+          {event.status === "open" && "¡Unete al evento!"}
+          {event.status === "closed" && "Evento cerrado"}
+          {event.status === "cancelled" && "Evento cancelado"}
+        </Button>
       </Box>}
-        
-      <hr />
 
-      <Card>
-        <CardHeader
-          subheader={`Mapa del evento`}
-          action={
-            <IconButton onClick={() => setShowMap(!showMap)}>
-              {showMap ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        />
-        <Collapse in={showMap}>
-          <CardMedia
-            component="img"
-            image={mapExample}
-            alt="mapa-evento"
-          />
-        </Collapse>
-      </Card>
+      {hasUserJoined && <Typography variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
-      <hr />
+      {hasUserJoined && <EventMapCard event={event}/> }
 
-      <Card>
-        <CardHeader
-          subheader={`Participantes`}
-          action={
-            <IconButton onClick={() => setShowParticipants(!showParticipants)}>
-              {showParticipants ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        />
-        <Collapse in={showParticipants}>
-        
-          {event.participants.map((eachMember) => <UserCard key={eachMember._id} user={eachMember}/>)}
-          {/* //todo to admin show all not in cars */}
+      {hasUserJoined && <EventParticipantsCard event={event}/> }
 
-        </Collapse>
-      </Card>
-
-      <hr />
-
-        {hasUserJoined && <>
-          <Button variant="outlined" color="error"onClick={() => setShowAreYouSureButtons(!showAreYouSureButtons)}>Salir del evento</Button>
-        {showAreYouSureButtons && (
-          <Card raised sx={{}}>
-            <Alert severity="warning">Estas seguro que deseas salir? Si tienes un grupo de coche creado, esto eliminará el grupo.</Alert>
-            <Button color="error" onClick={handleLeaveEvent}>Si</Button>
-            <Button color="primary"onClick={() => setShowAreYouSureButtons(false)}>No</Button>
-          </Card>
-        )}
-        </>}
-
-      <hr />
+      {(hasUserJoined && event.category === "car-group") && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
       {/* //todo show all cars to admin with qty, people and assigned */}
 
-      {hasUserJoined && (<>
-        <EventParticipantCard getEventDetails={getEventDetails}/>
-        {/* //todo separate elements in EventParticipantCard here */}
-        <hr />
-        <EventMessageBoard type="event" eventOrCarGroup={event}/>
-      </>
-      )}
+      {hasUserJoined && (<EventMessageBoard type="event" eventOrCarGroup={event}/>)}
 
-    </Container>
+      {hasUserJoined && <EventLeaveButton handleLeaveEvent={handleLeaveEvent}/>}
+
+    </>
   )
 }
 

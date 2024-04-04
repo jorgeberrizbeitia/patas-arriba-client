@@ -73,6 +73,7 @@ function EventMessageBoard({eventOrCarGroup, type}) {
 
   return (
     <Box display="flex" flexDirection="column">
+      <hr />
       <Typography variant="h5" gutterBottom>
         Mensajes del {type === "event" ? "Evento" : "Coche"}
       </Typography>

@@ -165,7 +165,11 @@ function EventCreate() {
             <MenuItem value={"no-car-group"}>Sin organización en coches</MenuItem>
           </TextField>
 
+          {console.log(category.value)}
+          {category.value === "no-car-group" && <Alert severity="warning">Con esta categoria no se podrán ver si crear grupos de coche para ir al evento</Alert>}
+
         </Box>
+
 
         <Button 
           variant="contained" 

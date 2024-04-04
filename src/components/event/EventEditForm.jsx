@@ -165,6 +165,8 @@ function EventEditForm({event}) {
             <MenuItem value={"no-car-group"}>Sin organización en coches</MenuItem>
           </TextField>
 
+          {category.value === "no-car-group" && <Alert severity="warning">Con esta categoria no se podrán ver si crear grupos de coche para ir al evento</Alert>}
+
         </Box>
 
         <Button 

@@ -52,7 +52,7 @@ function EventEditStatus({event}) {
       </TextField>
 
       {status.value === "closed" && <Alert severity="warning">Si el evento es cerrado, nadie nuevo se podrá apuntar. Los participantes actuales podrán seguir enviando mensajes y gestionando grupos de coche</Alert>}
-  {   status.value === "cancelled" && <Alert severity="warning">Si el evento es cancelado, nadie se podrá apuntar ni gestionar grupos de coche</Alert>}
+      {status.value === "cancelled" && <Alert severity="warning">Si el evento es cancelado, todos los participantes serán removidos del evento, adicionalmente nadie se podrá apuntar, gestionar coches o ver/crear mensajes en el evento</Alert>}
 
       <Button onClick={handleSubmit} variant="contained" color="primary" sx={{mt: "8px"}}>
         Cambiar Estado

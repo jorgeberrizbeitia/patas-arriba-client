@@ -58,7 +58,7 @@ function UpdateUserIcon({setPropertyToEdit}) {
     </Box>
 
     <Typography variant="caption" color="initial">Vista previa</Typography>
-    //todo change preview to component UserIcon
+    {/* //todo change preview to component UserIcon */}
 
       <TextField
         select
