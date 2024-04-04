@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom";
+import service from "@service/config";
 
+import GoBack from "@components/navigation/GoBack";
+
+import mapExample from "@assets/images/map-example.png"
+
+// MUI Components
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -7,37 +14,23 @@ import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 import CardMedia from "@mui/material/CardMedia";
 
-import mapExample from "@assets/images/map-example.png"
+function CarGroupCreate() {
 
-import { Link } from "react-router-dom";
+  const { eventId } = useParams()
 
-function CarGroupAddForm({joinEvent}) {
+  const navigate = useNavigate()
 
   const [ roomAvailable, setRoomAvailable ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ pickupLocation, setPickupLocation ] = useState({value: "", error: null, hasUserInteracted: true})
-  const [ pickupTime, setPickupTime ] = useState({value: "", error: null, hasUserInteracted: true})
-  const [ pickupCoordinates, setPickupCoordinates ] = useState({value: "", error: null, hasUserInteracted: true})
+  const [ pickupLocation, setPickupLocation ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ pickupTime, setPickupTime ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ pickupCoordinates, setPickupCoordinates ] = useState({value: "", error: null, hasUserInteracted: true}) // true as it is not required
 
   const [ canSubmit, setCanSubmit ] = useState(false)
   const [ serverError, setServerError] = useState();
 
-  const handleRoomAvailable = (e) => {
-    //todo validate number
-    setRoomAvailable({...roomAvailable, value: e.target.value, hasUserInteracted: true})
-  }
-
-  const handlePickupLocation = (e) => {
-    //todo validate length
-    setPickupLocation({...pickupLocation, value: e.target.value})
-  }
-
-  const handlePickupTime = (e) => {
-    //todo validate time format
-    setPickupTime({...pickupTime, value: e.target.value})
-  }
-
   useEffect(() => {
-    const allFormStates = [roomAvailable]
+    // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
+    const allFormStates = [roomAvailable, pickupLocation, pickupTime]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
     const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
@@ -47,23 +40,49 @@ function CarGroupAddForm({joinEvent}) {
     } else {
       if (canSubmit === true) setCanSubmit(false)
     }
-  }, [roomAvailable])
+  }, [roomAvailable, pickupLocation, pickupTime])
 
-  const handleSubmit = (e) => {
+  const handleRoomAvailable = (e) => {
+    //todo validate number
+    setRoomAvailable({...roomAvailable, value: e.target.value, hasUserInteracted: true})
+  }
+
+  const handlePickupLocation = (e) => {
+    //todo validate length
+    setPickupLocation({...pickupLocation, value: e.target.value, hasUserInteracted: true})
+  }
+
+  const handlePickupTime = (e) => {
+    //todo validate time format
+    setPickupTime({...pickupTime, value: e.target.value, hasUserInteracted: true})
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    joinEvent({
-      // pickupCoordinates: pickupCoordinates.value,
-      roomAvailable: roomAvailable.value,
-      pickupLocation: pickupLocation.value,
-      pickupTime: pickupTime.value
-    })
+    try {
+
+      await service.post(`/car-group/${eventId}`, {
+        roomAvailable: roomAvailable.value,
+        pickupLocation: pickupLocation.value,
+        pickupTime: pickupTime.value,
+        pickupCoordinates: pickupCoordinates.value,
+      })
+      navigate(`/event/${eventId}`)
+
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   return (
-    <Box  display="flex" flexDirection="column" alignItems="center">
+    <Box display="flex" flexDirection="column" alignItems="center">
+      {/* //todo check if we be changed to Container */}
 
-    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{maxWidth:"320px"}}>
+    <GoBack to={`/event/${eventId}`}/>      
+
+    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" sx={{maxWidth:"320px"}}>
 
       <Typography variant="h6" gutterBottom>
         Crea un grupo de coche
@@ -87,6 +106,7 @@ function CarGroupAddForm({joinEvent}) {
         value={pickupLocation.value}
         onChange={handlePickupLocation}
         margin="normal"
+        required
         error={pickupLocation.hasUserInteracted && pickupLocation.error !== null}
         // helperText={pickupLocation.error}
       />
@@ -98,6 +118,7 @@ function CarGroupAddForm({joinEvent}) {
         onChange={handlePickupTime}
         margin="normal"
         type="time"
+        required
         error={pickupTime.hasUserInteracted && pickupTime.error !== null}
         // helperText={pickupTime.error}
         helperText="La fecha será la del evento"
@@ -119,6 +140,7 @@ function CarGroupAddForm({joinEvent}) {
         variant="contained" 
         type="submit"
         disabled={!canSubmit}
+        onClick={handleSubmit}
       >Crear Grupo de coche y unirse al evento</Button>
 
       {serverError && <Alert severity="error">{serverError}</Alert>}
@@ -129,4 +151,4 @@ function CarGroupAddForm({joinEvent}) {
   )
 }
 
-export default CarGroupAddForm
+export default CarGroupCreate

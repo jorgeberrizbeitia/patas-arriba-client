@@ -80,6 +80,7 @@ const theme = createTheme({
     },
     gray: {
       main: '#95A5A6', // Neutral color
+      lighter: '#CED7D9' // Lighter tone
     },
   },
 });

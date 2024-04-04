@@ -1,14 +1,17 @@
 import { useState, useEffect, useContext } from "react"
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import mapExample from "@assets/images/map-example.png"
 
 import service from "@service/config"
 
-import Loading from "@components/ui/Loading";
+import UserCard from '@components/user/UserCard';
 
+
+import Loading from "@components/ui/Loading";
+import GoBack from "@components/navigation/GoBack";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
@@ -25,18 +28,26 @@ import IconButton from "@mui/material/IconButton";
 import EventMessageBoard from "@components/messages/EventMessageBoard";
 import EditIcon from '@mui/icons-material/Edit';
 import PetsIcon from '@mui/icons-material/Pets';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import Collapse from '@mui/material/Collapse';
+import EventCard from "@components/event/EventCard";
+import Alert from '@mui/material/Alert';
 
 
 
 function EventDetails() {
 
-  const { loggedUserId, loggedUserRole } = useContext(AuthContext)
+  const { loggedUserId } = useContext(AuthContext)
 
-  const { eventId } = useParams()
-  const navigate = useNavigate()
+  const { eventId } = useParams() 
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [event, setEvent] = useState(null)
+  const [ isLoading, setIsLoading ] = useState(true);
+  const [ event, setEvent ] = useState(null)
+  const [ showMap, setShowMap ] = useState(false)
+  const [ showParticipants, setShowParticipants ] = useState(false)
+  const [ showAreYouSureButtons, setShowAreYouSureButtons ] = useState(false)
+
 
   useEffect(() => {
     getEventDetails()
@@ -44,18 +55,38 @@ function EventDetails() {
 
   const getEventDetails = async () => {
 
-    // if (!isLoading) setIsLoading(true)
+    if (!isLoading) setIsLoading(true)
 
     try {
       
       const response = await service.get(`/event/${eventId}`)
-
-      console.log(response.data)
-      console.log(loggedUserId)
-
       setEvent(response.data)
 
       setTimeout(() => setIsLoading(false), 700)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const handleJoinEvent = async () => {
+    try {
+      
+      await service.patch(`/event/${eventId}/join`)
+      getEventDetails() // to get new list of participants
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleLeaveEvent = async () => {
+
+    try {
+      
+      await service.patch(`/event/${event._id}/leave`)
+      getEventDetails() // to get new list of participants
 
     } catch (error) {
       console.log(error)
@@ -67,60 +98,91 @@ function EventDetails() {
     return <Loading />
   }
 
+  const hasUserJoined = event.participants.some((e) => e._id == loggedUserId)
+
   return (
     <Container>
 
-      <Box sx={{display:"flex", justifyContent: "space-between"}}>
-        <IconButton onClick={() => navigate('/event')}><ArrowBackIcon/></IconButton>
-      </Box>
+      <GoBack to={`/event`}/> 
 
-      {event.status === "cancelled" && <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>}
+      <hr />
 
-      <Card sx={{ marginTop: 3}}>
-        <CardHeader 
-          title={event.title}
-          avatar={loggedUserRole === "admin" && <PetsIcon />}
-          action={loggedUserRole === "admin" && <IconButton 
-            onClick={() => navigate(`/event/${eventId}/edit`)} 
-            color="primary"
-          >
-            <EditIcon/>
-            <Typography variant="icon">editar</Typography>
-          </IconButton>}
+      {event.status === "cancelled" && <>
+      <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>
+      <hr />
+      </>}
+      
+      <EventCard event={event} fromDetails/>
+
+      <hr />
+
+      {hasUserJoined && <Typography variant="h5" color="info.main">¡Estas apuntado a este evento!</Typography>}
+      {!hasUserJoined && <Box>
+        <Button size="large" variant="contained" onClick={handleJoinEvent}>Unirse al evento!</Button>
+      </Box>}
+        
+      <hr />
+
+      <Card>
+        <CardHeader
+          subheader={`Mapa del evento`}
+          action={
+            <IconButton onClick={() => setShowMap(!showMap)}>
+              {showMap ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          }
         />
-        <CardContent sx={{display: "flex", flexDirection: "column", justifyContent: "space-around"}}>
-          <Typography variant="body2">Fecha: {new Date(event.date).toDateString()}</Typography>
-          <Typography variant="body2">Hora: {event.time}</Typography>
-          <Typography variant="body2">Participantes: {event.participants.length}</Typography>
-          {/* //todo when clicking on participants, open a modal with list */}
-        </CardContent>
+        <Collapse in={showMap}>
+          <CardMedia
+            component="img"
+            image={mapExample}
+            alt="mapa-evento"
+          />
+        </Collapse>
       </Card>
 
       <hr />
 
-      <Card sx={{height: 200, marginTop: 3}}>
-        <Typography variant="h5">Lugar: {event.location}</Typography>
-        <CardMedia
-          component="img"
-          image={mapExample}
-          alt="mapa-ubicación"
+      <Card>
+        <CardHeader
+          subheader={`Participantes`}
+          action={
+            <IconButton onClick={() => setShowParticipants(!showParticipants)}>
+              {showParticipants ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          }
         />
+        <Collapse in={showParticipants}>
+        
+          {event.participants.map((eachMember) => <UserCard key={eachMember._id} user={eachMember}/>)}
+          {/* //todo to admin show all not in cars */}
+
+        </Collapse>
       </Card>
 
       <hr />
 
-      {event.participants.some((e) => e._id == loggedUserId) ? (<>
+        {hasUserJoined && <>
+          <Button variant="outlined" color="error"onClick={() => setShowAreYouSureButtons(!showAreYouSureButtons)}>Salir del evento</Button>
+        {showAreYouSureButtons && (
+          <Card raised sx={{}}>
+            <Alert severity="warning">Estas seguro que deseas salir? Si tienes un grupo de coche creado, esto eliminará el grupo.</Alert>
+            <Button color="error" onClick={handleLeaveEvent}>Si</Button>
+            <Button color="primary"onClick={() => setShowAreYouSureButtons(false)}>No</Button>
+          </Card>
+        )}
+        </>}
+
+      <hr />
+
+      {/* //todo show all cars to admin with qty, people and assigned */}
+
+      {hasUserJoined && (<>
         <EventParticipantCard getEventDetails={getEventDetails}/>
         {/* //todo separate elements in EventParticipantCard here */}
         <hr />
         <EventMessageBoard type="event" eventOrCarGroup={event}/>
       </>
-      ) : (
-      <Box>
-        <Link to={`/event/${event._id}/join`}>
-          <Button size="large" variant="contained">Unirse al evento!</Button>
-        </Link>
-      </Box>
       )}
 
     </Container>

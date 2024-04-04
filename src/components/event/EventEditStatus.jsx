@@ -34,7 +34,7 @@ function EventEditStatus({event}) {
   }
 
   return (
-    <Box sx={{ marginTop: '8px', marginBottom: '8px' }}>
+    <Box sx={{ mt: '8px', mb: '8px' }}>
       <TextField
         select
         label="status"
@@ -43,6 +43,7 @@ function EventEditStatus({event}) {
         value={status.value}
         onChange={handleStatus}
         required
+        sx={{mb: "8px"}}
         InputLabelProps={{ shrink: true }}
       >
         <MenuItem value={"open"}>Activo</MenuItem>
@@ -50,10 +51,10 @@ function EventEditStatus({event}) {
         <MenuItem value={"cancelled"}>Cancelado</MenuItem>
       </TextField>
 
-      {status.value === "closed" && <Alert severity="warning">Si el evento es cerrado, nadie nuevo se podrá apuntar. Los participantes actuales podrán seguir buscando y gestionando grupos de coche</Alert>}
+      {status.value === "closed" && <Alert severity="warning">Si el evento es cerrado, nadie nuevo se podrá apuntar. Los participantes actuales podrán seguir enviando mensajes y gestionando grupos de coche</Alert>}
   {   status.value === "cancelled" && <Alert severity="warning">Si el evento es cancelado, nadie se podrá apuntar ni gestionar grupos de coche</Alert>}
 
-      <Button onClick={handleSubmit} variant="contained" color="primary">
+      <Button onClick={handleSubmit} variant="contained" color="primary" sx={{mt: "8px"}}>
         Cambiar Estado
       </Button>
 

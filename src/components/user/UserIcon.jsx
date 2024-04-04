@@ -1,10 +1,12 @@
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
 
-function UserIcon({size, user}) {
+function UserIcon({size, user, caption}) {
+  //todo change to receive only color and iconColor instead of the whole user
 
   const { icon, iconColor } = user
 
-  return (
+  return (<Box>
     <Box 
       bgcolor={iconColor} 
       borderRadius="50%" 
@@ -21,6 +23,8 @@ function UserIcon({size, user}) {
         height={size === "small" ? 15 : (size === "medium" ? 50 : 100)} 
       />
     </Box>
+    {caption && <Typography sx={{fontSize: 8}} variant="caption" color="initial">{user.username}</Typography>}
+  </Box>
   )
 }
 

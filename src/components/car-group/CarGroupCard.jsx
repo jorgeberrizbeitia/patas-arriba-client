@@ -8,43 +8,38 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import CheckIcon from '@mui/icons-material/Check';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import capitalizeAll from "@utils/capitalizeAll"
+import UserIcon from '@components/user/UserIcon';
+
 
 function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId}) {
 
-  console.log(eachCarGroup)
-
-  const {pickupLocation, pickupCoordinates, roomAvailable, pickupTime, owner} = eachCarGroup
+  const {pickupLocation, pickupCoordinates, roomAvailable, pickupTime, owner, members} = eachCarGroup
 
   //todo color code: green available, 
   //todo all fields mandatory
 
    
-
+  
   return (
     <Card>
       <CardHeader
-        avatar={
-          <Tooltip title={owner.username}>
-            <Avatar sx={{ bgcolor: "primary" }}>
-              {owner.username}
-            </Avatar>
-          </Tooltip>
-        }
+        avatar={ <UserIcon user={owner} size="small" caption/> }
         
-        title={`Recogida en: ${pickupLocation}`}
-        subheader={`Hora: ${pickupTime}. Plazas: ${roomAvailable}`}
+        title={<Typography variant="body2">{pickupLocation} </Typography>}
+        subheader={<Typography variant="caption">Hora: {pickupTime}</Typography>}
         action={
-          <>
-            {/* <Typography variant="body2">{`Disp`}</Typography> */}
+          <Box display="flex" flexDirection="column">
             <IconButton color={eachCarGroup._id == selectedCarGroupId ? "success" : "primary"} onClick={() => setSelectedCarGroupId(eachCarGroup._id)}>
               {eachCarGroup._id == selectedCarGroupId ? <CheckIcon /> : <AddIcon />}
             </IconButton>
-          </>
+            <Typography variant="caption">{`Disp. ${roomAvailable - members.length}`}</Typography>
+          </Box>
         }
       />
     </Card>

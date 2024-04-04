@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 import service from "@service/config.js"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import Loading from "@components/ui/Loading"
 
@@ -10,10 +10,12 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
-import CarGroupCard from "./CarGroupCard";
+import CarGroupCard from "../../components/car-group/CarGroupCard";
+import GoBack from "@components/navigation/GoBack";
 
-function CarGroupAvailableList({joinEvent}) {
+function CarGroupSearch () {
 
+  const navigate = useNavigate()
   const { eventId } = useParams()
 
   const [ isLoading, setIsLoading ] = useState(true)
@@ -30,10 +32,21 @@ function CarGroupAvailableList({joinEvent}) {
 
       const response = await service.get(`/car-group/list/${eventId}`)
 
-      console.log(response)
-
       setCarGroups(response.data)
       setTimeout(() => setIsLoading(false), 700)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const handleJoinCarGroup = async () => {
+
+    try {
+      
+      await service.patch(`car-group/${selectedCarGroupId}/join`)
+      navigate(`/event/${eventId}`)
 
     } catch (error) {
       console.log(error)
@@ -47,6 +60,8 @@ function CarGroupAvailableList({joinEvent}) {
   
   return (
     <Container>
+
+      <GoBack to={`/event/${eventId}`} />
       
       {carGroups.length === 0 ? <>
         <Alert severity="warning">No hay coches disponibles por los momentos, puede unirse al evento y buscar coches luego</Alert>
@@ -55,20 +70,21 @@ function CarGroupAvailableList({joinEvent}) {
             variant="contained"
           >Unirse al evento!</Button>
       </> : <>
-        <Typography variant="h5">Coches Disponibles:</Typography>
-        {carGroups.map((eachCarGroup) => <CarGroupCard 
+        <Typography variant="h5" gutterBottom>Coches disponibles</Typography>
+        {carGroups.map((eachCarGroup) => 
+          <CarGroupCard 
             key={eachCarGroup._id} 
             eachCarGroup={eachCarGroup} 
             setSelectedCarGroupId={setSelectedCarGroupId} 
-            selectedCarGroupId={selectedCarGroupId}/>
+            selectedCarGroupId={selectedCarGroupId}
+          />
         )}
-        <Alert severity="info">Si ningun coche te conviene, puedes unirte al evento sin elegir coche y buscar uno disponible luego</Alert>
         <Button 
             sx={{margin: "30px"}}
             variant="contained"
-            onClick={() => joinEvent(null, selectedCarGroupId)}
-            // NOTE: joinEvent always with null as first argument here, so it only takes second as car group id to join
-          >Unirse al evento{selectedCarGroupId && " con el coche elegido"}!</Button>
+            disabled={!selectedCarGroupId}
+            onClick={handleJoinCarGroup}
+          >{selectedCarGroupId ? "Unirse al grupo de coche!" : "Seleccione un grupo de coche"}</Button>
       </>}
       
 
@@ -76,4 +92,4 @@ function CarGroupAvailableList({joinEvent}) {
   )
 }
 
-export default CarGroupAvailableList
+export default CarGroupSearch

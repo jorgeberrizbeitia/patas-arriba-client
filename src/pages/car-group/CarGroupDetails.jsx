@@ -1,44 +1,34 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
+import GoBack from "@components/navigation/GoBack";
+
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import Tooltip from '@mui/material/Tooltip';
-import Button from '@mui/material/Button';
-import CheckIcon from '@mui/icons-material/Check';
 import { useContext, useEffect, useState } from 'react';
-import ChatIcon from '@mui/icons-material/Chat';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import Box from '@mui/material/Box';
-import Switch from '@mui/material/Switch';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import Grow from '@mui/material/Grow';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import mapExample from "@assets/images/map-example.png"
 import Loading from "@components/ui/Loading";
 
-import capitalizeAll from "@utils/capitalizeAll"
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import service from "@service/config"
 import UserCard from '@components/user/UserCard';
 import { AuthContext } from '@context/auth.context';
 import EventMessageBoard from '@components/messages/EventMessageBoard';
+import CarGroupActions from '@components/car-group/CarGroupActions';
+
+
 
 function CarGroupDetails() {
 
-  const navigate = useNavigate()
   const { loggedUserId } = useContext(AuthContext)
 
   const { carGroupId } = useParams()
@@ -81,26 +71,24 @@ function CarGroupDetails() {
   return (
     <Container>
 
-      <Box sx={{display:"flex", justifyContent: "space-between"}}>
-        <IconButton onClick={() => navigate(`/event/${event}`)}><ArrowBackIcon/></IconButton>
-      </Box>
+      <GoBack to={`/event/${event}`}/> 
+      
+      <Typography variant="h5" color="initial" gutterBottom>Detalles del grupo de coche</Typography>
 
       <Card>
         <CardHeader
-          avatar={
+          avatar={<IconButton sx={{ height: "24px", width: "24px" }} disabled>
             <DirectionsCarIcon />
-            // <Tooltip title={owner.username}>
-            //   <Avatar sx={{ bgcolor: "primary" }}>
-            //     {owner.username}
-            //   </Avatar>
-            // </Tooltip>
-          }
-          
+          </IconButton>}
+          action={<IconButton sx={{ mr: 0.5 ,height: "24px", width: "24px" }} disabled>
+            <DirectionsCarIcon />
+          </IconButton>} 
           title={owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}
+          sx={{ '& .MuiCardHeader-avatar': { marginRight: 0 }  }}
         />
         <CardContent>
           <Box>
-            <Typography variant="body2">
+            <Typography variant="body2" fontWeight="bold">
               Lugar de recogida:
             </Typography>
             <Typography variant="body2">
@@ -109,7 +97,7 @@ function CarGroupDetails() {
           </Box>
 
           <Box>
-            <Typography variant="body2">
+            <Typography variant="body2"  fontWeight="bold">
               Hora de recogida:
             </Typography>
             <Typography variant="body2">
@@ -117,8 +105,19 @@ function CarGroupDetails() {
             </Typography>
           </Box>
 
+          <Box>
+            <Typography variant="body2" fontWeight="bold">
+              Plazas disponibles:
+            </Typography>
+            <Typography variant="body2">
+              {roomAvailable - members.length}
+            </Typography>
+          </Box>
+
         </CardContent>
       </Card>
+
+      <hr />
 
       <Card>
         <CardHeader
@@ -133,10 +132,12 @@ function CarGroupDetails() {
           <CardMedia
             component="img"
             image={mapExample}
-            alt="mapa-ubicación"
+            alt="mapa-coche"
           />
         </Collapse>
       </Card>
+
+      <hr />
 
       <Card>
         <CardHeader
@@ -155,6 +156,8 @@ function CarGroupDetails() {
         </Collapse>
       </Card>
 
+      <hr />
+
       <Card>
         <CardHeader
           subheader={`Acciones`}
@@ -165,18 +168,11 @@ function CarGroupDetails() {
           }
         />
         <Collapse in={showActions}>
-        <CardActions sx={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-            <IconButton color="warning">
-              <ChangeCircleIcon />
-              <Typography variant="caption">Cambiar de coche</Typography>
-            </IconButton> 
-            <IconButton color="error" className='remove-margin'>
-              <ExitToAppIcon sx={{margin: 0}}/>
-              <Typography variant="caption">Salir del coche</Typography>
-            </IconButton> 
-          </CardActions>
+          <CarGroupActions carGroup={carGroup}/>
         </Collapse>
       </Card>
+
+      <hr />
 
       <EventMessageBoard type="car-group" eventOrCarGroup={carGroup}/>
 

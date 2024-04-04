@@ -4,35 +4,34 @@ import service from "@service/config";
 
 import GoBack from "@components/navigation/GoBack";
 import Loading from "@components/ui/Loading"
-import EventEditForm from "@components/event/EventEditForm";
-import EventEditStatus from "@components/event/EventEditStatus";
-import EventDelete from "@components/event/EventDelete";
+import CarGroupEditForm from "@components/car-group/CarGroupEditForm";
+import CarGroupDelete from "@components/car-group/CarGroupDelete";
 
 // MUI Components
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-function EventEdit() {
+function CarGroupEdit() {
   
-  const { eventId } = useParams()
+  const { carGroupId } = useParams()
 
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ event, setEvent ] = useState(null)
+  const [ carGroup, setCarGroup ] = useState(null)
   const [ editType, setEditType ] = useState(null)
-  // editType 1: normal fields, 2: change status, 3: delete event
+  // editType 1: edit info, 2: delete car group
 
   useEffect(() => {
-    getEventDetails()
+    getCarGroupDetails()
   }, [])
 
-  const getEventDetails = async () => {
+  const getCarGroupDetails = async () => {
 
     try {
       
-      const response = await service.get(`/event/${eventId}`)
+      const response = await service.get(`/car-group/${carGroupId}`)
 
-      setEvent(response.data)
+      setCarGroup(response.data)
       setTimeout(() => setIsLoading(false), 700)
 
     } catch (error) {
@@ -48,9 +47,9 @@ function EventEdit() {
   return (
     <>
 
-      <GoBack to={`/event/${event._id}`}/> 
+      <GoBack to={`/car-group/${carGroup._id}`}/>     
 
-      <Typography variant="h5" color="initial" gutterBottom>Como quieres editar el evento?</Typography>
+      <Typography variant="h5" color="initial" gutterBottom>Como quieres editar el grupo de coche?</Typography>
 
       <Box display="flex" flexDirection="row" justifyContent="space-evenly">
 
@@ -60,17 +59,11 @@ function EventEdit() {
           color="info" 
           sx={{width: "25%", height: 80}}
         > Editar info </Button>
+        {/* //todo cambiar todos los editar, modificar, actualizar a la misma palabra */}
 
         <Button 
           onClick={() => setEditType(2)} 
           variant={editType === 2 ? "contained" : "outlined"} 
-          color="primary" 
-          sx={{width: "25%", height: 80}}
-        >Cambiar Estado</Button>
-
-        <Button 
-          onClick={() => setEditType(3)} 
-          variant={editType === 3 ? "contained" : "outlined"} 
           color="error" 
           sx={{width: "25%", height: 80}}
         >Eliminar</Button>
@@ -81,14 +74,13 @@ function EventEdit() {
 
       <Box display="flex" flexDirection="column" alignItems="center">
 
-        {editType === 1 && <EventEditForm event={event}/>}
-        {editType === 2 && <EventEditStatus event={event}/>}
-        {editType === 3 && <EventDelete event={event}/>}
-
+        {editType === 1 && <CarGroupEditForm carGroup={carGroup}/>}
+        {editType === 2 && <CarGroupDelete carGroup={carGroup}/>}
+        
       </Box>
 
     </>
   );
 }
 
-export default EventEdit;
+export default CarGroupEdit;

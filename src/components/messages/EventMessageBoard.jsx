@@ -15,9 +15,12 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import UserIcon from '@components/user/UserIcon';
+import { useNavigate } from 'react-router-dom';
+
 
 function EventMessageBoard({eventOrCarGroup, type}) {
 
+  const navigate = useNavigate()
   const listRef = useRef(null);
 
   const { loggedUserId } = useContext(AuthContext)
@@ -69,7 +72,7 @@ function EventMessageBoard({eventOrCarGroup, type}) {
   }
 
   return (
-    <Box p={2}>
+    <Box display="flex" flexDirection="column">
       <Typography variant="h5" gutterBottom>
         Mensajes del {type === "event" ? "Evento" : "Coche"}
       </Typography>
@@ -85,16 +88,16 @@ function EventMessageBoard({eventOrCarGroup, type}) {
               <ListItem>
                 {!isSender && 
                   <ListItemAvatar>
-                    <UserIcon user={sender} size="small"/>
+                    <UserIcon user={sender} size="small" caption/>
                   </ListItemAvatar>
                 }
                 <Box sx={{width: "100%", textAlign: isSender ? "right" : "left"}}>
                   <ListItemText
                     primary={
                       <Typography variant="body2" color={isSender ? "#2ECC71" : "#3498DB"}>
-                        <span>{isSender ? "Tú" : sender.username}</span>
-                        {isAdmin && <span style={{color: "#F39C12"}}>, admin</span>}
-                        {carOwner && <span style={{color: "#F39C12"}}>, dueño de coche</span>}
+                        <span onClick={() => navigate(`/user/${sender._id}`)}>{isSender ? "Tú" : sender.username}</span>
+                        {isAdmin && <span style={{color: "#F39C12"}}> -admin-</span>}
+                        {carOwner && <span style={{color: "#F39C12"}}> -conductor-</span>}
                       </Typography>
                     }
                     sx={{ wordBreak: 'break-word' }}
@@ -109,28 +112,37 @@ function EventMessageBoard({eventOrCarGroup, type}) {
           )})}
         </List>
 
-      <IconButton onClick={refreshMessages} disabled={isSending}>
-        <RefreshIcon />
-      </IconButton>
+      <Box>
+        <IconButton onClick={refreshMessages} disabled={isSending} sx={{width: 75, height: 75}}>
+          <RefreshIcon />
+          <Typography variant="caption">refrescar</Typography>
+        </IconButton>
+      </Box>
 
-      <TextField
-        label="Escribe un mensaje"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        fullWidth
-        variant="outlined"
-        multiline
-        rows={3}
-        margin="normal"
-      />
-      
-      {/* //todo limit to only 140 characters */}
+      <Box display="flex" alignItems="center">
+        <TextField
+          label="Escribe un mensaje"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          variant="outlined"
+          multiline
+          rows={1}
+          margin="normal"
+          sx={{width: "80%", m: 0}}
+        />
+        
+        {/* //todo limit to only 140 characters */}
 
-      <Button variant="contained" disabled={isSending} onClick={handleSubmit}>
-        ENVIAR
-      </Button>
+        <Button 
+          variant="contained" 
+          disabled={isSending} 
+          onClick={handleSubmit} 
+          size='small'
+          sx={{width: "80px", height: "55px"}}
+        >Enviar</Button>
+      </Box>
 
-      <Alert severity='info'>Nota: Este chat no es en tiempo real, hay que recargar para ver nuevos mensajes</Alert>
+      <Alert severity='info'>Nota: Este chat no es en tiempo real, hay que refrescar para ver nuevos mensajes</Alert>
 
     </Box>
   );

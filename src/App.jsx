@@ -14,7 +14,7 @@ import IsPrivate from "@components/auth/IsPrivate.jsx"
 import IsAnon from './components/auth/IsAnon'
 import IsAdmin from './components/auth/IsAdmin'
 
-import EventJoin from './pages/event/EventJoin'
+// import EventJoin from './pages/event/EventJoin' //! obsolete page
 import EventList from './pages/event/EventList'
 import CarGroupDetails from './pages/car-group/CarGroupDetails'
 import UserDetails from './pages/user/UserDetails'
@@ -24,6 +24,10 @@ import EventMessages from './pages/message/EventMessages'
 import CarGroupMessages from './pages/message/CarGroupMessages'
 import EventCreate from './pages/event/EventCreate'
 import EventEdit from './pages/event/EventEdit'
+
+import CarGroupCreate from '@pages/car-group/CarGroupCreate'
+import CarGroupSearch from '@pages/car-group/CarGroupSearch'
+import CarGroupEdit from '@pages/car-group/CarGroupEdit'
 
 
 function App() {
@@ -51,8 +55,10 @@ function App() {
         {/* //* private routes */}
         <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
         <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
-        <Route path="/event/:eventId/join" element={  <IsPrivate> <EventJoin /> </IsPrivate>  }/>
+        <Route path="/event/:eventId/add-car-group" element={  <IsPrivate> <CarGroupCreate /> </IsPrivate>  }/>
+        <Route path="/event/:eventId/search-car-group" element={  <IsPrivate> <CarGroupSearch /> </IsPrivate>  }/>
         <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
+        <Route path="/car-group/:carGroupId/edit" element={<IsPrivate> <CarGroupEdit /> </IsPrivate>}/>
         <Route path="/user/own" element={ <IsPrivate> <OwnUserDetails /> </IsPrivate> }/>
         <Route path="/user/:userId" element={ <IsPrivate> <UserDetails /> </IsPrivate> }/>
         <Route path="/message/:eventId/event" element={ <IsPrivate> <EventMessages /> </IsPrivate> }/>
@@ -61,7 +67,6 @@ function App() {
         {/* //* error routes */}
         <Route path="/server-error" element={<ServerError />}/>
         <Route path="*" element={<NotFound />}/>
-
 
       </Routes>
 

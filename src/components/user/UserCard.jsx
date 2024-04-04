@@ -12,11 +12,11 @@ function UserCard({user}) {
 
   const navigate = useNavigate()
 
-  const { _id, username, role, icon, iconColor, } = user
+  const { _id, username, role } = user
 
   const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
 
-  return <Card raised>
+  return <Card sx={{bgcolor: "gray.lighter"}}>
       <CardHeader 
       avatar={
         <UserIcon user={user} size="small"/>

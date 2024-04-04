@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import { AuthContext } from '@context/auth.context'
 import CardMedia from '@mui/material/CardMedia'
 import UserIcon from '@components/user/UserIcon'
+import GoBack from '@components/navigation/GoBack'
 
 function UserDetails() {
 
@@ -60,10 +61,12 @@ function UserDetails() {
     return <Loading />
   }
 
-  const { username, email, icon, iconColor, fullName, phoneCode, phoneNumber, createdAt, role } = user
+  const { username, email, fullName, phoneCode, phoneNumber, createdAt, role } = user
 
   return (
     <Container maxWidth="xs">
+
+      <GoBack to={-1}/>
       
       <Card>
         <CardHeader

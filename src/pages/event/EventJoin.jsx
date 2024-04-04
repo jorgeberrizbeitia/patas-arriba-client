@@ -1,3 +1,5 @@
+//!this component will be obsolete
+
 import { useState } from "react"
 
 import service from "@service/config.js"
@@ -9,8 +11,8 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import CarGroupAddForm from "@components/car-group/CarGroupAddForm";
-import CarGroupAvailableList from "@components/car-group/CarGroupAvailableList";
+import CarGroupAddForm from "@pages/car-group/CarGroupCreate";
+import CarGroupAvailableList from "@pages/car-group/CarGroupSearch";
 import NoCarGroupNeeded from "@components/car-group/NoCarGroupNeeded";
 
 function EventJoin() {

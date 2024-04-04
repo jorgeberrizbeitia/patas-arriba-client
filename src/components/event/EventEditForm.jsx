@@ -1,27 +1,15 @@
-import logo from "@assets/images/logo.png";
-import { Link, useNavigate, useParams } from "react-router-dom"
-
-import countryPhoneCode from "@data/country-phone-code.json"
-
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Alert from '@mui/material/Alert';
-
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
 import service from "@service/config";
 
 import validateField from "@utils/validateField";
-import CardHeader from '@mui/material/CardHeader'
-import Avatar from '@mui/material/Avatar'
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+// MUI Components
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import Alert from '@mui/material/Alert';
 
 function EventEditForm({event}) {
   
@@ -29,11 +17,14 @@ function EventEditForm({event}) {
 
   const [ title, setTitle ] = useState({value: event.title, error: null, hasUserInteracted: true})
   const [ location, setLocation ] = useState({value: event.location, error: null, hasUserInteracted: true})
-  // const [ coordinates, setCoordinates ] = useState({value: event.coordinates, error: null, hasUserInteracted: true}) //! pending leaflet implementation
+  // const [ coordinates, setCoordinates ] = useState({value: event.coordinates, error: null, hasUserInteracted: true}) 
+  //! pending leaflet implementation
   const [ date, setDate ] = useState({value: event.date, error: null, hasUserInteracted: true})
   const [ time, setTime ] = useState({value: event.time, error: null, hasUserInteracted: true})
   const [ category, setCategory ] = useState({value: event.category, error: null, hasUserInteracted: true})
-  //? NOTE. no need for hasUserInteracted on edit, however, validate fields function adds it
+  //* NOTE. no need for hasUserInteracted on edit, however, validate fields function adds it
+
+  //todo modify validateField to remove hasUserInteracted, perhaps do it individually on each field. Check all 6 forms.
 
   const [ serverError, setServerError] = useState();
   const [ canSubmit, setCanSubmit ] = useState(false)

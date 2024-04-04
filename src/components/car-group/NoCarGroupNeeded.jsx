@@ -1,3 +1,5 @@
+//! obsolete
+
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 
