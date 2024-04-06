@@ -12,6 +12,7 @@ import { AuthContext } from '@context/auth.context'
 import CircularProgress from '@mui/material/CircularProgress';
 
 import icons from '@utils/icons'
+console.log(icons)
 import MenuItem from '@mui/material/MenuItem'
 
 

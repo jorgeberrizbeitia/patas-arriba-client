@@ -20,7 +20,9 @@ function EventEditStatus({event}) {
     setStatus(updatedstate);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+
+    e.preventDefault()
 
     try {
       
