@@ -24,10 +24,10 @@ function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId})
   //todo color code: green available, 
   //todo all fields mandatory
 
-   
+  const occupancyAvailable = roomAvailable - members.length
   
   return (
-    <Card>
+    <Card sx={{width: "100%"}}>
       <CardHeader
         avatar={ <UserIcon user={owner} size="small" caption/> }
         
@@ -35,10 +35,10 @@ function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId})
         subheader={<Typography variant="caption">Hora: {pickupTime}</Typography>}
         action={
           <Box display="flex" flexDirection="column">
-            <IconButton color={eachCarGroup._id == selectedCarGroupId ? "success" : "primary"} onClick={() => setSelectedCarGroupId(eachCarGroup._id)}>
+            <IconButton color={eachCarGroup._id == selectedCarGroupId ? "success" : "primary"} onClick={() => setSelectedCarGroupId(eachCarGroup._id)} disabled={occupancyAvailable <= 0}>
               {eachCarGroup._id == selectedCarGroupId ? <CheckIcon /> : <AddIcon />}
             </IconButton>
-            <Typography variant="caption">{`Disp. ${roomAvailable - members.length}`}</Typography>
+            <Typography variant="caption">{`Disp. ${occupancyAvailable}`}</Typography>
           </Box>
         }
       />

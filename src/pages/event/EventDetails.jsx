@@ -33,9 +33,9 @@ import Collapse from '@mui/material/Collapse';
 import EventCard from "@components/event/EventCard";
 import Alert from '@mui/material/Alert';
 import EventMapCard from "@components/event/EventMapCard";
-import EventParticipantsCard from "./EventParticipantsCard";
-import EventLeaveButton from "./EventLeaveButton";
-import EventCarGroupInfoCard from "./EventCarGroupInfoCard";
+import EventParticipantsCard from "../../components/event/EventParticipantsCard";
+import EventLeaveButton from "../../components/event/EventLeaveButton";
+import EventCarGroupInfoCard from "../../components/event/EventCarGroupInfoCard";
 
 
 
@@ -64,7 +64,9 @@ function EventDetails() {
       setEvent(responseEvent.data)
       setEventCarGroups(responseCarGroups.data)
 
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -104,14 +106,13 @@ function EventDetails() {
   const myCarGroup = eventCarGroups.find((eachCarGroup) => {
     return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
   })
-  const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.members), 0)
+  const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.members.length), 0)
+  console.log(totalRoomAvailableInCarGroups)
 
   return (
     <>
 
       <GoBack to={`/event`}/> 
-
-      <hr />
 
       {event.status === "cancelled" && <>
       <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>
@@ -125,8 +126,6 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      <hr />
-
       {!hasUserJoined && <Box>
         <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled"}>
           {event.status === "open" && "¡Unete al evento!"}
@@ -135,7 +134,9 @@ function EventDetails() {
         </Button>
       </Box>}
 
-      {hasUserJoined && <Typography variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
+      <hr />
+
+      {hasUserJoined && <Typography sx={{width: "100%"}}variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
       {hasUserJoined && <EventMapCard event={event}/> }
 

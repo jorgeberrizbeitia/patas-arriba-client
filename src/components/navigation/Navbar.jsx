@@ -14,7 +14,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import EventIcon from '@mui/icons-material/Event';
 import CloseIcon from '@mui/icons-material/Close';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import capitalizeAll from "@utils/capitalizeAll";
 import GroupIcon from '@mui/icons-material/Group';
 import Chip from '@mui/material/Chip';
 
@@ -199,7 +198,6 @@ function Navbar() {
         </Box>
       </Drawer>
 
-      <hr />
     </nav>
   );
 }

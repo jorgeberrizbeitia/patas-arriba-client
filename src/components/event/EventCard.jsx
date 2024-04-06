@@ -14,6 +14,7 @@ import { AuthContext } from '../../context/auth.context';
 import CornerChip from '@components/ui/CornerChip';
 
 
+
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   const navigate = useNavigate()
@@ -48,15 +49,15 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   }
 
   return (
-    <Card raised sx={{ minHeight: "250px", mt: "20px", position: 'relative' }}>
+    <Card raised sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
       
       {leftChip}
       {rightChip}
 
       <CardHeader 
-        title={event.title}
         sx={{ pl: (fromDetails && loggedUserRole === "admin") ? 7.5 : 2}}
         // * above is to account for the icon on the right side when user is admin
+        title={<Typography variant="h4" sx={{px: "8%"}}>{event.title}</Typography>}
         action={(fromDetails && loggedUserRole === "admin") && 
           <IconButton 
             onClick={() => navigate(`/event/${event._id}/edit`)} 

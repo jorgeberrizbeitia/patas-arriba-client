@@ -75,10 +75,9 @@ function CarGroupEditForm({carGroup}) {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-    {/* //todo check if we be changed to Container */} 
+    <>
 
-    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" sx={{maxWidth:"320px"}}>
+    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column">
 
       <TextField
         label="Plazas disponibles"
@@ -117,7 +116,7 @@ function CarGroupEditForm({carGroup}) {
         InputLabelProps={{ shrink: true }}
       />
 
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Selecciona punto de encuentro
       </Typography>
       <CardMedia
@@ -131,13 +130,14 @@ function CarGroupEditForm({carGroup}) {
         type="submit"
         disabled={!canSubmit}
         onClick={handleSubmit}
-      >Actualizar y volver a detalles del grupo de coche</Button>
+        sx={{my: 2}}
+      >Actualizar</Button>
 
       {serverError && <Alert severity="error">{serverError}</Alert>}
 
     </Box>
 
-  </Box>
+  </>
   )
 }
 

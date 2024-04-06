@@ -4,6 +4,10 @@
   text-align: center;
 }
 
+html {
+  font-size: 16px;
+}
+
 a:visited {
   /* weird but with mui and rect-router-dom links */
   color: #EFB665
@@ -19,13 +23,12 @@ hr {
   margin: 20px;
   border: none;
   border-top: 1px solid #EFB665;
-}
-
-html {
-  font-size: 16px;
+  width: 100%; 
+  max-width: 650px;
 }
 
 .MuiIconButton-root {
+  /* to allow icon caption at the bottom */
   display: flex;
   flex-direction: column;
 }

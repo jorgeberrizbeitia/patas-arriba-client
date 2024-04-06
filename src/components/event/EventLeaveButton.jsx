@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -8,6 +8,18 @@ function EventLeaveButton({handleLeaveEvent}) {
 
   const [ showAreYouSureButtons, setShowAreYouSureButtons ] = useState(false)
 
+  const cardRef = useRef(null)
+
+  const handleShowLeaveCard = () => {
+    setShowAreYouSureButtons(!showAreYouSureButtons)
+  }
+
+  useEffect(() => {
+    if (showAreYouSureButtons && cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [showAreYouSureButtons]);
+
   return (
     <>
       <hr />
@@ -15,11 +27,13 @@ function EventLeaveButton({handleLeaveEvent}) {
       <Button
         variant="outlined"
         color="error"
-        onClick={() => setShowAreYouSureButtons(!showAreYouSureButtons)}
+        onClick={handleShowLeaveCard}
       >Salir del evento</Button>
 
+      <br />
+
       {showAreYouSureButtons && (
-        <Card raised sx={{}}>
+        <Card ref={cardRef} raised sx={{width: "100%"}}>
 
           <Alert severity="warning">
             Estas seguro que deseas salir? Si tienes un grupo de coche creado,

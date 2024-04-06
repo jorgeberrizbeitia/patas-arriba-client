@@ -29,11 +29,11 @@ function UpdateUserIcon({setPropertyToEdit}) {
       
       const response = await service.patch("/user/icon", { icon, iconColor })
       console.log(response.data)
-      setTimeout(() => {
+      // setTimeout(() => {
         setLoggedUser(response.data)
         setPropertyToEdit(null)
         setIsUpdating(false)
-      }, 700)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -43,7 +43,7 @@ function UpdateUserIcon({setPropertyToEdit}) {
   }
 
   return (
-    <Container maxWidth="xs" sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+    <>
 
     <Box 
       bgcolor={iconColor} 
@@ -97,7 +97,7 @@ function UpdateUserIcon({setPropertyToEdit}) {
         </IconButton>
       </Box>
 
-    </Container>
+    </>
   )
 }
 

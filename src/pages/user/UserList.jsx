@@ -1,6 +1,5 @@
 import UserCard from '@components/user/UserCard'
 import Loading from '@components/ui/Loading'
-import Container from '@mui/material/Container'
 import service from '@service/config'
 import { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography'
@@ -20,7 +19,9 @@ function UserList() {
       
       const response = await service.get("/user")
       setUsers(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -41,8 +42,10 @@ function UserList() {
   .map((eachUser) => <UserCard key={eachUser._id} user={eachUser}/>)
 
   return (
-    <Container maxWidth="xs">
+    <>
 
+      <hr style={{maxWidth:"initial"}} />
+      {/* //* this will make the hr longer than the mui Container */}
       
       {pendingUsers.length > 0 && <>
         <Typography variant="h1" gutterBottom>Por aprobación</Typography>
@@ -55,7 +58,7 @@ function UserList() {
       
       {allowedUsers}
 
-    </Container>
+    </>
   )
 }
 

@@ -17,7 +17,7 @@ function EventMapCard({event}) {
   return (
     <>
       <hr />
-      <Card>
+      <Card sx={{width: "100%"}}>
         <CardHeader
           subheader={`Mapa del evento`}
           action={

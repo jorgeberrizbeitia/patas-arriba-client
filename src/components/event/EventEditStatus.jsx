@@ -34,7 +34,16 @@ function EventEditStatus({event}) {
   }
 
   return (
-    <Box sx={{ mt: '8px', mb: '8px' }}>
+    <Box       
+      component="form"
+      noValidate
+      autoComplete="on"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      width="100%" // because css is weird
+      onSubmit={handleSubmit}
+    >
       <TextField
         select
         label="status"
@@ -54,7 +63,7 @@ function EventEditStatus({event}) {
       {status.value === "closed" && <Alert severity="warning">Si el evento es cerrado, nadie nuevo se podrá apuntar. Los participantes actuales podrán seguir enviando mensajes y gestionando grupos de coche</Alert>}
       {status.value === "cancelled" && <Alert severity="warning">Si el evento es cancelado, todos los participantes serán removidos del evento, adicionalmente nadie se podrá apuntar, gestionar coches o ver/crear mensajes en el evento</Alert>}
 
-      <Button onClick={handleSubmit} variant="contained" color="primary" sx={{mt: "8px"}}>
+      <Button type="submit" variant="contained" color="primary" sx={{mt: "8px"}}>
         Cambiar Estado
       </Button>
 

@@ -33,28 +33,26 @@ function UpcomingEventsList() {
       const response = await service.get("/event/upcoming");
       console.log(response.data)
       setUpcomingEvents(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
     } catch (error) {
       console.log(error)
     }
   };
 
   return (
-    <Container>
-      <Typography variant="h4"gutterBottom>Próximos Eventos</Typography>
-      {/* <Box sx={{display:"flex", justifyContent: "space-between"}}>
-        <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
-        <Button onClick={() => getUpcomingEvents()} disabled={isLoading}><RefreshIcon/></Button>
-      </Box> */}
-      <Box>
-        {isLoading ? <Loading /> : upcomingEvents.map((event) => <EventCard key={event._id} event={event}/>)}
-        {!isLoading && upcomingEvents.length === 0 && <Typography>No hay próximos eventos</Typography>}
+    <>
+      <Typography variant="h4" gutterBottom>Próximos Eventos</Typography>
         
-        <hr />
+      {isLoading ? <Loading /> : upcomingEvents.map((event) => <EventCard key={event._id} event={event}/>)}
+      {!isLoading && upcomingEvents.length === 0 && <Typography>No hay próximos eventos</Typography>}
+        
+      <hr />
 
-        {!isLoading && <Link to="/event"><Button>Ver más eventos antiguos</Button></Link> }
-      </Box>
-    </Container>
+      {!isLoading && <Button onClick={() => navigate("/event")}>Ver más eventos antiguos</Button> }
+
+    </>
   );
 }
 

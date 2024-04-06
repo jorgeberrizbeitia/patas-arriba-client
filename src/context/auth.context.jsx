@@ -24,7 +24,9 @@ function AuthWrapper(props) {
       setLoggedUserId(null)
       setLoggedUserRole(null)
       setLoggedUser(null)
-      setTimeout(() => setIsAuthenticating(false), 700)
+      // setTimeout(() => {
+        setIsAuthenticating(false)
+      // }, 700)
       return
     }
 
@@ -39,7 +41,9 @@ function AuthWrapper(props) {
         setLoggedUserId(null)
         setLoggedUserRole(null)
         setLoggedUser(null)
-        setTimeout(() => setIsAuthenticating(false), 700)
+        // setTimeout(() => {
+          setIsAuthenticating(false)
+        // }, 700)
         return
       }
       
@@ -47,14 +51,18 @@ function AuthWrapper(props) {
       setLoggedUserId(responsePayload.data.payload._id)
       setLoggedUserRole(responsePayload.data.payload.role)
       setLoggedUser(responseOwnUserDetails.data)
-      setTimeout(() => setIsAuthenticating(false), 700)
+      // setTimeout(() => {
+        setIsAuthenticating(false)
+      // }, 700)
     } catch (error) {
       console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)
       setLoggedUser(null)
-      setTimeout(() => setIsAuthenticating(false), 700)
+      // setTimeout(() => {
+        setIsAuthenticating(false)
+      // }, 700)
     }
   }
 

@@ -32,14 +32,19 @@ function EventList() {
       const response = await service.get("/event");
       console.log(response.data)
       setEvents(response.data)
-      setTimeout(() => setIsLoading(false), 1000)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 1000)
     } catch (error) {
       console.log(error)
     }
   };
 
   return (
-    <Container>
+    <>
+
+      <hr style={{maxWidth:"initial"}} />
+
       <Typography variant="h4"gutterBottom>Todos los Eventos</Typography>
       {/* <Box sx={{display:"flex", justifyContent: "space-between"}}>
         <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
@@ -48,9 +53,9 @@ function EventList() {
       <Box>
         {isLoading ? <Loading /> : events.map((event) => <EventCard key={event._id} event={event}/>)}
         {!isLoading && events.length === 0 && <Typography>No hay eventos</Typography>}
-        {/* //! test if it works */}
+        {/* //todo test if it works */}
       </Box>
-    </Container>
+    </>
   );
 }
 

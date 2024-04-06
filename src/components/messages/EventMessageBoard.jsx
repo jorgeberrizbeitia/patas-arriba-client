@@ -72,19 +72,22 @@ function EventMessageBoard({eventOrCarGroup, type}) {
   }
 
   return (
-    <Box display="flex" flexDirection="column">
+    <>
+
       <hr />
-      <Typography variant="h5" gutterBottom>
+
+      <Typography variant="h5" gutterBottom sx={{width: "100%"}}>
         Mensajes del {type === "event" ? "Evento" : "Coche"}
       </Typography>
-        <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'primary.lighterSaturation', borderRadius: 1 }}>
-          {messages.map(({text, sender, createdAt}, index) => {
 
-            const isSender = sender._id == loggedUserId
-            const isAdmin = sender.role === "admin"
-            const carOwner = type === "car-group" && sender._id === eventOrCarGroup.owner._id
+      <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'primary.lighterSaturation', borderRadius: 1, width: "100%" }}>
+        {messages.map(({text, sender, createdAt}, index) => {
 
-            return (
+          const isSender = sender._id == loggedUserId
+          const isAdmin = sender.role === "admin"
+          const carOwner = type === "car-group" && sender._id === eventOrCarGroup.owner._id
+
+          return (
             <Box key={index}>
               <ListItem>
                 {!isSender && 
@@ -110,17 +113,18 @@ function EventMessageBoard({eventOrCarGroup, type}) {
               </ListItem>
               <Divider variant="inset" component="li" />
             </Box>
-          )})}
-        </List>
+          )}
+        )}
+      </List>
 
-      <Box>
+      <Box sx={{width: "100%"}}>
         <IconButton onClick={refreshMessages} disabled={isSending} sx={{width: 75, height: 75}}>
           <RefreshIcon />
           <Typography variant="caption">refrescar</Typography>
         </IconButton>
       </Box>
 
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" sx={{width: "100%"}}>
         <TextField
           label="Escribe un mensaje"
           value={text}
@@ -139,13 +143,13 @@ function EventMessageBoard({eventOrCarGroup, type}) {
           disabled={isSending} 
           onClick={handleSubmit} 
           size='small'
-          sx={{width: "80px", height: "55px"}}
+          sx={{width: "80px", height: "55px", ml: 1}}
         >Enviar</Button>
       </Box>
 
-      <Alert severity='info'>Nota: Este chat no es en tiempo real, hay que refrescar para ver nuevos mensajes</Alert>
+      <Alert sx={{width: "100%", mt:1}} severity='info'>Nota: Este chat no es en tiempo real, hay que refrescar para ver nuevos mensajes</Alert>
 
-    </Box>
+    </>
   );
 }
 

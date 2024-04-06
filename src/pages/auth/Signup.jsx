@@ -1,18 +1,18 @@
 import logo from "@assets/images/logo.png";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 
-import countryPhoneCode from "@data/country-phone-code.json"
+import countryPhoneCode from "@data/country-phone-code.json";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Alert from '@mui/material/Alert';
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Alert from "@mui/material/Alert";
 
 import { useEffect, useState } from "react";
 import service from "@service/config";
@@ -20,135 +20,215 @@ import service from "@service/config";
 import validateField from "@utils/validateField";
 
 function Signup() {
-  
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [ email, setEmail ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ username, setUsername ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ fullName, setFullName ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ phoneCode, setPhoneCode ] = useState({value: 34, error: null, hasUserInteracted: true}) // starts as true as there is default value
-  const [ phoneNumber, setPhoneNumber ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ password, setPassword ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ confirmPassword, setConfirmPassword ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [email, setEmail] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+  const [username, setUsername] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+  const [fullName, setFullName] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+  const [phoneCode, setPhoneCode] = useState({
+    value: 34,
+    error: null,
+    hasUserInteracted: true,
+  }); // starts as true as there is default value
+  const [phoneNumber, setPhoneNumber] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+  const [password, setPassword] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+  const [confirmPassword, setConfirmPassword] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
 
-  const [ showPassword, setShowPassword] = useState(false);
-  const [ serverError, setServerError] = useState();
-  const [ canSubmit, setCanSubmit ] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState();
+  const [canSubmit, setCanSubmit] = useState(false);
 
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
-    
-    const allFormStates = [email, username, fullName, phoneCode, phoneNumber, password, confirmPassword]
 
-    const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
-    const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
+    const allFormStates = [
+      email,
+      username,
+      fullName,
+      phoneCode,
+      phoneNumber,
+      password,
+      confirmPassword,
+    ];
+
+    const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted);
+    const allStatesWithoutErrors = allFormStates.every((e) => !e.error);
 
     if (allStatesInteracted && allStatesWithoutErrors) {
-      if (canSubmit === false) setCanSubmit(true)
+      if (canSubmit === false) setCanSubmit(true);
     } else {
-      if (canSubmit === true) setCanSubmit(false)
+      if (canSubmit === true) setCanSubmit(false);
     }
-  }, [email, username, fullName, phoneCode, phoneNumber, password, confirmPassword])
+  }, [
+    email,
+    username,
+    fullName,
+    phoneCode,
+    phoneNumber,
+    password,
+    confirmPassword,
+  ]);
 
   const handleEmail = (e) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    const updatedstate = validateField(e.target.value, email, true, regex, "Formato incorrecto")
-    console.log(updatedstate)
+    const updatedstate = validateField(
+      e.target.value,
+      email,
+      true,
+      regex,
+      "Formato incorrecto"
+    );
+    console.log(updatedstate);
     setEmail(updatedstate);
   };
 
   const handleUsername = (e) => {
-    const regex = /^[^\s]{3,15}$/; 
-    e.target.value = e.target.value.replace(" ", "") // removes all empty spaces
-    const updatedstate = validateField(e.target.value, username, true, regex, "No debe tener espacios y de 3 a 15 characteres")
+    const regex = /^[^\s]{3,15}$/;
+    e.target.value = e.target.value.replace(" ", ""); // removes all empty spaces
+    const updatedstate = validateField(
+      e.target.value,
+      username,
+      true,
+      regex,
+      "No debe tener espacios y de 3 a 15 characteres"
+    );
     setUsername(updatedstate);
   };
 
   const handleFullName = (e) => {
     const regex = /^[a-zA-ZÀ-ÖØ-öØ-ÿ\s']{3,30}$/;
-    const updatedstate = validateField(e.target.value, fullName, true, regex, "Solo letras, espacios y de 3 a 30 caracteres")
+    const updatedstate = validateField(
+      e.target.value,
+      fullName,
+      true,
+      regex,
+      "Solo letras, espacios y de 3 a 30 caracteres"
+    );
     setFullName(updatedstate);
   };
 
   const handlePhoneCode = (e) => {
     // no error verification
-    setPhoneCode({...phoneCode, value: e.target.value})
+    setPhoneCode({ ...phoneCode, value: e.target.value });
   };
 
   const handlePhoneNumber = (e) => {
     const regex = /^[0-9]{7,15}$/;
-    e.target.value = e.target.value.replace(/\D/g, ''); // removes all non-digits
-    const updatedstate = validateField(e.target.value, phoneNumber, true, regex, "Solo dígitos numericos y de 7 a 15 dígitos")
+    e.target.value = e.target.value.replace(/\D/g, ""); // removes all non-digits
+    const updatedstate = validateField(
+      e.target.value,
+      phoneNumber,
+      true,
+      regex,
+      "Solo dígitos numericos y de 7 a 15 dígitos"
+    );
     setPhoneNumber(updatedstate);
   };
 
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-    const updatedstate = validateField(e.target.value, password, true, regex, "Al menos 6 caractéres, un número, una minúscula y una mayúscula")
+    const updatedstate = validateField(
+      e.target.value,
+      password,
+      true,
+      regex,
+      "Al menos 6 caractéres, un número, una minúscula y una mayúscula"
+    );
     setPassword(updatedstate);
   };
 
   const handleConfirmPassword = (e) => {
-    console.log(e.target.value)
-    const clone = {...confirmPassword}
+    console.log(e.target.value);
+    const clone = { ...confirmPassword };
     if (!e.target.value) {
-      clone.error =  "Campo obligatorio"
+      clone.error = "Campo obligatorio";
     } else if (e.target.value !== password.value) {
-      clone.error = "Campos de contraseña no concuerdan"
+      clone.error = "Campos de contraseña no concuerdan";
     } else {
-      clone.error = null
+      clone.error = null;
     }
-    clone.value = e.target.value
-    clone.hasUserInteracted = true
+    clone.value = e.target.value;
+    clone.hasUserInteracted = true;
     setConfirmPassword(clone);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-
       await service.post("/auth/signup", {
-        email: email.value, 
-        username: username.value, 
-        fullName: fullName.value, 
-        phoneCode: phoneCode.value, 
-        phoneNumber: phoneNumber.value, 
-        password: password.value
-      })
+        email: email.value,
+        username: username.value,
+        fullName: fullName.value,
+        phoneCode: phoneCode.value,
+        phoneNumber: phoneNumber.value,
+        password: password.value,
+      });
 
-      navigate("/login")
-
+      navigate("/login");
     } catch (error) {
-      console.log(error)
-      const errorCode = error?.response?.status
-      const errorMessage = error?.response?.data?.errorMessage
-      const errorField = error?.response?.data?.errorField
+      console.log(error);
+      const errorCode = error?.response?.status;
+      const errorMessage = error?.response?.data?.errorMessage;
+      const errorField = error?.response?.data?.errorField;
       if (errorCode === 400) {
-        setServerError(errorMessage)
+        setServerError(errorMessage);
         //* error handling for unique properties below
         if (errorField === "email") {
-          setEmail({...email, error: errorMessage})
+          setEmail({ ...email, error: errorMessage });
         } else if (errorField === "phoneNumber") {
-          setPhoneNumber({...phoneNumber, error: errorMessage})
+          setPhoneNumber({ ...phoneNumber, error: errorMessage });
         } else if (errorField === "username") {
-          setUsername({...username, error: errorMessage})
+          setUsername({ ...username, error: errorMessage });
         }
-        setTimeout(() => setServerError(null), 5000)
+        setTimeout(() => setServerError(null), 5000);
       } else {
-        navigate("/server-error")
+        navigate("/server-error");
       }
     }
-
-  }
+  };
 
   return (
-    <Box  display="flex" flexDirection="column" alignItems="center">
+    <>
+
+      <hr style={{maxWidth:"initial"}} />
+      {/* //* this will make the hr longer than the mui Container */}
 
       <img src={logo} alt="logo" width={"300px"} />
 
-      <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" onSubmit={handleSubmit} sx={{width:"100%", maxWidth: "600px"}}>
-
+      <Box
+        component="form"
+        noValidate
+        autoComplete="on"
+        display="flex"
+        flexDirection="column"
+        width="100%" 
+        onSubmit={handleSubmit}
+      >
         <Typography variant="h4" gutterBottom>
           Registro
         </Typography>
@@ -189,7 +269,7 @@ function Signup() {
           helperText={fullName.error}
         />
 
-        <Box sx={{ marginTop: '8px', marginBottom: '8px' }}>
+        <Box sx={{ marginTop: "8px", marginBottom: "8px" }}>
           <TextField
             select
             label="Código"
@@ -197,10 +277,14 @@ function Signup() {
             fullWidth
             value={phoneCode.value}
             onChange={handlePhoneCode}
-            sx={{ width: '45%' }}
+            sx={{ width: "45%" }}
             required
           >
-            {countryPhoneCode.map((e, i) => <MenuItem key={i} value={e.code}>{e.country} +{e.code}</MenuItem>)}
+            {countryPhoneCode.map((e, i) => (
+              <MenuItem key={i} value={e.code}>
+                {e.country} +{e.code}
+              </MenuItem>
+            ))}
           </TextField>
 
           {/* //TODO. Make it a button with flags, then it will update the code on a box on the side */}
@@ -211,7 +295,7 @@ function Signup() {
             fullWidth
             value={phoneNumber.value}
             onChange={handlePhoneNumber}
-            sx={{ width: '55%' }}
+            sx={{ width: "55%" }}
             required
             error={phoneNumber.hasUserInteracted && phoneNumber.error !== null}
             helperText={phoneNumber.error}
@@ -254,11 +338,13 @@ function Signup() {
           margin="normal"
           required
           fullWidth
-          error={confirmPassword.hasUserInteracted && confirmPassword.error !== null}
+          error={
+            confirmPassword.hasUserInteracted && confirmPassword.error !== null
+          }
           helperText={confirmPassword.error}
           InputProps={{
             endAdornment: (
-              <InputAdornment position="end" >
+              <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() => setShowPassword(!showPassword)}
@@ -272,19 +358,15 @@ function Signup() {
           }}
         />
 
-        <Button 
-          variant="contained" 
-          type="submit"
-          disabled={!canSubmit}
-        >registrarse</Button>
+        <Button variant="contained" type="submit" disabled={!canSubmit}>
+          registrarse
+        </Button>
 
-          {serverError && <Alert severity="error">{serverError}</Alert>}
-
+        {serverError && <Alert severity="error">{serverError}</Alert>}
       </Box>
 
-      <Link to="/login">Si ya tienes cuenta accede aqui</Link>
-
-    </Box>
+      <Link to="/login">Si ya tienes cuenta, accede aqui</Link>
+    </>
   );
 }
 

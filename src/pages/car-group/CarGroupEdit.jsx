@@ -32,7 +32,9 @@ function CarGroupEdit() {
       const response = await service.get(`/car-group/${carGroupId}`)
 
       setCarGroup(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -51,13 +53,13 @@ function CarGroupEdit() {
 
       <Typography variant="h5" color="initial" gutterBottom>Como quieres editar el grupo de coche?</Typography>
 
-      <Box display="flex" flexDirection="row" justifyContent="space-evenly">
+      <Box display="flex" flexDirection="row" justifyContent="space-evenly" width="100%">
 
         <Button 
           onClick={() => setEditType(1)} 
           variant={editType === 1 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "25%", height: 80}}
+          sx={{width: "35%", height: 80}}
         > Editar info </Button>
         {/* //todo cambiar todos los editar, modificar, actualizar a la misma palabra */}
 
@@ -65,7 +67,7 @@ function CarGroupEdit() {
           onClick={() => setEditType(2)} 
           variant={editType === 2 ? "contained" : "outlined"} 
           color="error" 
-          sx={{width: "25%", height: 80}}
+          sx={{width: "35%", height: 80}}
         >Eliminar</Button>
 
       </Box>

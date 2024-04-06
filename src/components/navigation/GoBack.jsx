@@ -9,11 +9,13 @@ function GoBack({to}) {
   const navigate = useNavigate()
 
   return (
-    <Box display="flex" justifyContent="flex-start" width="100%" paddingLeft={2}>
+    <Box display="flex" justifyContent="space-evenly" width="100%" mb="10px" >
+      <hr width="50%"/>
       <IconButton onClick={() => navigate(to)} sx={{width: "50px", height: "50px"}} color="primary">
         <ArrowBackIcon />
         <Typography variant="caption">volver</Typography>
       </IconButton>
+      <hr width="50%"/>
     </Box>
   )
 }

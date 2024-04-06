@@ -20,14 +20,14 @@ function EventCarGroupInfoCard({myCarGroup}) {
 
   if (myCarGroup) {
     return (
-      <Box>
+      <>
         <hr />
 
-        <Typography>
+        <Typography sx={{width: "100%"}}>
           Ya tienes un coche asignado!
         </Typography>
 
-        <Card>
+        <Card sx={{width: "100%"}}>
         <CardHeader
           avatar={<DirectionsCarIcon />}
           title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${myCarGroup.owner.username}`}
@@ -42,22 +42,22 @@ function EventCarGroupInfoCard({myCarGroup}) {
             }
           />
         </Card>
-      </Box>
+      </>
     )
   } else {
     return (
-      <Box>
-        <hr />
+      <>
 
-        <Typography color="error">
+        <hr />
+        <Typography color="error" sx={{width: "100%"}}>
           No tienes coche asignado para ir al evento
         </Typography>
 
-        <Alert sx={{my:2}} severity="error">
+        <Alert sx={{my:2, width: "100%"}} severity="error" >
           Si 48 horas antes del evento no tienes como ir, es posible que seas removido. Asegurate de buscar coche disponible!
         </Alert>
 
-        <Box display="flex" justifyContent="space-evenly" >
+        <Box display="flex" justifyContent="space-evenly" width="100%">
 
           <Button size="small" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
             Voy con mi coche y puedo llevar gente
@@ -68,7 +68,7 @@ function EventCarGroupInfoCard({myCarGroup}) {
           </Button>
           
         </Box>
-      </Box>
+      </>
     )
   }
 }

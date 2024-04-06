@@ -23,20 +23,20 @@ function UpdateSingleField({value, setPropertyToEdit, propertyToEdit}) {
 
     try {
       const response = await service.patch(`/user/${propertyToEdit}`, {[propertyToEdit]: input.value})
-      setTimeout(() => {
+      // setTimeout(() => {
         setLoggedUser(response.data)
         setIsUpdating(false)
         setPropertyToEdit(null)
-      }, 700)
+      // }, 700)
 
     } catch (error) {
       const errorCode = error?.response?.status
       const errorMessage = error?.response?.data?.errorMessage
       if (errorCode === 400) {
-        setTimeout(() => {
+        // setTimeout(() => {
           setInput({...input, error: errorMessage})
           setIsUpdating(false)
-        }, 700)
+        // }, 700)
       } else {
         console.log(error)
       }

@@ -77,16 +77,24 @@ function CarGroupCreate() {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      {/* //todo check if we be changed to Container */}
+    <>
 
     <GoBack to={`/event/${eventId}`}/>      
 
-    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" sx={{maxWidth:"320px"}}>
+    <Box 
+      component="form" 
+      noValidate 
+      autoComplete="on" 
+      display="flex" 
+      flexDirection="column"
+      width="100%"
+    >
 
       <Typography variant="h6" gutterBottom>
         Crea un grupo de coche
       </Typography>
+
+      <Alert severity="info" sx={{my: 1}}>Todos los campos se pueden modificar luego</Alert>
 
       <TextField
         label="Plazas disponibles"
@@ -125,8 +133,8 @@ function CarGroupCreate() {
         InputLabelProps={{ shrink: true }}
       />
 
-      <Typography variant="body1" gutterBottom>
-        Selecciona punto de encuentro
+      <Typography variant="h5" gutterBottom>
+        Indica un punto de recogida
       </Typography>
       <CardMedia
           component="img"
@@ -134,20 +142,19 @@ function CarGroupCreate() {
           alt="mapa-selección"
         />
 
-      <Alert severity="info">Todos los campos se pueden modificar luego</Alert>
-
       <Button 
         variant="contained" 
         type="submit"
         disabled={!canSubmit}
         onClick={handleSubmit}
-      >Crear Grupo de coche y unirse al evento</Button>
+        sx={{my: 2}}
+      >Crear Grupo de coche</Button>
 
       {serverError && <Alert severity="error">{serverError}</Alert>}
 
     </Box>
 
-  </Box>
+  </>
   )
 }
 

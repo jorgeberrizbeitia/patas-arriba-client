@@ -33,7 +33,9 @@ function EventEdit() {
       const response = await service.get(`/event/${eventId}`)
 
       setEvent(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -79,13 +81,9 @@ function EventEdit() {
 
       <hr />
 
-      <Box display="flex" flexDirection="column" alignItems="center">
-
-        {editType === 1 && <EventEditForm event={event}/>}
-        {editType === 2 && <EventEditStatus event={event}/>}
-        {editType === 3 && <EventDelete event={event}/>}
-
-      </Box>
+      {editType === 1 && <EventEditForm event={event}/>}
+      {editType === 2 && <EventEditStatus event={event}/>}
+      {editType === 3 && <EventDelete event={event}/>}
 
     </>
   );

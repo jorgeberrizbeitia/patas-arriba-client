@@ -1,33 +1,31 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
-import Home from '@pages/Home'
-import About from '@pages/About'
-import Signup from '@pages/auth/Signup'
-import Login from '@pages/auth/Login'
-import ServerError from '@pages/error/ServerError'
-import NotFound from '@pages/error/NotFound'
-import EventDetails from './pages/event/EventDetails'
-
 import Navbar from "@components/navigation/Navbar.jsx"
 import IsPrivate from "@components/auth/IsPrivate.jsx"
 import IsAnon from './components/auth/IsAnon'
 import IsAdmin from './components/auth/IsAdmin'
 
-// import EventJoin from './pages/event/EventJoin' //! obsolete page
+import Home from '@pages/Home'
+import About from '@pages/About'
+import Signup from '@pages/auth/Signup'
+import Login from '@pages/auth/Login'
+import NotFound from '@pages/error/NotFound'
+import ServerError from '@pages/error/ServerError'
 import EventList from './pages/event/EventList'
-import CarGroupDetails from './pages/car-group/CarGroupDetails'
-import UserDetails from './pages/user/UserDetails'
-import OwnUserDetails from './pages/user/OwnUserDetails'
-import UserList from './pages/user/UserList'
-import EventMessages from './pages/message/EventMessages'
-import CarGroupMessages from './pages/message/CarGroupMessages'
+import EventDetails from './pages/event/EventDetails'
 import EventCreate from './pages/event/EventCreate'
 import EventEdit from './pages/event/EventEdit'
-
 import CarGroupCreate from '@pages/car-group/CarGroupCreate'
 import CarGroupSearch from '@pages/car-group/CarGroupSearch'
+import CarGroupDetails from './pages/car-group/CarGroupDetails'
 import CarGroupEdit from '@pages/car-group/CarGroupEdit'
+import UserList from './pages/user/UserList'
+import UserDetails from './pages/user/UserDetails'
+import OwnUserDetails from './pages/user/OwnUserDetails'
+
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
 
 
 function App() {
@@ -37,38 +35,40 @@ function App() {
 
       <Navbar />
       
-      <Routes>
+      <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
 
-        {/* //* public routes */}
-        <Route path="/" element={<Home />}/>
-        <Route path="/about" element={<About />}/>
+        <Routes>
 
-        {/* //* anon routes */}
-        <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>
-        <Route path="/login" element={<IsAnon> <Login /> </IsAnon>}/>
+          {/* //* public routes */}
+          <Route path="/" element={<Home />}/>
+          <Route path="/about" element={<About />}/>
 
-        {/* //* admin routes */}
-        <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
-        <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
-        <Route path="/user" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
+          {/* //* anon routes */}
+          <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>
+          <Route path="/login" element={<IsAnon> <Login /> </IsAnon>}/>
 
-        {/* //* private routes */}
-        <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
-        <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
-        <Route path="/event/:eventId/add-car-group" element={  <IsPrivate> <CarGroupCreate /> </IsPrivate>  }/>
-        <Route path="/event/:eventId/search-car-group" element={  <IsPrivate> <CarGroupSearch /> </IsPrivate>  }/>
-        <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
-        <Route path="/car-group/:carGroupId/edit" element={<IsPrivate> <CarGroupEdit /> </IsPrivate>}/>
-        <Route path="/user/own" element={ <IsPrivate> <OwnUserDetails /> </IsPrivate> }/>
-        <Route path="/user/:userId" element={ <IsPrivate> <UserDetails /> </IsPrivate> }/>
-        <Route path="/message/:eventId/event" element={ <IsPrivate> <EventMessages /> </IsPrivate> }/>
-        <Route path="/message/:carGroupId/car-group" element={ <IsPrivate> <CarGroupMessages /> </IsPrivate> }/>
-        
-        {/* //* error routes */}
-        <Route path="/server-error" element={<ServerError />}/>
-        <Route path="*" element={<NotFound />}/>
+          {/* //* admin routes */}
+          <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
+          <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
+          <Route path="/user" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
 
-      </Routes>
+          {/* //* private routes */}
+          <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
+          <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
+          <Route path="/event/:eventId/add-car-group" element={  <IsPrivate> <CarGroupCreate /> </IsPrivate>  }/>
+          <Route path="/event/:eventId/search-car-group" element={  <IsPrivate> <CarGroupSearch /> </IsPrivate>  }/>
+          <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
+          <Route path="/car-group/:carGroupId/edit" element={<IsPrivate> <CarGroupEdit /> </IsPrivate>}/>
+          <Route path="/user/own" element={ <IsPrivate> <OwnUserDetails /> </IsPrivate> }/>
+          <Route path="/user/:userId" element={ <IsPrivate> <UserDetails /> </IsPrivate> }/>
+          
+          {/* //* error routes */}
+          <Route path="/server-error" element={<ServerError />}/>
+          <Route path="*" element={<NotFound />}/>
+
+        </Routes>
+
+      </Container>
 
     </>
   )

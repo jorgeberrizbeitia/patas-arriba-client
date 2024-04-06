@@ -51,10 +51,11 @@ function CarGroupActions({carGroup}) {
         :
         <>
           <Box sx={{width:"100%", display: "flex", justifyContent: "space-evenly"}}>
-            <IconButton color="warning">
+            {/* <IconButton color="warning">
               <ChangeCircleIcon />
               <Typography variant="caption">Cambiar</Typography>
-            </IconButton> 
+            </IconButton>  */}
+            {/* //todo not yet implemented */}
             <IconButton color="error"onClick={() => setAreYouSure("exit")}>
               <ExitToAppIcon/>
               <Typography variant="caption">Salir</Typography>

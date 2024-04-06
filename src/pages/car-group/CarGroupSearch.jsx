@@ -32,8 +32,12 @@ function CarGroupSearch () {
 
       const response = await service.get(`/car-group/list/${eventId}`)
 
-      setCarGroups(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      setCarGroups(response.data.filter((car) => (car.roomAvailable - car.members.length) > 0))
+      //* filter to only display available cars
+
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -59,12 +63,12 @@ function CarGroupSearch () {
   }
   
   return (
-    <Container>
+    <>
 
       <GoBack to={`/event/${eventId}`} />
       
       {carGroups.length === 0 ? <>
-        <Alert severity="warning">No hay coches disponibles por los momentos, puede unirse al evento y buscar coches luego</Alert>
+        <Alert severity="warning">No hay coches disponibles por los momentos, intenta volver luego</Alert>
         <Button 
             sx={{margin: "30px"}}
             variant="contained"
@@ -85,11 +89,11 @@ function CarGroupSearch () {
             variant="contained"
             disabled={!selectedCarGroupId}
             onClick={handleJoinCarGroup}
-          >{selectedCarGroupId ? "Unirse al grupo de coche!" : "Seleccione un grupo de coche"}</Button>
+          >{selectedCarGroupId ? "Unete al grupo de coche!" : "Selecciona un grupo de coche"}</Button>
       </>}
       
 
-    </Container>
+    </>
   )
 }
 

@@ -16,7 +16,8 @@ function UserCard({user}) {
 
   const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
 
-  return <Card sx={{bgcolor: "gray.lighter"}}>
+  return (
+    <Card sx={{bgcolor: "gray.lighter", width:"100%"}}>
       <CardHeader 
       avatar={
         <UserIcon user={user} size="small"/>
@@ -27,8 +28,9 @@ function UserCard({user}) {
         <ReadMoreIcon />
         <Typography variant="icon">Ver más</Typography>
       </IconButton>}
-    />
-  </Card>
+      />
+    </Card>
+  )
 }
 
 export default UserCard

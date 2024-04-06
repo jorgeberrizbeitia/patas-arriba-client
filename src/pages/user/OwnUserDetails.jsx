@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import UpdateSingleField from "@components/user/UpdateSingleField";
 import UpdateUserIcon from "@components/user/UpdateUserIcon";
 import UserIcon from "@components/user/UserIcon";
+import GoBack from "@components/navigation/GoBack";
 
 function OwnUserDetails() {
 
@@ -19,13 +20,17 @@ function OwnUserDetails() {
   const { email, icon, iconColor, username, fullName, phoneCode, phoneNumber, createdAt } = loggedUser
 
   return (
-    <Box p={4}>
+    <>
+
+      <GoBack to={-1}/>
+
       <Grid container spacing={4}>
         <Grid item xs={12} md={4} display="flex" flexDirection="column" alignItems="center">
           <UserIcon size="big" user={loggedUser}/>
           <IconButton color={"warning"} onClick={() => setPropertyToEdit("icon")}>
             <EditIcon />
           </IconButton>
+          {/* //todo edit icon at the top right of the picture */}
           {propertyToEdit === "icon" && <UpdateUserIcon setPropertyToEdit={setPropertyToEdit} />}
         </Grid>
 
@@ -86,7 +91,7 @@ function OwnUserDetails() {
 
         </Grid>
       </Grid>
-    </Box>
+    </>
   )
 }
 

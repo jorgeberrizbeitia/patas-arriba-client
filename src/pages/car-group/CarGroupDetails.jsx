@@ -53,7 +53,9 @@ function CarGroupDetails() {
       console.log(response.data)
 
       setCarGroup(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -69,57 +71,49 @@ function CarGroupDetails() {
 
 
   return (
-    <Container>
+    <>
 
       <GoBack to={`/event/${event}`}/> 
       
-      <Typography variant="h5" color="initial" gutterBottom>Detalles del grupo de coche</Typography>
+      <Typography variant="h4" color="initial" gutterBottom>Detalles del grupo de coche</Typography>
 
-      <Card>
+      {/* //todo organize below cards into components */}
+
+      <Card raised sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
+
         <CardHeader
+          sx={{ '& .MuiCardHeader-avatar': { marginRight: 0 }  }}
           avatar={<IconButton sx={{ height: "24px", width: "24px" }} disabled>
             <DirectionsCarIcon />
           </IconButton>}
+          title={<Typography variant="h4" sx={{px: "8%"}}>{owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}</Typography>}
           action={<IconButton sx={{ mr: 0.5 ,height: "24px", width: "24px" }} disabled>
             <DirectionsCarIcon />
           </IconButton>} 
-          title={owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}
-          sx={{ '& .MuiCardHeader-avatar': { marginRight: 0 }  }}
         />
         <CardContent>
-          <Box>
-            <Typography variant="body2" fontWeight="bold">
-              Lugar de recogida:
-            </Typography>
-            <Typography variant="body2">
-              {pickupLocation}
-            </Typography>
-          </Box>
 
-          <Box>
-            <Typography variant="body2"  fontWeight="bold">
-              Hora de recogida:
-            </Typography>
-            <Typography variant="body2">
-              {pickupTime}
-            </Typography>
-          </Box>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="span" color="initial" fontWeight="bold">Lugar de recogida:</Typography>
+            <Typography variant="span" color="initial"> {pickupLocation}</Typography>
+          </Typography>
 
-          <Box>
-            <Typography variant="body2" fontWeight="bold">
-              Plazas disponibles:
-            </Typography>
-            <Typography variant="body2">
-              {roomAvailable - members.length}
-            </Typography>
-          </Box>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="span" color="initial" fontWeight="bold">Hora de recogida:</Typography>
+            <Typography variant="span" color="initial"> {pickupTime}</Typography>
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="span" color="initial" fontWeight="bold">Plazas disponibles:</Typography>
+            <Typography variant="span" color="initial"> {roomAvailable - members.length}</Typography>
+          </Typography>
 
         </CardContent>
       </Card>
 
       <hr />
 
-      <Card>
+      <Card sx={{width: "100%"}}>
         <CardHeader
           subheader={`Mapa de recogida`}
           action={
@@ -139,7 +133,7 @@ function CarGroupDetails() {
 
       <hr />
 
-      <Card>
+      <Card sx={{width: "100%"}}>
         <CardHeader
           subheader={`Miembros`}
           action={
@@ -158,7 +152,7 @@ function CarGroupDetails() {
 
       <hr />
 
-      <Card>
+      <Card sx={{width: "100%"}}>
         <CardHeader
           subheader={`Acciones`}
           action={
@@ -172,11 +166,9 @@ function CarGroupDetails() {
         </Collapse>
       </Card>
 
-      <hr />
-
       <EventMessageBoard type="car-group" eventOrCarGroup={carGroup}/>
 
-    </Container>
+    </>
   )
 }
 

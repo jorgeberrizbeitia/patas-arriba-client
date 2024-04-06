@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom'
 import Card from "@mui/material/Card";
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import capitalizeAll from '@utils/capitalizeAll'
 import Typography from '@mui/material/Typography'
@@ -36,7 +36,9 @@ function UserDetails() {
       const response = await service.get(`/user/${userId}`)
 
       setUser(response.data)
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -49,7 +51,9 @@ function UserDetails() {
       
       const response = await service.patch(`/user/${userId}/user-role-validation`)
       setUser(response.data) // the updated user
-      setTimeout(() => setIsLoading(false), 700)
+      // setTimeout(() => {
+        setIsLoading(false)
+      // }, 700)
 
     } catch (error) {
       console.log(error)
@@ -64,11 +68,11 @@ function UserDetails() {
   const { username, email, fullName, phoneCode, phoneNumber, createdAt, role } = user
 
   return (
-    <Container maxWidth="xs">
+    <>
 
       <GoBack to={-1}/>
       
-      <Card>
+      <Card sx={{width: "100%"}}>
         <CardHeader
           avatar={<UserIcon size="medium" user={user}/>}
           title={username}
@@ -114,7 +118,7 @@ function UserDetails() {
         </CardContent> 
       </Card>
 
-    </Container>
+    </>
   )
 }
 
