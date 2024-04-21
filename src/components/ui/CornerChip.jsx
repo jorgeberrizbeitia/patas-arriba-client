@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-function CornerChip({label, color, side}) {
+function CornerChip({label, bgcolor, color, side}) {
 
   const isSmallScreen = useMediaQuery('(width > 960px)');
 
@@ -19,7 +19,8 @@ function CornerChip({label, color, side}) {
       p={6}
       pb={side === "left" ? 0.3 : 6}
       pt={side === "left" ? 6 : 0}
-      bgcolor={color}
+      bgcolor={bgcolor}
+      color={color}
       sx={{transform: "rotate(-45deg)"}}
     >
       <Typography

@@ -15,28 +15,43 @@ import validateField from "@utils/validateField";
 function EventCreate() {
   const navigate = useNavigate();
 
+  const [category, setCategory] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+
   const [title, setTitle] = useState({
     value: "",
     error: null,
     hasUserInteracted: false,
   });
+
   const [location, setLocation] = useState({
     value: "",
     error: null,
     hasUserInteracted: false,
   });
-  // const [ coordinates, setCoordinates ] = useState({value: [], error: null, hasUserInteracted: false}) //! pending leaflet implementation
+
   const [date, setDate] = useState({
     value: "",
     error: null,
     hasUserInteracted: false,
   });
+
   const [time, setTime] = useState({
     value: "",
     error: null,
     hasUserInteracted: false,
   });
-  const [category, setCategory] = useState({
+
+  const [hasCarOrganization, setHasCarOrganization] = useState({
+    value: "",
+    error: null,
+    hasUserInteracted: false,
+  });
+
+  const [hasTaskAssignments, setHasTaskAssignments] = useState({
     value: "",
     error: null,
     hasUserInteracted: false,
@@ -47,7 +62,7 @@ function EventCreate() {
 
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
-    const allFormStates = [title, location, date, time, category];
+    const allFormStates = [category, title, location, date, time, hasCarOrganization, hasTaskAssignments];
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted);
     const allStatesWithoutErrors = allFormStates.every((e) => !e.error);
@@ -57,7 +72,13 @@ function EventCreate() {
     } else {
       if (canSubmit === true) setCanSubmit(false);
     }
-  }, [title, location, date, time, category]);
+  }, [category, title, location, date, time, hasCarOrganization, hasTaskAssignments]);
+
+  const handleCategory = (e) => {
+    //todo validate date format
+    const updatedstate = validateField(e.target.value, category, true);
+    setCategory(updatedstate);
+  };
 
   const handleTitle = (e) => {
     const regex = /^.{0,50}$/;
@@ -95,21 +116,29 @@ function EventCreate() {
     setTime(updatedstate);
   };
 
-  const handleCategory = (e) => {
-    const updatedstate = validateField(e.target.value, location, true);
-    setCategory(updatedstate);
+  const handleHasCarOrganization = (e) => {
+    const updatedstate = validateField(e.target.value, hasCarOrganization, true);
+    setHasCarOrganization(updatedstate);
+  };
+
+  const handleHasTaskAssignments = (e) => {
+    const updatedstate = validateField(e.target.value, hasTaskAssignments, true);
+    setHasTaskAssignments(updatedstate);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const dateWithTime = new Date(`${date.value}T${time.value}:00`)
+
     try {
       await service.post("/event", {
         title: title.value,
         location: location.value,
-        date: date.value,
-        time: time.value,
+        date: dateWithTime,
         category: category.value,
+        hasCarOrganization: hasCarOrganization.value,
+        hasTaskAssignments: hasTaskAssignments.value
       });
       navigate("/");
     } catch (error) {
@@ -130,6 +159,25 @@ function EventCreate() {
       <Typography variant="h4" gutterBottom>
         Crear Evento
       </Typography>
+
+      <TextField
+        select
+        label="Categoria"
+        variant="outlined"
+        value={category.value}
+        fullWidth
+        onChange={handleCategory}
+        margin="normal"
+        required
+        sx={{textAlign: "start"}}
+        error={category.hasUserInteracted && category.error !== null} // can display and any error exists
+        helperText={title.error}
+      >
+        <MenuItem value={"protectora"}>Protectora</MenuItem>
+        <MenuItem value={"recogida"}>Recogida</MenuItem>
+        <MenuItem value={"mercadillo"}>Mercadillo</MenuItem>
+        <MenuItem value={"otro"}>Otro</MenuItem>
+      </TextField>
 
       <TextField
         label="Título"
@@ -186,21 +234,43 @@ function EventCreate() {
       <Box sx={{ marginTop: "8px", marginBottom: "8px" }}>
         <TextField
           select
-          label="categoria"
+          sx={{textAlign: "start"}}
+          label="Requiere grupos de coches?"
           variant="outlined"
-          value={category.value}
-          onChange={handleCategory}
+          value={hasCarOrganization.value}
+          onChange={handleHasCarOrganization}
           fullWidth
           required
-          InputLabelProps={{ shrink: true }}
         >
-          <MenuItem value={"car-group"}>Con organización en coches</MenuItem>
-          <MenuItem value={"no-car-group"}>Sin organización en coches</MenuItem>
+          <MenuItem value={true}>Si, permitir organizarse en coches</MenuItem>
+          <MenuItem value={false}>No, el evento será local</MenuItem>
         </TextField>
 
-        {category.value === "no-car-group" && (
+        {hasCarOrganization.value === false && (
           <Alert sx={{ my: 1 }} severity="warning">
-            Con esta categoria no se podrán ver ni crear grupos de coche para ir al evento
+            Esto significa que los usuarios no podrán ver ni crear grupos de coche para ir al evento, usar solo para eventos locales donde cada participante va por su cuenta.
+          </Alert>
+        )}
+      </Box>
+
+      <Box sx={{ marginTop: "8px", marginBottom: "8px" }}>
+        <TextField
+          select
+          sx={{textAlign: "start"}}
+          label="Requiere asignar tareas a participantes?"
+          variant="outlined"
+          value={hasTaskAssignments.value}
+          onChange={handleHasTaskAssignments}
+          fullWidth
+          required
+        >
+          <MenuItem value={true}>Si, permitir asignar tareas</MenuItem>
+          <MenuItem value={false}>No, el evento no requiere asignar tareas individuales</MenuItem>
+        </TextField>
+
+        {hasTaskAssignments.value === false && (
+          <Alert sx={{ my: 1 }} severity="warning">
+            Esto significa que el admin no podrá asignar tareas individuales a los participantes, usar solo cuando el evento no lo necesite.
           </Alert>
         )}
       </Box>

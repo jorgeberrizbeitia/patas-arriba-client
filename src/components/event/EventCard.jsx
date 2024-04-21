@@ -5,6 +5,7 @@ import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 
@@ -12,10 +13,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
 import CornerChip from '@components/ui/CornerChip';
+import capitalizeAll from '@utils/capitalizeAll';
 
 
 
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
+  console.log(event)
 
   const navigate = useNavigate()
   const {loggedUserId, loggedUserRole} = useContext(AuthContext)
@@ -25,34 +28,48 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   const todayStartOfDay = new Date()
   todayStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
 
-  const hasUserJoined = event.participants.some((e) => e._id == loggedUserId) // participants without populate (from event list)
-  const hasUserJoined2 = event.participants.includes(loggedUserId) // participants with populate (from event details)
+  const hasUserJoinedFromList = event.attendees.includes(loggedUserId) // attendees without populate (from event list) 
+  const hasUserJoinedFromDetails = event.attendees.some((attendee) => attendee?.user?._id == loggedUserId) // attendees with populate (from event details)
   //todo improve above code
 
-  let rightChip;
-  if (event.status === "cancelled") {
-    rightChip = <CornerChip label="Cancelado" color="error.main" side={"right"}/>
-  } else if (hasUserJoined || hasUserJoined2) {
-    rightChip = <CornerChip label="Apuntado" color="success.main" side={"right"} />
+  let statusChip;
+  if (event.status === "open" && eventDateStartOfDay >= todayStartOfDay) {
+    statusChip = <Chip label="Estado: Abierto" variant='filled' color="primary"/>
   } else if (event.status === "closed") {
-    console.log("cerrado")
-    rightChip = <CornerChip label="Cerrado" color="warning.main" side={"right"}/>
+    statusChip = <Chip label="Estado: Cerrado" variant='filled' color="warning"/>
+  } else if (event.status === "cancelled") {
+    statusChip = <Chip label="Estado: Cancelado" variant='filled' color="error"/>
   }
 
-  let leftChip;
+  // let categoryChip = <Chip label={`Categoria: ${capitalizeAll(event.category)}`} variant='outlined' color="info"/>
+
+  let joinedChip;
+  if (hasUserJoinedFromList || hasUserJoinedFromDetails) {
+    joinedChip = <Chip label="Apuntado" variant='filled' color="success"/>
+  }
+
+  let timeFrameChip;
   if (eventDateStartOfDay > todayStartOfDay) {
-    leftChip = <CornerChip label="Próximo" color="primary.main" side={"left"}/>
+    timeFrameChip = <Chip label="Próximo" variant='filled' color="primary"/>
   } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
-    leftChip = <CornerChip label="Es Hoy" color="info.main" side={"left"}/>
+    timeFrameChip = <Chip label="Hoy" variant='filled' color="info"/>
   } else {
-    leftChip = <CornerChip label="Pasado" color="gray.main" side={"left"}/>
+    timeFrameChip = <Chip label="Pasado" variant='filled' sx={{bgcolor: "gray.main", color: "white"}}/>
+  }
+
+  let cornerTimeFrameChip;
+  if (eventDateStartOfDay > todayStartOfDay) {
+    cornerTimeFrameChip = <CornerChip label="Próximo" bgcolor="primary.main" color="black" side={"left"}/>
+  } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
+    cornerTimeFrameChip = <CornerChip label="Es Hoy" bgcolor="info.main" color="white" side={"left"}/>
+  } else {
+    cornerTimeFrameChip = <CornerChip label="Pasado" bgcolor="gray.main" color="white" side={"left"}/>
   }
 
   return (
     <Card raised sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
       
-      {leftChip}
-      {rightChip}
+      {cornerTimeFrameChip}
 
       <CardHeader 
         sx={{ pl: (fromDetails && loggedUserRole === "admin") ? 7.5 : 2}}
@@ -70,25 +87,51 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
       <CardContent>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
+          <Typography variant="span" color="initial" fontWeight="bold">Categoria:</Typography>
+          <Typography variant="span" color="initial"> {capitalizeAll(event.category)}</Typography>
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Lugar:</Typography>
           <Typography variant="span" color="initial"> {event.location}</Typography>
         </Typography>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Fecha:</Typography>
-          <Typography variant="span" color="initial"> {new Date(event.date).toDateString()}</Typography>
+          <Typography variant="span" color="initial"> {new Date(event.date).toLocaleDateString('es-ES', {
+            weekday: 'long', // Display the full name of the weekday (e.g., "lunes")
+            year: 'numeric', // Display the year (e.g., "2024")
+            month: 'long', // Display the full name of the month (e.g., "abril")
+            day: 'numeric' // Display the day of the month (e.g., "21")
+          }).replace(/^\w|\s\w/g, c => c.toUpperCase())}
+          </Typography>
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          <Typography variant="span" color="initial" fontWeight="bold">Hora:</Typography>
+          <Typography variant="span" color="initial"> {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </Typography>
         </Typography>
 
         {event.status !== "cancelled" && <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Participantes:</Typography>
-          <Typography variant="span" color="initial"> {event.participants.length}</Typography>
+          <Typography variant="span" color="initial"> {event.attendees.length}</Typography>
         </Typography>}
 
-        {(totalRoomAvailableInCarGroups !== undefined && event.status !== "cancelled" && event.category === "car-group")&& 
+        {(totalRoomAvailableInCarGroups !== undefined && event.status !== "cancelled" && event.hasCarOrganization)&& 
           <Typography variant="body2" color="text.secondary" gutterBottom>
             <Typography variant="span" color="initial" fontWeight="bold">Plazas en coche disponibles:</Typography>
             <Typography variant="span" color="initial"> {totalRoomAvailableInCarGroups}</Typography>
           </Typography>}
+
+        <br />
+
+        <Box display="flex" justifyContent="center" gap="5px">
+          {timeFrameChip}
+          {/* {categoryChip} */}
+          {statusChip}
+          {joinedChip}
+        </Box>
 
       </CardContent>
 

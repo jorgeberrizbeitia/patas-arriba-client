@@ -5,11 +5,8 @@ import Loading from "@components/ui/Loading";
 import EventCard from "@components/event/EventCard";
 
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import RefreshIcon from '@mui/icons-material/Refresh';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +15,8 @@ function EventList() {
   const navigate = useNavigate()
 
   const [isLoading, setIsLoading] = useState(true);
-  const [events, setEvents] = useState(null);
+  const [events, setEvents] = useState([]);
+  const [timeFrame, setTimeFrame] = useState("upcoming")
 
   useEffect(() => {
     getEvents();
@@ -30,31 +28,47 @@ function EventList() {
 
     try {
       const response = await service.get("/event");
-      console.log(response.data)
       setEvents(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 1000)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   };
+
+  let eventsToDisplay;
+  const today = new Date()
+  today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  if (timeFrame === "upcoming") {
+    eventsToDisplay = events.filter((event) => new Date(event.date) >= today)
+  } else if (timeFrame === "past") {
+    eventsToDisplay = events.filter((event) => new Date(event.date) < today).reverse()
+  }
 
   return (
     <>
 
       <hr style={{maxWidth:"initial"}} />
 
-      <Typography variant="h4"gutterBottom>Todos los Eventos</Typography>
-      {/* <Box sx={{display:"flex", justifyContent: "space-between"}}>
-        <Button onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
-        <Button onClick={() => getEvents()} disabled={isLoading}><RefreshIcon /></Button>
-      </Box> */}
-      <Box>
-        {isLoading ? <Loading /> : events.map((event) => <EventCard key={event._id} event={event}/>)}
-        {!isLoading && events.length === 0 && <Typography>No hay eventos</Typography>}
-        {/* //todo test if it works */}
+      <Typography variant="h4" gutterBottom>Aqui podrás ver todos los eventos próximos y más recientes</Typography>
+
+      <br />
+
+      <Box display="flex" gap="20px">
+        <Button onClick={() => setTimeFrame("upcoming")} sx={{width: "120px"}} variant={timeFrame === "upcoming" ? "contained" : "outlined"} color="primary">
+          Próximos
+        </Button>
+
+        <Button onClick={() => setTimeFrame("past")} sx={{width: "120px"}} variant={timeFrame === "past" ? "contained" : "outlined"} color="primary">
+          Pasados
+        </Button>
       </Box>
+      
+      <br />
+
+      {isLoading ? <Loading /> : eventsToDisplay.map((event) => <EventCard key={event._id} event={event}/>)}
+
+      {!isLoading && events.length === 0 && <Typography>No se han encontrado eventos</Typography>}
+
     </>
   );
 }

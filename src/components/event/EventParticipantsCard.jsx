@@ -29,7 +29,7 @@ function EventParticipantsCard({event}) {
         <Collapse in={showParticipants}>
 
           <Box display="flex" flexDirection="column" alignItems="center" p={3}>
-            {event.participants.map((eachMember) => <UserCard key={eachMember._id} user={eachMember}/>)}
+            {event.attendees.map((eachAttendee) => <UserCard key={eachAttendee._id} attendee={eachAttendee}/>)}
             {/* //todo to admin show all not in cars */}
           </Box>
           

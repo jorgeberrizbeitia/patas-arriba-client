@@ -9,10 +9,8 @@ import CheckIcon from '@mui/icons-material/Check';
 import IconButton from '@mui/material/IconButton'
 import service from '@service/config'
 import { AuthContext } from '@context/auth.context'
-import CircularProgress from '@mui/material/CircularProgress';
 
 import icons from '@utils/icons'
-console.log(icons)
 import MenuItem from '@mui/material/MenuItem'
 
 
@@ -30,11 +28,10 @@ function UpdateUserIcon({setPropertyToEdit}) {
       
       const response = await service.patch("/user/icon", { icon, iconColor })
       console.log(response.data)
-      // setTimeout(() => {
-        setLoggedUser(response.data)
-        setPropertyToEdit(null)
-        setIsUpdating(false)
-      // }, 700)
+        
+      setLoggedUser(response.data)
+      setPropertyToEdit(null)
+      setIsUpdating(false)
 
     } catch (error) {
       console.log(error)
@@ -63,8 +60,7 @@ function UpdateUserIcon({setPropertyToEdit}) {
 
       <TextField
         select
-        label="icon"
-        value={icon}
+        label="Selecciona un icono"
         fullWidth
         onChange={(e) => setIcon(e.target.value)} 
         size="small"
@@ -78,7 +74,7 @@ function UpdateUserIcon({setPropertyToEdit}) {
       </TextField>
 
       <TextField
-        label="Color"
+        label="Selecciona un color"
         type="color"
         fullWidth
         sx={{m: 1}}

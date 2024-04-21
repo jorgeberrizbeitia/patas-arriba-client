@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
+import GoBack from "@components/navigation/GoBack";
 
 function Login() {
   const navigate = useNavigate();
@@ -95,10 +96,7 @@ function Login() {
   return (
     <>
 
-      <hr style={{maxWidth:"initial"}} />
-      {/* //* this will make the hr longer than the mui Container */}
-
-      <img src={logo} alt="logo" width={"300px"} />
+      <GoBack to="/"/>
 
       <Box
         component="form"
@@ -153,13 +151,15 @@ function Login() {
         />
 
         <Button variant="contained" type="submit" disabled={!canSubmit}>
-          Acceder
+          Accede
         </Button>
 
-        {serverError && <Alert severity="error">{serverError}</Alert>}
+        {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
       </Box>
 
-      <Link to="/signup">Si no tienes cuenta, registrate aqui</Link>
+      <br />
+
+      <Link style={{marginBottom: "20px"}} to="/signup">Si no tienes cuenta, registrate aqui</Link>
     </>
   );
 }

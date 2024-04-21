@@ -18,13 +18,13 @@ import UserIcon from '@components/user/UserIcon';
 import { useNavigate } from 'react-router-dom';
 
 
-function EventMessageBoard({eventOrCarGroup, type}) {
+function EventMessageBoard({eventOrCarGroup, messages, type}) {
 
   const navigate = useNavigate()
   const listRef = useRef(null);
 
   const { loggedUserId } = useContext(AuthContext)
-  const [messages, setMessages] = useState(eventOrCarGroup.messages);
+  // const [messages, setMessages] = useState(messages);
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false)
 

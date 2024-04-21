@@ -18,10 +18,9 @@ function UserList() {
     try {
       
       const response = await service.get("/user")
+      console.log(response.data)
       setUsers(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      setIsLoading(false)
 
     } catch (error) {
       console.log(error)

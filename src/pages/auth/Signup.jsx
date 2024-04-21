@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import service from "@service/config";
 
 import validateField from "@utils/validateField";
+import GoBack from "@components/navigation/GoBack";
 
 function Signup() {
   const navigate = useNavigate();
@@ -215,10 +216,7 @@ function Signup() {
   return (
     <>
 
-      <hr style={{maxWidth:"initial"}} />
-      {/* //* this will make the hr longer than the mui Container */}
-
-      <img src={logo} alt="logo" width={"300px"} />
+      <GoBack to="/"/>
 
       <Box
         component="form"
@@ -359,13 +357,17 @@ function Signup() {
         />
 
         <Button variant="contained" type="submit" disabled={!canSubmit}>
-          registrarse
+          registrate
         </Button>
 
-        {serverError && <Alert severity="error">{serverError}</Alert>}
+        {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
+
+        <Alert sx={{mt: 2}} severity="info">Luego de registrarte deberas contactar a algún fundador de Patas Arriba para habilitar a tu usuario y poder acceder</Alert>
       </Box>
 
-      <Link to="/login">Si ya tienes cuenta, accede aqui</Link>
+      <br />
+
+      <Link style={{marginBottom: "20px"}} to="/login">Si ya tienes cuenta, accede aqui</Link>
     </>
   );
 }

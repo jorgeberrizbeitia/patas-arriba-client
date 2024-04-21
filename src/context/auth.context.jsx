@@ -24,9 +24,7 @@ function AuthWrapper(props) {
       setLoggedUserId(null)
       setLoggedUserRole(null)
       setLoggedUser(null)
-      // setTimeout(() => {
-        setIsAuthenticating(false)
-      // }, 700)
+      setIsAuthenticating(false)
       return
     }
 
@@ -34,6 +32,7 @@ function AuthWrapper(props) {
       setIsAuthenticating(true)
       const responsePayload = await service.get("/auth/verify")
       const responseOwnUserDetails = await service.get("/user/own")
+
       if (!responseOwnUserDetails.data) {
         //* user was deleted after creating a Token
         localStorage.removeItem("authToken")
@@ -41,9 +40,7 @@ function AuthWrapper(props) {
         setLoggedUserId(null)
         setLoggedUserRole(null)
         setLoggedUser(null)
-        // setTimeout(() => {
-          setIsAuthenticating(false)
-        // }, 700)
+        setIsAuthenticating(false)
         return
       }
       
@@ -51,18 +48,14 @@ function AuthWrapper(props) {
       setLoggedUserId(responsePayload.data.payload._id)
       setLoggedUserRole(responsePayload.data.payload.role)
       setLoggedUser(responseOwnUserDetails.data)
-      // setTimeout(() => {
-        setIsAuthenticating(false)
-      // }, 700)
+      setIsAuthenticating(false)
     } catch (error) {
       console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)
       setLoggedUser(null)
-      // setTimeout(() => {
-        setIsAuthenticating(false)
-      // }, 700)
+      setIsAuthenticating(false)
     }
   }
 

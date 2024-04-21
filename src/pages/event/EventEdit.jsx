@@ -30,12 +30,10 @@ function EventEdit() {
 
     try {
       
-      const response = await service.get(`/event/${eventId}`)
+      const response = await service.get(`/event/${eventId}/edit`)
 
       setEvent(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      setIsLoading(false)
 
     } catch (error) {
       console.log(error)

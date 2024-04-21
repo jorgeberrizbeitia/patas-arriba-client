@@ -1,43 +1,22 @@
 import { useState, useEffect, useContext } from "react"
-
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate, useParams } from "react-router-dom";
-
-import mapExample from "@assets/images/map-example.png"
+import { useParams } from "react-router-dom";
 
 import service from "@service/config"
-
-import UserCard from '@components/user/UserCard';
-
 
 import Loading from "@components/ui/Loading";
 import GoBack from "@components/navigation/GoBack";
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import CardMedia from '@mui/material/CardMedia';
-import CardHeader from "@mui/material/CardHeader";
 
 import { AuthContext } from "@context/auth.context"
-import IconButton from "@mui/material/IconButton";
 
 import EventMessageBoard from "@components/messages/EventMessageBoard";
-import EditIcon from '@mui/icons-material/Edit';
-import PetsIcon from '@mui/icons-material/Pets';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Collapse from '@mui/material/Collapse';
 import EventCard from "@components/event/EventCard";
-import Alert from '@mui/material/Alert';
 import EventMapCard from "@components/event/EventMapCard";
 import EventParticipantsCard from "../../components/event/EventParticipantsCard";
 import EventLeaveButton from "../../components/event/EventLeaveButton";
 import EventCarGroupInfoCard from "../../components/event/EventCarGroupInfoCard";
-
-
 
 function EventDetails() {
 
@@ -48,6 +27,7 @@ function EventDetails() {
   const [ isLoading, setIsLoading ] = useState(true);
   const [ event, setEvent ] = useState(null)
   const [ eventCarGroups, setEventCarGroups ] = useState(null)
+  const [ eventMessages, setEventMessages ] = useState(null)
 
   useEffect(() => {
     getEventDetails()
@@ -59,10 +39,11 @@ function EventDetails() {
 
     try {
       
-      const responseEvent = await service.get(`/event/${eventId}`)
-      const responseCarGroups = await service.get(`/car-group/list/${eventId}`)
-      setEvent(responseEvent.data)
-      setEventCarGroups(responseCarGroups.data)
+      const response = await service.get(`/event/${eventId}`)
+      console.log(response.data)
+      setEvent(response.data.eventDetails) // attendees are in eventDetails
+      setEventCarGroups(response.data.carGroups)
+      setEventMessages(response.data.messages)
 
       // setTimeout(() => {
         setIsLoading(false)
@@ -77,8 +58,8 @@ function EventDetails() {
   const handleJoinEvent = async () => {
     try {
       
-      await service.patch(`/event/${eventId}/join`)
-      getEventDetails() // to get new list of participants
+      const response = await service.post(`/attendee/${eventId}`)
+      setEvent({...event, attendees: [...event.attendees, response.data]})
 
     } catch (error) {
       console.log(error)
@@ -102,12 +83,17 @@ function EventDetails() {
     return <Loading />
   }
 
-  const hasUserJoined = event.participants.some((e) => e._id == loggedUserId)
+  const hasUserJoined = event.attendees.some((attendee) => attendee.user._id == loggedUserId)
+  console.log(event.attendees)
   const myCarGroup = eventCarGroups.find((eachCarGroup) => {
     return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
   })
   const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.members.length), 0)
   console.log(totalRoomAvailableInCarGroups)
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  const isEventInThePast = new Date(event.date) < today
 
   return (
     <>
@@ -126,27 +112,29 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      {!hasUserJoined && <Box>
-        <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled"}>
+      {!hasUserJoined && !isEventInThePast && <Box>
+        <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
           {event.status === "open" && "¡Unete al evento!"}
           {event.status === "closed" && "Evento cerrado"}
           {event.status === "cancelled" && "Evento cancelado"}
         </Button>
       </Box>}
 
+      {isEventInThePast && <Button size="large" variant="contained" disabled={true}>este evento ya ha pasado</Button>}
+
       <hr />
 
       {hasUserJoined && <Typography sx={{width: "100%"}}variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
-      {hasUserJoined && <EventMapCard event={event}/> }
+      {/* {hasUserJoined && <EventMapCard event={event}/> } */}
 
       {hasUserJoined && <EventParticipantsCard event={event}/> }
 
-      {(hasUserJoined && event.category === "car-group") && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
+      {(hasUserJoined && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
       {/* //todo show all cars to admin with qty, people and assigned */}
 
-      {hasUserJoined && (<EventMessageBoard type="event" eventOrCarGroup={event}/>)}
+      {hasUserJoined && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
 
       {hasUserJoined && <EventLeaveButton handleLeaveEvent={handleLeaveEvent}/>}
 
