@@ -17,6 +17,7 @@ function EventList() {
   const [isLoading, setIsLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [timeFrame, setTimeFrame] = useState("upcoming")
+  // todo manage timeFrame state with queries
 
   useEffect(() => {
     getEvents();
@@ -31,13 +32,13 @@ function EventList() {
       setEvents(response.data)
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
   };
 
   let eventsToDisplay;
   const today = new Date()
-  today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  // today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
   if (timeFrame === "upcoming") {
     eventsToDisplay = events.filter((event) => new Date(event.date) >= today)
   } else if (timeFrame === "past") {
@@ -67,7 +68,7 @@ function EventList() {
 
       {isLoading ? <Loading /> : eventsToDisplay.map((event) => <EventCard key={event._id} event={event}/>)}
 
-      {!isLoading && events.length === 0 && <Typography>No se han encontrado eventos</Typography>}
+      {!isLoading && eventsToDisplay.length === 0 && <Typography>No se han encontrado eventos</Typography>}
 
     </>
   );

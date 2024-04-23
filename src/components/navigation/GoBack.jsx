@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useNavigate } from 'react-router-dom';
 
-function GoBack({to}) {
+function GoBack({to, caption}) {
 
   const navigate = useNavigate()
 
@@ -13,7 +13,7 @@ function GoBack({to}) {
       <hr width="50%"/>
       <IconButton onClick={() => navigate(to)} sx={{width: "50px", height: "50px"}} color="primary">
         <ArrowBackIcon />
-        <Typography variant="caption">volver</Typography>
+        <Typography variant="caption">{caption || "volver"}</Typography>
       </IconButton>
       <hr width="50%"/>
     </Box>

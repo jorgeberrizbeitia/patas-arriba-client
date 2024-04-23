@@ -12,9 +12,12 @@ import { AuthContext } from '@context/auth.context'
 
 import icons from '@utils/icons'
 import MenuItem from '@mui/material/MenuItem'
+import { useNavigate } from 'react-router-dom'
 
 
 function UpdateUserIcon({setPropertyToEdit}) {
+
+  const navigate = useNavigate()
 
   const { loggedUser, setLoggedUser } = useContext(AuthContext)
   const [ icon, setIcon ] = useState(loggedUser.icon) 
@@ -27,15 +30,13 @@ function UpdateUserIcon({setPropertyToEdit}) {
     try {
       
       const response = await service.patch("/user/icon", { icon, iconColor })
-      console.log(response.data)
         
       setLoggedUser(response.data)
       setPropertyToEdit(null)
       setIsUpdating(false)
 
     } catch (error) {
-      console.log(error)
-      setIsUpdating(false)
+      navigate("/server-error")
     }
 
   }

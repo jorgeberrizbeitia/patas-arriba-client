@@ -103,7 +103,6 @@ function Signup() {
       regex,
       "Formato incorrecto"
     );
-    console.log(updatedstate);
     setEmail(updatedstate);
   };
 
@@ -163,7 +162,6 @@ function Signup() {
   };
 
   const handleConfirmPassword = (e) => {
-    console.log(e.target.value);
     const clone = { ...confirmPassword };
     if (!e.target.value) {
       clone.error = "Campo obligatorio";
@@ -192,7 +190,6 @@ function Signup() {
 
       navigate("/login");
     } catch (error) {
-      console.log(error);
       const errorCode = error?.response?.status;
       const errorMessage = error?.response?.data?.errorMessage;
       const errorField = error?.response?.data?.errorField;

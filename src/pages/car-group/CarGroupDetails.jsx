@@ -11,38 +11,41 @@ import { useContext, useEffect, useState } from 'react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import EditIcon from '@mui/icons-material/Edit';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import mapExample from "@assets/images/map-example.png"
 import Loading from "@components/ui/Loading";
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import service from "@service/config"
 import UserCard from '@components/user/UserCard';
 import { AuthContext } from '@context/auth.context';
 import EventMessageBoard from '@components/messages/EventMessageBoard';
 import CarGroupActions from '@components/car-group/CarGroupActions';
+import CarGroupLeaveButton from '@components/car-group/CarGroupLeaveButton';
+
 
 
 
 function CarGroupDetails() {
 
   const { loggedUserId } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const { carGroupId } = useParams()
 
   const [ carGroup, setCarGroup ] = useState(null)
+  const [ carGroupMessages, setCarGroupMessages ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
   const [ showMap, setShowMap ] = useState(false)
   const [ showActions, setShowActions ] = useState(false)
-  const [ showMembers, setShowMembers ] = useState(false)
+  const [ showPassengers, setShowPassengers ] = useState(false)
 
   useEffect(() => {
-
     getCarGroupDetails()
-
   }, [])
 
   const getCarGroupDetails = async () => {
@@ -50,15 +53,13 @@ function CarGroupDetails() {
     try {
       
       const response = await service.get(`/car-group/${carGroupId}`)
-      console.log(response.data)
 
-      setCarGroup(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      setCarGroup(response.data.carGroupDetails)
+      setCarGroupMessages(response.data.messages)
+      setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -67,29 +68,35 @@ function CarGroupDetails() {
     return <Loading />
   }
 
-  const {pickupLocation, pickupCoordinates, roomAvailable, pickupTime, owner, members, event} = carGroup
+  const {pickupLocation, roomAvailable, pickupTime, carBrand, carColor, owner, passengers, event} = carGroup
 
+  const isOwner = owner._id == loggedUserId
 
   return (
     <>
 
-      <GoBack to={`/event/${event}`}/> 
+      <GoBack to={`/event/${event._id}`} caption="evento"/> 
       
       <Typography variant="h4" color="initial" gutterBottom>Detalles del grupo de coche</Typography>
 
-      {/* //todo organize below cards into components */}
+      {/* //todo organize below details into components */}
 
       <Card raised sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
 
         <CardHeader
           sx={{ '& .MuiCardHeader-avatar': { marginRight: 0 }  }}
-          avatar={<IconButton sx={{ height: "24px", width: "24px" }} disabled>
+          avatar={<IconButton sx={{ height: "24px", width: "24px" }}>
             <DirectionsCarIcon />
           </IconButton>}
-          title={<Typography variant="h4" sx={{px: "8%"}}>{owner._id == loggedUserId ? "Tu coche" : `Coche de ${owner.username}`}</Typography>}
-          action={<IconButton sx={{ mr: 0.5 ,height: "24px", width: "24px" }} disabled>
-            <DirectionsCarIcon />
-          </IconButton>} 
+          title={<Typography variant="h4" sx={{pr: isOwner ? 0 : 3}}>{isOwner ? "Tu coche" : `Coche de ${owner.username}`}</Typography>}
+          action={isOwner && 
+          <IconButton 
+            onClick={() => navigate(`/car-group/${carGroup._id}/edit`)}
+            color="primary"
+            sx={{width: "50px", height: "50px"}}
+          ><EditIcon/>
+            <Typography variant="icon">editar</Typography>
+          </IconButton>}
         />
         <CardContent>
 
@@ -104,8 +111,18 @@ function CarGroupDetails() {
           </Typography>
 
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            <Typography variant="span" color="initial" fontWeight="bold">Plazas disponibles:</Typography>
-            <Typography variant="span" color="initial"> {roomAvailable - members.length}</Typography>
+            <Typography variant="span" color="initial" fontWeight="bold">Marca de coche:</Typography>
+            <Typography variant="span" color="initial"> {carBrand}</Typography>
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="span" color="initial" fontWeight="bold">Color de coche</Typography>
+            <Typography variant="span" color="initial"> {carColor}</Typography>
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="span" color="initial" fontWeight="bold">Plazas aún disponibles:</Typography>
+            <Typography variant="span" color="initial"> {roomAvailable - passengers.length}</Typography>
           </Typography>
 
         </CardContent>
@@ -115,58 +132,25 @@ function CarGroupDetails() {
 
       <Card sx={{width: "100%"}}>
         <CardHeader
-          subheader={`Mapa de recogida`}
+          sx={{pl:7}}
+          subheader={`Conductor y pasajeros: ${passengers.length+1}`}
           action={
-            <IconButton onClick={() => setShowMap(!showMap)}>
-              {showMap ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <IconButton onClick={() => setShowPassengers(!showPassengers)}>
+              {showPassengers ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           }
         />
-        <Collapse in={showMap}>
-          <CardMedia
-            component="img"
-            image={mapExample}
-            alt="mapa-coche"
-          />
-        </Collapse>
-      </Card>
+        <Collapse in={showPassengers}>
 
-      <hr />
-
-      <Card sx={{width: "100%"}}>
-        <CardHeader
-          subheader={`Miembros`}
-          action={
-            <IconButton onClick={() => setShowMembers(!showMembers)}>
-              {showMembers ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        />
-        <Collapse in={showMembers}>
-        
           <UserCard user={owner}/>
-          {members.map((eachMember) => <UserCard key={eachMember._id} user={eachMember}/>)}
+          {passengers.map((eachPassenger) => <UserCard key={eachPassenger._id} user={eachPassenger}/>)}
 
         </Collapse>
       </Card>
 
-      <hr />
+      <EventMessageBoard type="car-group" eventOrCarGroup={carGroup} messages={[]}/>
 
-      <Card sx={{width: "100%"}}>
-        <CardHeader
-          subheader={`Acciones`}
-          action={
-            <IconButton onClick={() => setShowActions(!showActions)}>
-              {showActions ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        />
-        <Collapse in={showActions}>
-          <CarGroupActions carGroup={carGroup}/>
-        </Collapse>
-      </Card>
-
-      <EventMessageBoard type="car-group" eventOrCarGroup={carGroup}/>
+      {!isOwner && <CarGroupLeaveButton carGroup={carGroup}/>}
 
     </>
   )

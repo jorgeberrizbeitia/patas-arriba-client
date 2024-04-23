@@ -50,7 +50,6 @@ function AuthWrapper(props) {
       setLoggedUser(responseOwnUserDetails.data)
       setIsAuthenticating(false)
     } catch (error) {
-      console.log(error)
       setIsLoggedIn(false)
       setLoggedUserId(null)
       setLoggedUserRole(null)

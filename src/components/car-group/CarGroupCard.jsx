@@ -19,19 +19,19 @@ import UserIcon from '@components/user/UserIcon';
 
 function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId}) {
 
-  const {pickupLocation, pickupCoordinates, roomAvailable, pickupTime, owner, members} = eachCarGroup
+  const {pickupLocation, roomAvailable, carBrand, carColor, pickupTime, owner, passengers} = eachCarGroup
 
   //todo color code: green available, 
   //todo all fields mandatory
 
-  const occupancyAvailable = roomAvailable - members.length
+  const occupancyAvailable = roomAvailable - passengers.length
   
   return (
     <Card sx={{width: "100%"}}>
       <CardHeader
         avatar={ <UserIcon user={owner} size="small" caption/> }
         
-        title={<Typography variant="body2">{pickupLocation} </Typography>}
+        title={<Typography variant="body2">Recogida: {pickupLocation} </Typography>}
         subheader={<Typography variant="caption">Hora: {pickupTime}</Typography>}
         action={
           <Box display="flex" flexDirection="column">

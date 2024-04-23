@@ -20,7 +20,7 @@ function EventDelete({event}) {
       navigate(`/`)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }

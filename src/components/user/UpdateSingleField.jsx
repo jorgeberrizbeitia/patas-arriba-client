@@ -9,11 +9,13 @@ import { AuthContext } from '@context/auth.context';
 import Typography from '@mui/material/Typography'
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 
 function UpdateSingleField({value, setPropertyToEdit, propertyToEdit}) {
 
   const { loggedUser, setLoggedUser } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const [ input, setInput ] = useState({value: value, error: null})
   const [ isUpdating, setIsUpdating ] = useState(false)
@@ -23,22 +25,19 @@ function UpdateSingleField({value, setPropertyToEdit, propertyToEdit}) {
 
     try {
       const response = await service.patch(`/user/${propertyToEdit}`, {[propertyToEdit]: input.value})
-      // setTimeout(() => {
-        setLoggedUser(response.data)
-        setIsUpdating(false)
-        setPropertyToEdit(null)
-      // }, 700)
+        
+      setLoggedUser(response.data)
+      setIsUpdating(false)
+      setPropertyToEdit(null)
 
     } catch (error) {
       const errorCode = error?.response?.status
       const errorMessage = error?.response?.data?.errorMessage
       if (errorCode === 400) {
-        // setTimeout(() => {
-          setInput({...input, error: errorMessage})
-          setIsUpdating(false)
-        // }, 700)
+        setInput({...input, error: errorMessage})
+        setIsUpdating(false)
       } else {
-        console.log(error)
+        navigate("/server-error")
       }
       
     }

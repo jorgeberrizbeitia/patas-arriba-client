@@ -26,11 +26,10 @@ function UpcomingEventsList() {
 
     try {
       const response = await service.get("/event?upcoming=true");
-      console.log(response.data)
       setUpcomingEvents(response.data)
       setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
   };
 

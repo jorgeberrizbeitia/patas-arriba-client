@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import service from "@service/config";
 
 import mapExample from "@assets/images/map-example.png"
@@ -19,9 +19,8 @@ function CarGroupEditForm({carGroup}) {
   const [ roomAvailable, setRoomAvailable ] = useState({value: carGroup.roomAvailable, error: null, hasUserInteracted: true})
   const [ pickupLocation, setPickupLocation ] = useState({value: carGroup.pickupLocation, error: null, hasUserInteracted: true})
   const [ pickupTime, setPickupTime ] = useState({value: carGroup.pickupTime, error: null, hasUserInteracted: true})
-  // const [ pickupCoordinates, setPickupCoordinates ] = useState({value: carGroup.pickupCoordinates, error: null, hasUserInteracted: true})
-  //! pending leaflet implementation
-  //* NOTE. no need for hasUserInteracted on edit, however, validate fields function adds it
+  const [ carBrand, setCarBrand ] = useState({value: carGroup.carBrand, error: null, hasUserInteracted: true})
+  const [ carColor, setCarColor ] = useState({value: carGroup.carColor, error: null, hasUserInteracted: true})
   
   const [ canSubmit, setCanSubmit ] = useState(false)
   const [ serverError, setServerError] = useState();
@@ -55,6 +54,16 @@ function CarGroupEditForm({carGroup}) {
     setPickupTime({...pickupTime, value: e.target.value})
   }
 
+  const handleCarBrand = (e) => {
+    //todo validate time format
+    setCarBrand({...carBrand, value: e.target.value, hasUserInteracted: true})
+  }
+
+  const handleCarColor = (e) => {
+    //todo validate time format
+    setCarColor({...carColor, value: e.target.value, hasUserInteracted: true})
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -64,12 +73,17 @@ function CarGroupEditForm({carGroup}) {
         roomAvailable: roomAvailable.value,
         pickupLocation: pickupLocation.value,
         pickupTime: pickupTime.value,
-        // pickupCoordinates: pickupCoordinates.value,
+        carBrand: carBrand.value,
+        carColor: carColor.value,
       })
       navigate(`/car-group/${carGroup._id}`)
 
     } catch (error) {
-      console.log(error)
+      if (error?.response?.status === 400) {
+        setServerError(error?.response?.data?.errorMessage)
+      } else {
+        navigate("/server-error")
+      }
     }
 
   }
@@ -77,7 +91,7 @@ function CarGroupEditForm({carGroup}) {
   return (
     <>
 
-    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column">
+    <Box component="form" noValidate autoComplete="on" display="flex" flexDirection="column" width="100%">
 
       <TextField
         label="Plazas disponibles"
@@ -89,6 +103,30 @@ function CarGroupEditForm({carGroup}) {
         required
         error={roomAvailable.hasUserInteracted && roomAvailable.error !== null}
         helperText={roomAvailable.error}
+      />
+
+      <TextField
+        label="Marca y modelo del coche"
+        variant="outlined"
+        value={carBrand.value}
+        onChange={handleCarBrand}
+        margin="normal"
+        type="text"
+        required
+        error={carBrand.hasUserInteracted && carBrand.error !== null}
+        helperText={carBrand.error}
+      />
+
+      <TextField
+        label="Color del coche"
+        variant="outlined"
+        value={carColor.value}
+        onChange={handleCarColor}
+        margin="normal"
+        type="text"
+        required
+        error={carColor.hasUserInteracted && carColor.error !== null}
+        helperText={carColor.error}
       />
 
       <TextField
@@ -115,15 +153,6 @@ function CarGroupEditForm({carGroup}) {
         helperText="La fecha será la del evento"
         InputLabelProps={{ shrink: true }}
       />
-
-      <Typography variant="h5" gutterBottom>
-        Selecciona punto de encuentro
-      </Typography>
-      <CardMedia
-          component="img"
-          image={mapExample}
-          alt="mapa-selección"
-        />
 
       <Button 
         variant="contained" 

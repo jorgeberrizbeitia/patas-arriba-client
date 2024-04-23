@@ -26,6 +26,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LoginIcon from "@mui/icons-material/Login";
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import { useState, useContext } from "react";
 import { AuthContext } from "@context/auth.context";
@@ -94,7 +95,7 @@ function Navbar() {
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
-                <ListItemText primary={"Home"} />
+                <ListItemText primary={"Inicio"} />
               </ListItemButton>
             </ListItem>
           </List>
@@ -136,7 +137,7 @@ function Navbar() {
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/event")}>
                 <ListItemIcon>
-                  <EventIcon />
+                  <CalendarMonthIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Eventos"} />
               </ListItemButton>

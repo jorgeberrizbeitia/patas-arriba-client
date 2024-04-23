@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import service from "@service/config"
 
@@ -13,14 +13,17 @@ import { AuthContext } from "@context/auth.context"
 
 import EventMessageBoard from "@components/messages/EventMessageBoard";
 import EventCard from "@components/event/EventCard";
-import EventMapCard from "@components/event/EventMapCard";
 import EventParticipantsCard from "../../components/event/EventParticipantsCard";
 import EventLeaveButton from "../../components/event/EventLeaveButton";
 import EventCarGroupInfoCard from "../../components/event/EventCarGroupInfoCard";
+import EventDescription from "@components/event/EventDescription";
+import EventTask from "@components/event/EventTask";
+
 
 function EventDetails() {
 
-  const { loggedUserId } = useContext(AuthContext)
+  const { loggedUserId, loggedUserRole } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const { eventId } = useParams() 
 
@@ -28,6 +31,7 @@ function EventDetails() {
   const [ event, setEvent ] = useState(null)
   const [ eventCarGroups, setEventCarGroups ] = useState(null)
   const [ eventMessages, setEventMessages ] = useState(null)
+  const [ myAttendee, setMyAttendee ] = useState(null)
 
   useEffect(() => {
     getEventDetails()
@@ -40,43 +44,38 @@ function EventDetails() {
     try {
       
       const response = await service.get(`/event/${eventId}`)
-      console.log(response.data)
       setEvent(response.data.eventDetails) // attendees are in eventDetails
+      //todo get attendees on its own state
       setEventCarGroups(response.data.carGroups)
       setEventMessages(response.data.messages)
 
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      const foundAttendee = response.data.eventDetails.attendees.find((attendee) => attendee.user._id == loggedUserId)
+      setMyAttendee(foundAttendee)
+
+      setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
 
   const handleJoinEvent = async () => {
     try {
-      
       const response = await service.post(`/attendee/${eventId}`)
       setEvent({...event, attendees: [...event.attendees, response.data]})
-
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
   }
 
   const handleLeaveEvent = async () => {
-
     try {
-      
-      await service.patch(`/event/${event._id}/leave`)
+      await service.delete(`/attendee/${event._id}`)
       getEventDetails() // to get new list of participants
-
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
-
   }
 
   if (isLoading) {
@@ -84,12 +83,10 @@ function EventDetails() {
   }
 
   const hasUserJoined = event.attendees.some((attendee) => attendee.user._id == loggedUserId)
-  console.log(event.attendees)
   const myCarGroup = eventCarGroups.find((eachCarGroup) => {
-    return eachCarGroup.members.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
+    return eachCarGroup.passengers.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
   })
-  const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.members.length), 0)
-  console.log(totalRoomAvailableInCarGroups)
+  const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.passengers.length), 0)
 
   const today = new Date()
   today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
@@ -112,6 +109,8 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
+      {hasUserJoined && loggedUserRole === "admin" && <Button variant="contained" color="primary" onClick={() => navigate(`/event/${event._id}/manage`)}>Gestiona los participantes</Button>}
+
       {!hasUserJoined && !isEventInThePast && <Box>
         <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
           {event.status === "open" && "¡Unete al evento!"}
@@ -126,9 +125,13 @@ function EventDetails() {
 
       {hasUserJoined && <Typography sx={{width: "100%"}}variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
-      {/* {hasUserJoined && <EventMapCard event={event}/> } */}
 
-      {hasUserJoined && <EventParticipantsCard event={event}/> }
+      {hasUserJoined && event.description && <EventDescription event={event}/> }
+
+      {hasUserJoined && <EventParticipantsCard attendees={event.attendees}/> }
+      {/* //todo change name to attendees */}
+
+      {hasUserJoined && event.hasTaskAssignments && <EventTask myAttendee={myAttendee}/> }
 
       {(hasUserJoined && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
@@ -136,7 +139,7 @@ function EventDetails() {
 
       {hasUserJoined && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
 
-      {hasUserJoined && <EventLeaveButton handleLeaveEvent={handleLeaveEvent}/>}
+      {hasUserJoined && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event}/>}
 
     </>
   )

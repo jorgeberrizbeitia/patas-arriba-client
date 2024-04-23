@@ -10,7 +10,6 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,10 +26,10 @@ function CarGroupActions({carGroup}) {
     try {
       
       service.patch(`/car-group/${carGroup._id}/leave`)
-      navigate(`/event/${carGroup.event}`)
+      navigate(`/event/${carGroup.event._id}`)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }

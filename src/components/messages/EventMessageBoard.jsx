@@ -1,30 +1,29 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import Avatar from '@mui/material/Avatar';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
+
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import service from '@service/config';
 import { AuthContext } from '@context/auth.context';
 import Alert from '@mui/material/Alert';
-import Divider from '@mui/material/Divider';
+
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import UserIcon from '@components/user/UserIcon';
+
 import { useNavigate } from 'react-router-dom';
+import Message from './Message';
 
 
-function EventMessageBoard({eventOrCarGroup, messages, type}) {
+
+function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
   const navigate = useNavigate()
   const listRef = useRef(null);
 
   const { loggedUserId } = useContext(AuthContext)
-  // const [messages, setMessages] = useState(messages);
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false)
 
@@ -35,16 +34,15 @@ function EventMessageBoard({eventOrCarGroup, messages, type}) {
     setIsSending(true)
 
     try {
-      await service.post(`/message/${eventOrCarGroup._id}/${type}`, {text})
+      await service.post(`/message/${type}/${eventOrCarGroup._id}`, {text})
       const response = await service.get(`/${type}/${eventOrCarGroup._id}`)
       setMessages(response.data.messages)
       //todo why is it not working with getEventDetails?
       setText('')
       setIsSending(false)
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
       //todo create an alert if there was an error
-      setIsSending(false)
     }
   };
 
@@ -56,19 +54,27 @@ function EventMessageBoard({eventOrCarGroup, messages, type}) {
   }, [messages]);
 
   const refreshMessages = async () => {
-    //todo function just to refresh but getting the whole event details, is this ok?
+
     setIsSending(true)
     try {
       
-      const response = await service.get(`/${type}/${eventOrCarGroup._id}`)
-      setMessages(response.data.messages)
+      const response = await service.get(`/message/${type}/${eventOrCarGroup._id}`)
+      setMessages(response.data)
       setIsSending(false)
 
     } catch (error) {
-      console.log(error)
-      setIsSending(false)
+      navigate("/server-error")
     }
 
+  }
+
+  const handleDelete = async (messageId) => {
+    try {
+      await service.patch(`/message/${messageId}/delete`)
+      refreshMessages()
+    } catch (error) {
+      navigate("/server-error")
+    }
   }
 
   return (
@@ -77,54 +83,34 @@ function EventMessageBoard({eventOrCarGroup, messages, type}) {
       <hr />
 
       <Typography variant="h5" gutterBottom sx={{width: "100%"}}>
-        Mensajes del {type === "event" ? "Evento" : "Coche"}
+        Mensajes del {type === "event" ? "evento" : "grupo de coche"}
       </Typography>
 
-      <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'primary.lighterSaturation', borderRadius: 1, width: "100%" }}>
-        {messages.map(({text, sender, createdAt}, index) => {
+      <Alert severity='info' sx={{textAlign: "start"}}>Si tienes alguna duda, envía un mensaje y {type === "event" ? "alguno de los organizadores o participantes" : "el dueño del coche u otro pasajero"} te responderá. Recuerda refrescar o volver luego a la página para ver las respuestas.</Alert>
 
-          const isSender = sender._id == loggedUserId
-          const isAdmin = sender.role === "admin"
-          const carOwner = type === "car-group" && sender._id === eventOrCarGroup.owner._id
+      <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'primary.lighterSaturation', borderRadius: 1, width: "100%"}}>
+        <Box>
+          {messages.length === 0 && <Typography variant="body1" color="initial" sx={{pt: 1}}>No hay mensajes</Typography>}
 
-          return (
-            <Box key={index}>
-              <ListItem>
-                {!isSender && 
-                  <ListItemAvatar>
-                    <UserIcon user={sender} size="small" caption/>
-                  </ListItemAvatar>
-                }
-                <Box sx={{width: "100%", textAlign: isSender ? "right" : "left"}}>
-                  <ListItemText
-                    primary={
-                      <Typography variant="body2" color={isSender ? "#2ECC71" : "#3498DB"}>
-                        <span onClick={() => navigate(`/user/${sender._id}`)}>{isSender ? "Tú" : sender.username}</span>
-                        {isAdmin && <span style={{color: "#F39C12"}}> -admin-</span>}
-                        {carOwner && <span style={{color: "#F39C12"}}> -conductor-</span>}
-                      </Typography>
-                    }
-                    sx={{ wordBreak: 'break-word' }}
-                    secondary={text}/>
-                  <Typography variant="caption" color="textSecondary">
-                    {new Date(createdAt).toLocaleString()}
-                  </Typography>
-                </Box>
-              </ListItem>
-              <Divider variant="inset" component="li" />
-            </Box>
+          {messages.map((message, index) => {
+            return <Message 
+              key={index} 
+              message={message}
+              type={type}
+              handleDelete={handleDelete}
+            />}
           )}
-        )}
+        </Box>
       </List>
 
-      <Box sx={{width: "100%"}}>
-        <IconButton onClick={refreshMessages} disabled={isSending} sx={{width: 75, height: 75}}>
-          <RefreshIcon />
-          <Typography variant="caption">refrescar</Typography>
+      <Box sx={{bgcolor: 'primary.lighterSaturation', width: "100%"}}>
+        <IconButton onClick={refreshMessages} disabled={isSending} sx={{width: 200, height: 50, p: 0, borderRadius: 2}}>
+          <RefreshIcon/>
+          <Typography variant="caption">refrescar mensajes</Typography>
         </IconButton>
       </Box>
 
-      <Box display="flex" alignItems="center" sx={{width: "100%"}}>
+      <Box display="flex" alignItems="center" sx={{width: "100%", pt: 1}}>
         <TextField
           label="Escribe un mensaje"
           value={text}
@@ -146,8 +132,6 @@ function EventMessageBoard({eventOrCarGroup, messages, type}) {
           sx={{width: "80px", height: "55px", ml: 1}}
         >Enviar</Button>
       </Box>
-
-      <Alert sx={{width: "100%", mt:1}} severity='info'>Nota: Este chat no es en tiempo real, hay que refrescar para ver nuevos mensajes</Alert>
 
     </>
   );

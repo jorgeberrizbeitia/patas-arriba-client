@@ -8,17 +8,15 @@ import Typography from '@mui/material/Typography'
 import UserIcon from "./UserIcon";
 
 
-function UserCard({attendee}) {
+function UserCard({user}) {
 
   const navigate = useNavigate()
-  console.log(attendee)
-  const { user } = attendee
   const { _id, username, role } = user
 
   const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
 
   return (
-    <Card sx={{bgcolor: "gray.lighter", width:"100%"}}>
+    <Card sx={{bgcolor: "gray.transparent", width:"100%"}}>
       <CardHeader 
       avatar={
         <UserIcon user={user} size="small"/>

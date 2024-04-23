@@ -12,6 +12,7 @@ import EventDelete from "@components/event/EventDelete";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import EventDescriptionForm from "@components/event/EventDescriptionForm";
 
 function EventEdit() {
   
@@ -20,7 +21,7 @@ function EventEdit() {
   const [ isLoading, setIsLoading ] = useState(true)
   const [ event, setEvent ] = useState(null)
   const [ editType, setEditType ] = useState(null)
-  // editType 1: normal fields, 2: change status, 3: delete event
+  // editType 1: normal fields, 2: description, 3: change status, 4: delete event
 
   useEffect(() => {
     getEventDetails()
@@ -36,7 +37,7 @@ function EventEdit() {
       setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -48,31 +49,42 @@ function EventEdit() {
   return (
     <>
 
-      <GoBack to={`/event/${event._id}`}/> 
+      <GoBack to={-1}/> 
 
-      <Typography variant="h5" color="initial" gutterBottom>Como quieres editar el evento?</Typography>
+      <Typography variant="h5" color="initial" gutterBottom>¿Que quieres editar el evento?</Typography>
 
       <Box display="flex" flexDirection="row" justifyContent="space-evenly">
 
         <Button 
+          size="small"
           onClick={() => setEditType(1)} 
           variant={editType === 1 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "25%", height: 80}}
-        > Editar info </Button>
+          sx={{width: "20%", height: 60}}
+        > Info básica</Button>
 
         <Button 
+          size="small"
           onClick={() => setEditType(2)} 
           variant={editType === 2 ? "contained" : "outlined"} 
-          color="primary" 
-          sx={{width: "25%", height: 80}}
-        >Cambiar Estado</Button>
+          color="info" 
+          sx={{width: "20%", height: 60}}
+        > Info extra</Button>
 
         <Button 
+          size="small"
           onClick={() => setEditType(3)} 
           variant={editType === 3 ? "contained" : "outlined"} 
+          color="warning" 
+          sx={{width: "20%", height: 60}}
+        >Estado</Button>
+
+        <Button 
+          size="small"
+          onClick={() => setEditType(4)} 
+          variant={editType === 4 ? "contained" : "outlined"} 
           color="error" 
-          sx={{width: "25%", height: 80}}
+          sx={{width: "20%", height: 60}}
         >Eliminar</Button>
 
       </Box>
@@ -80,8 +92,9 @@ function EventEdit() {
       <hr />
 
       {editType === 1 && <EventEditForm event={event}/>}
-      {editType === 2 && <EventEditStatus event={event}/>}
-      {editType === 3 && <EventDelete event={event}/>}
+      {editType === 2 && <EventDescriptionForm event={event}/>}
+      {editType === 3 && <EventEditStatus event={event}/>}
+      {editType === 4 && <EventDelete event={event}/>}
 
     </>
   );

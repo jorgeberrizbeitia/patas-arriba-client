@@ -23,14 +23,15 @@ function CarGroupCreate() {
   const [ roomAvailable, setRoomAvailable ] = useState({value: "", error: null, hasUserInteracted: false})
   const [ pickupLocation, setPickupLocation ] = useState({value: "", error: null, hasUserInteracted: false})
   const [ pickupTime, setPickupTime ] = useState({value: "", error: null, hasUserInteracted: false})
-  const [ pickupCoordinates, setPickupCoordinates ] = useState({value: "", error: null, hasUserInteracted: true}) // true as it is not required
+  const [ carBrand, setCarBrand ] = useState({value: "", error: null, hasUserInteracted: false})
+  const [ carColor, setCarColor ] = useState({value: "", error: null, hasUserInteracted: false})
 
   const [ canSubmit, setCanSubmit ] = useState(false)
   const [ serverError, setServerError] = useState();
 
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
-    const allFormStates = [roomAvailable, pickupLocation, pickupTime]
+    const allFormStates = [roomAvailable, pickupLocation, pickupTime, carBrand, carColor]
 
     const allStatesInteracted = allFormStates.every((e) => e.hasUserInteracted)
     const allStatesWithoutErrors = allFormStates.every((e) => !e.error)
@@ -57,6 +58,16 @@ function CarGroupCreate() {
     setPickupTime({...pickupTime, value: e.target.value, hasUserInteracted: true})
   }
 
+  const handleCarBrand = (e) => {
+    //todo validate time format
+    setCarBrand({...carBrand, value: e.target.value, hasUserInteracted: true})
+  }
+
+  const handleCarColor = (e) => {
+    //todo validate time format
+    setCarColor({...carColor, value: e.target.value, hasUserInteracted: true})
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -66,12 +77,13 @@ function CarGroupCreate() {
         roomAvailable: roomAvailable.value,
         pickupLocation: pickupLocation.value,
         pickupTime: pickupTime.value,
-        pickupCoordinates: pickupCoordinates.value,
+        carBrand: carBrand.value,
+        carColor: carColor.value,
       })
       navigate(`/event/${eventId}`)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -109,6 +121,30 @@ function CarGroupCreate() {
       />
 
       <TextField
+        label="Marca y modelo del coche"
+        variant="outlined"
+        value={carBrand.value}
+        onChange={handleCarBrand}
+        margin="normal"
+        type="text"
+        required
+        error={carBrand.hasUserInteracted && carBrand.error !== null}
+        helperText={carBrand.error}
+      />
+
+      <TextField
+        label="Color del coche"
+        variant="outlined"
+        value={carColor.value}
+        onChange={handleCarColor}
+        margin="normal"
+        type="text"
+        required
+        error={carColor.hasUserInteracted && carColor.error !== null}
+        helperText={carColor.error}
+      />
+
+      <TextField
         label="Dirección de recogida"
         variant="outlined"
         value={pickupLocation.value}
@@ -132,15 +168,6 @@ function CarGroupCreate() {
         helperText="La fecha será la del evento"
         InputLabelProps={{ shrink: true }}
       />
-
-      <Typography variant="h5" gutterBottom>
-        Indica un punto de recogida
-      </Typography>
-      <CardMedia
-          component="img"
-          image={mapExample}
-          alt="mapa-selección"
-        />
 
       <Button 
         variant="contained" 

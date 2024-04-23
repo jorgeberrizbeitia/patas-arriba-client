@@ -10,7 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-function EventParticipantsCard({event}) {
+function EventParticipantsCard({attendees}) {
 
   const [ showParticipants, setShowParticipants ] = useState(false)
 
@@ -19,7 +19,7 @@ function EventParticipantsCard({event}) {
       <hr />
       <Card sx={{width: "100%"}}>
         <CardHeader
-          subheader={`Participantes`}
+          subheader={`Participantes: ${attendees.length}`}
           action={
             <IconButton onClick={() => setShowParticipants(!showParticipants)}>
               {showParticipants ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -28,11 +28,8 @@ function EventParticipantsCard({event}) {
         />
         <Collapse in={showParticipants}>
 
-          <Box display="flex" flexDirection="column" alignItems="center" p={3}>
-            {event.attendees.map((eachAttendee) => <UserCard key={eachAttendee._id} attendee={eachAttendee}/>)}
-            {/* //todo to admin show all not in cars */}
-          </Box>
-          
+        {attendees.map((eachAttendee) => <UserCard key={eachAttendee._id} user={eachAttendee.user}/>)}
+        {/* //todo to admin show all not in cars */}
 
         </Collapse>
       </Card>

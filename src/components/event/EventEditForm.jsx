@@ -12,7 +12,6 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 
 function EventEditForm({ event }) {
-  console.log(event)
   const navigate = useNavigate();
 
   const [category, setCategory] = useState({
@@ -35,7 +34,6 @@ function EventEditForm({ event }) {
 
   // Extract date
   const dateInputValue = new Date(event.date).toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }) // Get YYYY-MM-DD format
-  console.log(dateInputValue)
   const [date, setDate] = useState({
     value: dateInputValue,
     error: null,
@@ -114,7 +112,6 @@ function EventEditForm({ event }) {
 
   const handleTime = (e) => {
     const updatedstate = validateField(e.target.value, time, true);
-    console.log(updatedstate);
     setTime(updatedstate);
   };
 
@@ -136,7 +133,6 @@ function EventEditForm({ event }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(date.value, time.value)
     const dateWithTime = new Date(`${date.value}T${time.value}:00`)
     try {
       await service.put(`/event/${event._id}`, {
@@ -259,7 +255,7 @@ function EventEditForm({ event }) {
 
         {hasCarOrganization.value === false && (
           <Alert sx={{ my: 1 }} severity="warning">
-            Esto significa que los usuarios no podrán ver ni crear grupos de coche para ir al evento, usar solo para eventos locales donde cada participante va por su cuenta.
+            Esto significa que los participantes del evento no podrán ver ni crear grupos de coche para ir al evento, usar solo para eventos locales donde cada participante va por su cuenta.
           </Alert>
         )}
       </Box>
@@ -281,7 +277,7 @@ function EventEditForm({ event }) {
 
         {hasTaskAssignments.value === false && (
           <Alert sx={{ my: 1 }} severity="warning">
-            Esto significa que el admin no podrá asignar tareas individuales a los participantes, usar solo cuando el evento no lo necesite.
+            Esto significa no podrá asignar tareas individuales a los participantes, usar solo cuando el evento no lo necesite.
           </Alert>
         )}
       </Box>

@@ -3,11 +3,13 @@ import Loading from '@components/ui/Loading'
 import service from '@service/config'
 import { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography'
+import { useNavigate } from 'react-router-dom'
 
 function UserList() {
 
   const [ users, setUsers ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     getAllUsers()
@@ -18,12 +20,11 @@ function UserList() {
     try {
       
       const response = await service.get("/user")
-      console.log(response.data)
       setUsers(response.data)
       setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }

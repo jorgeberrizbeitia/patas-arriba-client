@@ -16,7 +16,6 @@ function EventEditStatus({event}) {
 
   const handleStatus = (e) => {
     const updatedstate = validateField(e.target.value, status, true)
-    console.log(updatedstate)
     setStatus(updatedstate);
   };
 
@@ -30,7 +29,7 @@ function EventEditStatus({event}) {
       navigate(`/event/${event._id}`)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -57,7 +56,7 @@ function EventEditStatus({event}) {
         sx={{mb: "8px"}}
         InputLabelProps={{ shrink: true }}
       >
-        <MenuItem value={"open"}>Activo</MenuItem>
+        <MenuItem value={"open"}>Abierto</MenuItem>
         <MenuItem value={"closed"}>Cerrado</MenuItem>
         <MenuItem value={"cancelled"}>Cancelado</MenuItem>
       </TextField>

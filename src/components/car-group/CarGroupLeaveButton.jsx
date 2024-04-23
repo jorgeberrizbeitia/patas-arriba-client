@@ -3,10 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Alert from "@mui/material/Alert";
+import service from "@service/config";
+import { useNavigate } from "react-router-dom";
 
-function EventLeaveButton({handleLeaveEvent, event}) {
+function CarGroupLeaveButton({carGroup}) {
 
   const [ showAreYouSureButtons, setShowAreYouSureButtons ] = useState(false)
+  const navigate = useNavigate()
 
   const cardRef = useRef(null)
 
@@ -20,34 +23,39 @@ function EventLeaveButton({handleLeaveEvent, event}) {
     }
   }, [showAreYouSureButtons]);
 
+  const handleLeaveCarGroup = async () => {
+    
+    try {
+      
+      service.patch(`/car-group/${carGroup._id}/leave`)
+      navigate(`/event/${carGroup.event._id}`)
+
+    } catch (error) {
+      navigate("/server-error")
+    }
+
+  }
+
   return (
     <>
       <hr />
 
-      <Button
+      {<Button
         variant="outlined"
         color="error"
         onClick={handleShowLeaveCard}
-        disabled={event.status !== "open"}
-      >Salir del evento</Button>
+      >Salir del grupo de coche</Button>}
 
       <br />
-
-      {event.status === "closed" && (
-        <Alert severity="warning">
-          Este evento ya ha sido cerrado. Si no puedes ir por cualquier razón, comunicate con el organizador o agrega un mensaje al evento
-        </Alert>
-      )}
 
       {showAreYouSureButtons && (
         <Card ref={cardRef} raised sx={{width: "100%"}}>
 
           <Alert severity="warning">
-            Estas seguro que deseas salir? Si tienes un grupo de coche creado,
-            esto eliminará el grupo.
+            Estas seguro que deseas salir de este grupo de coche?
           </Alert>
 
-          <Button color="error" onClick={handleLeaveEvent}>
+          <Button color="error" onClick={handleLeaveCarGroup}>
             Si
           </Button>
 
@@ -62,4 +70,4 @@ function EventLeaveButton({handleLeaveEvent, event}) {
   );
 }
 
-export default EventLeaveButton;
+export default CarGroupLeaveButton;

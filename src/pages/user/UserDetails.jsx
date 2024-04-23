@@ -1,29 +1,25 @@
 import Loading from '@components/ui/Loading'
 import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
 import service from '@service/config'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Card from "@mui/material/Card";
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
 import capitalizeAll from '@utils/capitalizeAll'
 import Typography from '@mui/material/Typography'
 import { AuthContext } from '@context/auth.context'
-import CardMedia from '@mui/material/CardMedia'
 import UserIcon from '@components/user/UserIcon'
 import GoBack from '@components/navigation/GoBack'
+import formatDate from '@utils/formatDate'
 
 function UserDetails() {
 
   const { loggedUserRole } = useContext(AuthContext)
-
   const { userId } = useParams()
+  const navigate = useNavigate()
 
   const [user, setUser] = useState()
-
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -32,33 +28,23 @@ function UserDetails() {
 
   const getUserDetails = async () => {
     try {
-      
       const response = await service.get(`/user/${userId}`)
-
       setUser(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
-
+      setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
   }
 
   const handleAllowUser = async () => {
     setIsLoading(true)
     try {
-      
       const response = await service.patch(`/user/${userId}/user-role-validation`)
-      setUser(response.data) // the updated user
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
-
+      setUser(response.data) //* the updated user
+      setIsLoading(false)
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
-
   }
 
   if (isLoading) {
@@ -92,7 +78,7 @@ function UserDetails() {
             Este usuario es admin
           </Typography>}
           <Typography variant="body">
-            Desde: {new Date(createdAt).toDateString()}
+            Desde: {formatDate(createdAt)}
           </Typography>
 
           <hr />
@@ -100,14 +86,14 @@ function UserDetails() {
 
             {role === "pending" ? 
               <>
-                <Typography variant="body" color="error.main">
+                <Typography variant="h5" color="error.main" gutterBottom>
                   Pendiente por permiso
                 </Typography>
                 <Button variant="contained" onClick={handleAllowUser}>
-                  Permitir
+                  Permitir acceso a la página
                 </Button>
               </> : <>
-                <Typography variant="body" color="success.main">
+                <Typography variant="h5" color="success.main">
                   Usuario habilitado
                 </Typography>
               </>

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import service from "@service/config";
 
@@ -15,6 +15,7 @@ import Button from "@mui/material/Button";
 function CarGroupEdit() {
   
   const { carGroupId } = useParams()
+  const navigate = useNavigate()
 
   const [ isLoading, setIsLoading ] = useState(true)
   const [ carGroup, setCarGroup ] = useState(null)
@@ -30,14 +31,11 @@ function CarGroupEdit() {
     try {
       
       const response = await service.get(`/car-group/${carGroupId}`)
-
-      setCarGroup(response.data)
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      setCarGroup(response.data.carGroupDetails)
+      setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -49,9 +47,9 @@ function CarGroupEdit() {
   return (
     <>
 
-      <GoBack to={`/car-group/${carGroup._id}`}/>     
+      <GoBack to={`/car-group/${carGroup._id}`} caption="volver"/>     
 
-      <Typography variant="h5" color="initial" gutterBottom>Como quieres editar el grupo de coche?</Typography>
+      <Typography variant="h5" color="initial" gutterBottom>¿Como quieres editar el grupo de coche?</Typography>
 
       <Box display="flex" flexDirection="row" justifyContent="space-evenly" width="100%">
 
@@ -74,12 +72,8 @@ function CarGroupEdit() {
 
       <hr />
 
-      <Box display="flex" flexDirection="column" alignItems="center">
-
-        {editType === 1 && <CarGroupEditForm carGroup={carGroup}/>}
-        {editType === 2 && <CarGroupDelete carGroup={carGroup}/>}
-        
-      </Box>
+      {editType === 1 && <CarGroupEditForm carGroup={carGroup}/>}
+      {editType === 2 && <CarGroupDelete carGroup={carGroup}/>}
 
     </>
   );

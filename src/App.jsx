@@ -24,8 +24,8 @@ import UserList from './pages/user/UserList'
 import UserDetails from './pages/user/UserDetails'
 import OwnUserDetails from './pages/user/OwnUserDetails'
 
-import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
+import EventManage from '@pages/event/EventManage'
 
 
 function App() {
@@ -50,6 +50,7 @@ function App() {
           {/* //* admin routes */}
           <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
           <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
+          <Route path="/event/:eventId/manage" element={ <IsAdmin> <EventManage /> </IsAdmin>}/>
           <Route path="/user" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
 
           {/* //* private routes */}

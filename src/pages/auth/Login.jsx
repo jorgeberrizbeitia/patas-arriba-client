@@ -75,7 +75,6 @@ function Login() {
 
       navigate("/");
     } catch (error) {
-      console.log(error);
       const errorCode = error?.response?.status;
       const errorMessage = error?.response?.data?.errorMessage;
       const errorField = error?.response?.data?.errorField;

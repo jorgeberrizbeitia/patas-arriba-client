@@ -8,8 +8,9 @@ import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
+import Link from '@mui/material/Link';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
 import CornerChip from '@components/ui/CornerChip';
@@ -18,7 +19,6 @@ import capitalizeAll from '@utils/capitalizeAll';
 
 
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
-  console.log(event)
 
   const navigate = useNavigate()
   const {loggedUserId, loggedUserRole} = useContext(AuthContext)
@@ -102,8 +102,8 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
             weekday: 'long', // Display the full name of the weekday (e.g., "lunes")
             year: 'numeric', // Display the year (e.g., "2024")
             month: 'long', // Display the full name of the month (e.g., "abril")
-            day: 'numeric' // Display the day of the month (e.g., "21")
-          }).replace(/^\w|\s\w/g, c => c.toUpperCase())}
+            day: 'numeric', // Display the day of the month (e.g., "21")
+          })}
           </Typography>
         </Typography>
 
@@ -123,6 +123,11 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
             <Typography variant="span" color="initial" fontWeight="bold">Plazas en coche disponibles:</Typography>
             <Typography variant="span" color="initial"> {totalRoomAvailableInCarGroups}</Typography>
           </Typography>}
+
+        {fromDetails && <Typography variant="body2" color="text.secondary" gutterBottom>
+          <Typography variant="span" color="initial" fontWeight="bold">Organizado por:</Typography>
+          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner.username}</Link>
+        </Typography>}
 
         <br />
 

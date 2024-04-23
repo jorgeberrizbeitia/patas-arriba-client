@@ -23,8 +23,8 @@ function EventCarGroupInfoCard({myCarGroup}) {
       <>
         <hr />
 
-        <Typography sx={{width: "100%"}}>
-          Ya tienes un coche asignado!
+        <Typography sx={{width: "100%", pb: 1}} color="success.main">
+          ¡Ya tienes un coche asignado!
         </Typography>
 
         <Card sx={{width: "100%"}}>
@@ -54,13 +54,13 @@ function EventCarGroupInfoCard({myCarGroup}) {
         </Typography>
 
         <Alert sx={{my:2, width: "100%"}} severity="error" >
-          Si 48 horas antes del evento no tienes como ir, es posible que seas removido. Asegurate de buscar coche disponible!
+          Si 48 horas antes del evento no has seleccionado la forma de ir al evento, es posible que seas removido. ¡Asegurate de buscar coche disponible o indicar que vas en tu coche!
         </Alert>
 
         <Box display="flex" justifyContent="space-evenly" width="100%">
 
           <Button size="small" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
-            Voy con mi coche y puedo llevar gente
+            Voy con mi coche
           </Button>
 
           <Button size="small" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>

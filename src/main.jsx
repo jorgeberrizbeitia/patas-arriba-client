@@ -61,6 +61,7 @@ const theme = createTheme({
       lighterSaturation: '#F7E4B0', // Lighter saturation
       darkerSaturation: '#D6A637', // Darker saturation
       contrast: '#856329', // Contrast tone
+      transparent: 'rgba(239, 182, 101, 0.1)'
     },
     text: {
       primary: '#173A5E',
@@ -80,7 +81,8 @@ const theme = createTheme({
     },
     gray: {
       main: '#95A5A6', // Neutral color
-      lighter: '#CED7D9' // Lighter tone
+      lighter: '#CED7D9', // Lighter tone
+      transparent: 'rgba(149, 165, 166, 0.1)'
     },
   },
 });

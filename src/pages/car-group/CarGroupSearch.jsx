@@ -32,15 +32,13 @@ function CarGroupSearch () {
 
       const response = await service.get(`/car-group/list/${eventId}`)
 
-      setCarGroups(response.data.filter((car) => (car.roomAvailable - car.members.length) > 0))
+      setCarGroups(response.data.filter((car) => (car.roomAvailable - car.passengers.length) > 0))
       //* filter to only display available cars
 
-      // setTimeout(() => {
-        setIsLoading(false)
-      // }, 700)
+      setIsLoading(false)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
@@ -50,10 +48,10 @@ function CarGroupSearch () {
     try {
       
       await service.patch(`car-group/${selectedCarGroupId}/join`)
-      navigate(`/event/${eventId}`)
+      navigate(`/car-group/${selectedCarGroupId}`)
 
     } catch (error) {
-      console.log(error)
+      navigate("/server-error")
     }
 
   }
