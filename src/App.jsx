@@ -41,7 +41,7 @@ function App() {
 
           {/* //* public routes */}
           <Route path="/" element={<Home />}/>
-          <Route path="/about" element={<About />}/>
+          {/* <Route path="/about" element={<About />}/> */}
 
           {/* //* anon routes */}
           <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>

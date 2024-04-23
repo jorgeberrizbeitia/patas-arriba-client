@@ -168,7 +168,7 @@ function Navbar() {
             </ListItem>
           </List>}
 
-          <Divider />
+          {/* <Divider />
 
           <List>
             <ListItem disablePadding>
@@ -184,7 +184,7 @@ function Navbar() {
                 </ListItemButton>
               </Link>
             </ListItem>
-          </List>
+          </List> */}
 
           {isLoggedIn && <Divider />}
 

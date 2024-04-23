@@ -23,7 +23,6 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
   const navigate = useNavigate()
   const listRef = useRef(null);
 
-  const { loggedUserId } = useContext(AuthContext)
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false)
 
@@ -98,6 +97,8 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
               message={message}
               type={type}
               handleDelete={handleDelete}
+              eventOrCarGroup={eventOrCarGroup}
+              //todo check for a simpler way to add who the car owner is instead of passing eventOrCarGroup to each message
             />}
           )}
         </Box>

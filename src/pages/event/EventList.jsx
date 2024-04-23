@@ -38,7 +38,8 @@ function EventList() {
 
   let eventsToDisplay;
   const today = new Date()
-  // today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  today.setHours(0, 0, 0, 0); 
+  //* Above will include events for the same day. FE and BE won't allow them to join if they are in the last a few hours.
   if (timeFrame === "upcoming") {
     eventsToDisplay = events.filter((event) => new Date(event.date) >= today)
   } else if (timeFrame === "past") {

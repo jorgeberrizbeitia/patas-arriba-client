@@ -126,7 +126,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
         {fromDetails && <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Organizado por:</Typography>
-          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner.username}</Link>
+          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner?.username}</Link>
         </Typography>}
 
         <br />

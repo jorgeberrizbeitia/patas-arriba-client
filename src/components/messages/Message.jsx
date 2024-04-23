@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import formatDate from '@utils/formatDate';
 
-function Message({message, type, handleDelete}) {
+function Message({message, type, handleDelete, eventOrCarGroup}) {
 
   const { _id, isDeleted, sender, text, createdAt } = message
 

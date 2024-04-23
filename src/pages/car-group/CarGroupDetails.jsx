@@ -40,8 +40,6 @@ function CarGroupDetails() {
   const [ carGroup, setCarGroup ] = useState(null)
   const [ carGroupMessages, setCarGroupMessages ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ showMap, setShowMap ] = useState(false)
-  const [ showActions, setShowActions ] = useState(false)
   const [ showPassengers, setShowPassengers ] = useState(false)
 
   useEffect(() => {
@@ -148,7 +146,7 @@ function CarGroupDetails() {
         </Collapse>
       </Card>
 
-      <EventMessageBoard type="car-group" eventOrCarGroup={carGroup} messages={[]}/>
+      <EventMessageBoard type="car-group" eventOrCarGroup={carGroup} messages={carGroupMessages} setMessages={setCarGroupMessages}/>
 
       {!isOwner && <CarGroupLeaveButton carGroup={carGroup}/>}
 

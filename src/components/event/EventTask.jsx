@@ -11,7 +11,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Typography from '@mui/material/Typography'
 
-function EventTask({myAttendee}) {
+function EventTask({userAttendee}) {
 
   const [ showDescription, setshowDescription ] = useState(false)
 
@@ -19,18 +19,18 @@ function EventTask({myAttendee}) {
     <>
       <hr />
 
-      {!myAttendee.task && <Typography sx={{width: "100%", pb: 1}} color="warning.main">
+      {!userAttendee.task && <Typography sx={{width: "100%", pb: 1}} color="warning.main">
         Aun no tienes tarea asignada, revisa más cerca de la fecha del evento para saber como puedes apoyar el día del evento.
       </Typography>}
 
-      {myAttendee.task && <Typography sx={{width: "100%", pb: 1}} color="success.main">
+      {userAttendee.task && <Typography sx={{width: "100%", pb: 1}} color="success.main">
         ¡Ya tienes una tarea asignada para el evento!
       </Typography>}
 
-      {myAttendee.task && <Card sx={{width: "100%"}}>
+      {userAttendee.task && <Card sx={{width: "100%"}}>
         <CardHeader
           avatar={<AssignmentIcon />}
-          title={myAttendee.task}
+          title={userAttendee.task}
           sx={{pr: 8}}
           />
         </Card>}

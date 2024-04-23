@@ -31,8 +31,8 @@ function EventDetails() {
   const [ event, setEvent ] = useState(null)
   const [ eventCarGroups, setEventCarGroups ] = useState(null)
   const [ eventMessages, setEventMessages ] = useState(null)
-  const [ myAttendee, setMyAttendee ] = useState(null)
-
+  const [ userAttendee, setUserAttendee ] = useState(null)
+  console.log(userAttendee)
   useEffect(() => {
     getEventDetails()
   }, [])
@@ -50,7 +50,7 @@ function EventDetails() {
       setEventMessages(response.data.messages)
 
       const foundAttendee = response.data.eventDetails.attendees.find((attendee) => attendee.user._id == loggedUserId)
-      setMyAttendee(foundAttendee)
+      setUserAttendee(foundAttendee)
 
       setIsLoading(false)
 
@@ -64,6 +64,7 @@ function EventDetails() {
     try {
       const response = await service.post(`/attendee/${eventId}`)
       setEvent({...event, attendees: [...event.attendees, response.data]})
+      setUserAttendee(response.data)
     } catch (error) {
       navigate("/server-error")
     }
@@ -72,7 +73,8 @@ function EventDetails() {
   const handleLeaveEvent = async () => {
     try {
       await service.delete(`/attendee/${event._id}`)
-      getEventDetails() // to get new list of participants
+      setEvent({...event, attendees: event.attendees.filter((attendee) => attendee.user._id != loggedUserId)})
+      setUserAttendee(null)
     } catch (error) {
       navigate("/server-error")
     }
@@ -82,14 +84,14 @@ function EventDetails() {
     return <Loading />
   }
 
-  const hasUserJoined = event.attendees.some((attendee) => attendee.user._id == loggedUserId)
+  // const hasUserJoined = event.attendees.some((attendee) => attendee.user._id == loggedUserId)
   const myCarGroup = eventCarGroups.find((eachCarGroup) => {
     return eachCarGroup.passengers.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
   })
   const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.passengers.length), 0)
 
   const today = new Date()
-  today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  // today.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
   const isEventInThePast = new Date(event.date) < today
 
   return (
@@ -98,20 +100,25 @@ function EventDetails() {
       <GoBack to={`/event`}/> 
 
       {event.status === "cancelled" && <>
-      <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>
-      <hr />
+        <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>
+        <hr />
       </>}
 
       {event.status === "closed" && <>
-      <Typography variant="h3" color="warning.main" gutterBottom>Este evento ya no acepta nuevos participantes</Typography>
-      <hr />
+        <Typography variant="h3" color="warning.main" gutterBottom>Este evento ya no acepta nuevos participantes</Typography>
+        <hr />
       </>}
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      {hasUserJoined && loggedUserRole === "admin" && <Button variant="contained" color="primary" onClick={() => navigate(`/event/${event._id}/manage`)}>Gestiona los participantes</Button>}
+      {loggedUserRole === "admin" && userAttendee && <Button 
+        variant="contained"
+        sx={{mb: 2}}
+        color="primary" 
+        onClick={() => navigate(`/event/${event._id}/manage`)}
+        > Gestiona los participantes</Button>}
 
-      {!hasUserJoined && !isEventInThePast && <Box>
+      {!userAttendee && !isEventInThePast && <Box>
         <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
           {event.status === "open" && "¡Unete al evento!"}
           {event.status === "closed" && "Evento cerrado"}
@@ -119,27 +126,30 @@ function EventDetails() {
         </Button>
       </Box>}
 
-      {isEventInThePast && <Button size="large" variant="contained" disabled={true}>este evento ya ha pasado</Button>}
+      {isEventInThePast && !userAttendee && <Button 
+        size="large" 
+        variant="contained" 
+        disabled={true}
+        > este evento ya ha pasado</Button>}
 
       <hr />
 
-      {hasUserJoined && <Typography sx={{width: "100%"}}variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
+      {userAttendee && <Typography sx={{width: "100%"}}variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
+      {userAttendee && event.description && <EventDescription event={event}/> }
 
-      {hasUserJoined && event.description && <EventDescription event={event}/> }
-
-      {hasUserJoined && <EventParticipantsCard attendees={event.attendees}/> }
+      {userAttendee && <EventParticipantsCard attendees={event.attendees}/> }
       {/* //todo change name to attendees */}
 
-      {hasUserJoined && event.hasTaskAssignments && <EventTask myAttendee={myAttendee}/> }
+      {userAttendee && event.hasTaskAssignments && <EventTask userAttendee={userAttendee}/> }
 
-      {(hasUserJoined && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
+      {(userAttendee && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
       {/* //todo show all cars to admin with qty, people and assigned */}
 
-      {hasUserJoined && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
+      {userAttendee && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
 
-      {hasUserJoined && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event}/>}
+      {userAttendee && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event}/>}
 
     </>
   )
