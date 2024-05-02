@@ -10,6 +10,7 @@ import UpdateSingleField from "@components/user/UpdateSingleField";
 import UpdateUserIcon from "@components/user/UpdateUserIcon";
 import UserIcon from "@components/user/UserIcon";
 import GoBack from "@components/navigation/GoBack";
+import Alert from "@mui/material/Alert";
 
 
 function OwnUserDetails() {
@@ -78,10 +79,12 @@ function OwnUserDetails() {
       </Typography>
 
       <Typography variant="body1" gutterBottom>
-        <span>Telefono: </span>
+        <span>Teléfono: </span>
         <span>+{phoneCode} {phoneNumber}</span>
         {/* //todo update phone number  */}
       </Typography>
+
+      <Alert severity="info">Si necesitas modificar tu correo electrónico o número telefónico, contacta a un administrador</Alert>
 
       <hr />
 

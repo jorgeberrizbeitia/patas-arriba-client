@@ -69,9 +69,6 @@ function UserDetails() {
 
         <CardContent sx={{display: "flex", flexDirection: "column"}}>
           <Typography variant="body">
-            {email}
-          </Typography>
-          <Typography variant="body">
             +{phoneCode} {phoneNumber}
           </Typography>
           {role === "admin" && <Typography variant="body" color="warning.main">
