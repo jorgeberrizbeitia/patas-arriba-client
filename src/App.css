@@ -9,17 +9,17 @@ html {
 }
 
 a:visited {
-  /* weird but with mui and rect-router-dom links */
+  /* //* weird but with mui and rect-router-dom links */
   color: #EFB665
 }
 
 .remove-margin {
-  /* weird bug with mui adding a small margin-left on some Icons */
+  /* //* weird bug with mui adding a small margin-left on some Icons */
   margin: 0 !important;
 }
 
 hr {
-  /* better than mui Divider */ 
+  /* //* better than mui Divider */ 
   margin: 20px;
   border: none;
   border-top: 1px solid #EFB665;
@@ -28,9 +28,14 @@ hr {
 }
 
 .MuiIconButton-root {
-  /* to allow icon caption at the bottom */
+  /* //* to allow icon caption at the bottom */
   display: flex;
   flex-direction: column;
+}
+
+.MuiAlert-root {
+  /* //* To manually adjust the font size of all Alerts. It will use the same value as captions */
+  font-size: 0.75rem !important;
 }
 
 @media (min-width: 600px) {

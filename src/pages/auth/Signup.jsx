@@ -149,6 +149,7 @@ function Signup() {
     setPhoneNumber(updatedstate);
   };
 
+
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
     const updatedstate = validateField(
@@ -297,6 +298,8 @@ function Signup() {
           />
         </Box>
 
+        <Alert severity="warning">Tu número telefónico podrá ser compartido con otros voluntarios para ponerse en contacto al organizar eventos o grupos de coche</Alert>
+
         <TextField
           label="Contraseña"
           type={showPassword ? "text" : "password"}
@@ -359,7 +362,7 @@ function Signup() {
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
 
-        <Alert sx={{mt: 2}} severity="info">Luego de registrarte deberas contactar a algún fundador de Patas Arriba para habilitar a tu usuario y poder acceder</Alert>
+        <Alert sx={{mt: 2}} severity="info">Luego de registrarte deberas contactar a algún fundador de Patas Arriba para habilitar tu usuario y poder acceder</Alert>
       </Box>
 
       <br />

@@ -8,6 +8,11 @@ import { BrowserRouter } from "react-router-dom"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { AuthWrapper } from './context/auth.context'
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 const theme = createTheme({
   typography: {
     h1: {
@@ -51,7 +56,7 @@ const theme = createTheme({
     },
     icon: {
       fontSize: '0.5rem', 
-    }
+    },
   },
   palette: {
     primary: {
@@ -86,11 +91,6 @@ const theme = createTheme({
     },
   },
 });
-
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
