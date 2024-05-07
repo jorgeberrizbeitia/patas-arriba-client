@@ -129,7 +129,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
           variant="contained" 
           disabled={isSending} 
           onClick={handleSubmit} 
-          size='small'
+          size='medium'
           sx={{width: "80px", height: "55px", ml: 1}}
         >Enviar</Button>
       </Box>

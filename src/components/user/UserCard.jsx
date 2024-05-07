@@ -6,12 +6,15 @@ import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Typography from '@mui/material/Typography'
 import UserIcon from "./UserIcon";
+import { useContext } from "react";
+import { AuthContext } from "@context/auth.context.jsx"
 
 
 function UserCard({user}) {
 
   const navigate = useNavigate()
   const { _id, username, role } = user
+  const { loggedUserId } = useContext(AuthContext)
 
   const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
 
@@ -21,11 +24,14 @@ function UserCard({user}) {
       avatar={
         <UserIcon user={user} size="small"/>
       }
-      title={username}
+      title={<Typography variant="body2">
+        <Typography variant="span">{user.username}</Typography>
+        <Typography variant="span" color={"success.main"}>{user._id == loggedUserId && " (tú)"}</Typography>
+      </Typography>}
       subheader={<Typography variant="caption" color={color}>{role}</Typography>}
       action={<IconButton onClick={() => navigate(`/user/${_id}`)}>
         <ReadMoreIcon />
-        <Typography variant="icon">Ver más</Typography>
+        <Typography variant="icon">Ver info</Typography>
       </IconButton>}
       />
     </Card>

@@ -13,11 +13,12 @@ import { AuthContext } from "@context/auth.context"
 
 import EventMessageBoard from "@components/messages/EventMessageBoard";
 import EventCard from "@components/event/EventCard";
-import EventParticipantsCard from "../../components/event/EventParticipantsCard";
+import EventParticipantsCollapse from "../../components/event/EventParticipantsCollapse";
 import EventLeaveButton from "../../components/event/EventLeaveButton";
 import EventCarGroupInfoCard from "../../components/event/EventCarGroupInfoCard";
 import EventDescription from "@components/event/EventDescription";
 import EventTask from "@components/event/EventTask";
+import CarGroupCollapse from "@components/car-group/CarGroupCollapse";
 
 
 function EventDetails() {
@@ -86,8 +87,12 @@ function EventDetails() {
 
   // const hasUserJoined = event.attendees.some((attendee) => attendee.user._id == loggedUserId)
   const myCarGroup = eventCarGroups.find((eachCarGroup) => {
-    return eachCarGroup.passengers.includes(loggedUserId) || eachCarGroup.owner._id == loggedUserId
+    const loggedUserIsCarGroupOwner = eachCarGroup.owner._id == loggedUserId
+    const loggedUserIsCarGroupParticipant = eachCarGroup.passengers.some((passenger) => passenger._id == loggedUserId)
+    return loggedUserIsCarGroupOwner || loggedUserIsCarGroupParticipant
   })
+  console.log(myCarGroup);
+  
   const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.passengers.length), 0)
 
   const today = new Date()
@@ -113,6 +118,7 @@ function EventDetails() {
 
       {loggedUserRole === "admin" && userAttendee && <Button 
         variant="contained"
+        size="medium"
         sx={{mb: 2}}
         color="primary" 
         onClick={() => navigate(`/event/${event._id}/manage`)}
@@ -138,14 +144,14 @@ function EventDetails() {
 
       {userAttendee && event.description && <EventDescription event={event}/> }
 
-      {userAttendee && <EventParticipantsCard attendees={event.attendees}/> }
+      {userAttendee && <EventParticipantsCollapse attendees={event.attendees}/> }
       {/* //todo change name to attendees */}
 
-      {userAttendee && event.hasTaskAssignments && <EventTask userAttendee={userAttendee}/> }
+      {userAttendee && event.hasCarOrganization && <CarGroupCollapse carGroups={eventCarGroups}/> }
 
       {(userAttendee && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
-      {/* //todo show all cars to admin with qty, people and assigned */}
+      {userAttendee && event.hasTaskAssignments && <EventTask userAttendee={userAttendee}/> }
 
       {userAttendee && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
 

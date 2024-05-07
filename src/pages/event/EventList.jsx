@@ -56,11 +56,11 @@ function EventList() {
       <br />
 
       <Box display="flex" gap="20px">
-        <Button onClick={() => setTimeFrame("upcoming")} sx={{width: "120px"}} variant={timeFrame === "upcoming" ? "contained" : "outlined"} color="primary">
+        <Button onClick={() => setTimeFrame("upcoming")} sx={{width: "120px"}} size="medium" variant={timeFrame === "upcoming" ? "contained" : "outlined"} color="primary">
           Próximos
         </Button>
 
-        <Button onClick={() => setTimeFrame("past")} sx={{width: "120px"}} variant={timeFrame === "past" ? "contained" : "outlined"} color="primary">
+        <Button onClick={() => setTimeFrame("past")} sx={{width: "120px"}} size="medium" variant={timeFrame === "past" ? "contained" : "outlined"} color="primary">
           Pasados
         </Button>
       </Box>

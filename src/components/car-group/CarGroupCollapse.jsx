@@ -9,27 +9,30 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import CarGroupListItem from "./CarGroupListItem";
 
-function EventParticipantsCard({attendees}) {
+function EventParticipantsCollapse({carGroups}) {
+  console.log(carGroups);
+  
 
-  const [ showParticipants, setShowParticipants ] = useState(false)
+  const [ showCarGroups, setShowCarGroups ] = useState(false)
 
   return (
     <>
       <hr />
       <Card sx={{width: "100%"}}>
         <CardHeader
-          subheader={`Participantes: ${attendees.length}`}
+        sx={{textAlign: "start", pl: 5}}
+          subheader={`Ver Coches: ${carGroups.length}`}
           action={
-            <IconButton onClick={() => setShowParticipants(!showParticipants)}>
-              {showParticipants ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <IconButton onClick={() => setShowCarGroups(!showCarGroups)}>
+              {showCarGroups ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           }
         />
-        <Collapse in={showParticipants}>
+        <Collapse in={showCarGroups}>
 
-        {attendees.map((eachAttendee) => <UserCard key={eachAttendee._id} user={eachAttendee.user}/>)}
-        {/* //todo to admin show all not in cars */}
+        {carGroups.map((carGroup) => <CarGroupListItem key={carGroup._id} carGroup={carGroup}/>)}
 
         </Collapse>
       </Card>
@@ -37,4 +40,4 @@ function EventParticipantsCard({attendees}) {
   )
 }
 
-export default EventParticipantsCard
+export default EventParticipantsCollapse

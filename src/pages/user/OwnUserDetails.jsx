@@ -11,7 +11,7 @@ import UpdateUserIcon from "@components/user/UpdateUserIcon";
 import UserIcon from "@components/user/UserIcon";
 import GoBack from "@components/navigation/GoBack";
 import Alert from "@mui/material/Alert";
-
+import formatDate from "@utils/formatDate.js"
 
 function OwnUserDetails() {
 
@@ -89,8 +89,8 @@ function OwnUserDetails() {
       <hr />
 
       <Typography variant="body1">
-        <span>Desde: </span>
-        <span>{new Date(createdAt).toDateString()}</span>
+        <span>Usuario desde: </span>
+        <span>{formatDate(createdAt, "member-since")}</span>
       </Typography>
     </>
   )

@@ -130,7 +130,7 @@ function CarGroupDetails() {
 
       <Card sx={{width: "100%"}}>
         <CardHeader
-          sx={{pl:7}}
+          sx={{textAlign: "start"}}
           subheader={`Conductor y pasajeros: ${passengers.length+1}`}
           action={
             <IconButton onClick={() => setShowPassengers(!showPassengers)}>

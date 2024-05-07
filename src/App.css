@@ -38,6 +38,18 @@ hr {
   font-size: 0.75rem !important;
 }
 
+.MuiButton-containedSizeSmall, .MuiButton-outlinedSizeSmall, .MuiButton-textSizeSmall {
+  font-size: 0.575rem !important;
+}
+
+.MuiButton-containedSizeMedium, .MuiButton-outlinedSizeMedium, .MuiButton-textSizeMedium {
+  font-size: 0.625rem;
+}
+
+.MuiButton-containedSizeLarge, .MuiButton-outlinedSizeLarge, .MuiButton-textSizeLarge {
+  font-size: 0.75rem;
+}
+
 @media (min-width: 600px) {
   html {
     font-size: 19px;

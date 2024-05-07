@@ -27,9 +27,9 @@ function EventCarGroupInfoCard({myCarGroup}) {
           ¡Ya tienes un coche asignado!
         </Typography>
 
-        <Card sx={{width: "100%"}}>
+        <Card sx={{bgcolor: "gray.transparent", width: "100%"}}>
         <CardHeader
-          avatar={<DirectionsCarIcon />}
+          avatar={<DirectionsCarIcon color="success"/>}
           title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${myCarGroup.owner.username}`}
           action={
             <IconButton 
@@ -37,7 +37,7 @@ function EventCarGroupInfoCard({myCarGroup}) {
               onClick={() => navigate(`/car-group/${myCarGroup._id}`)}
             >
               <ReadMoreIcon />
-              <Typography variant="caption">Ver info</Typography>
+              <Typography variant="icon">Ver info</Typography>
             </IconButton>
             }
           />
@@ -59,11 +59,11 @@ function EventCarGroupInfoCard({myCarGroup}) {
 
         <Box display="flex" justifyContent="space-evenly" width="100%">
 
-          <Button size="small" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
+          <Button size="medium" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
             Voy con mi coche
           </Button>
 
-          <Button size="small" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
+          <Button size="medium" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
             Buscar coche
           </Button>
           

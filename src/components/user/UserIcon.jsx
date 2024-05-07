@@ -6,12 +6,25 @@ function UserIcon({size, user, caption}) {
 
   const { icon, iconColor } = user
 
+  let boxSize;
+  let imgSize;
+  if (size === "small") {
+    boxSize = 30
+    imgSize = 15
+  } else if (size === "small") {
+    boxSize = 100
+    imgSize = 50
+  } else {
+    boxSize = 200
+    imgSize = 100
+  }
+
   return (<Box>
     <Box 
       bgcolor={iconColor} 
       borderRadius="50%" 
-      width={size === "small" ? 30 : (size === "medium" ? 100 : 200)} 
-      height={size === "small" ? 30 : (size === "medium" ? 100 : 200)} 
+      width={boxSize} 
+      height={boxSize} 
       display="flex" 
       justifyContent="center" 
       alignItems="center"
@@ -19,8 +32,8 @@ function UserIcon({size, user, caption}) {
       <img 
         src={icon} 
         alt={`icono-de-perfil`} 
-        width={size === "small" ? 15 : (size === "medium" ? 50 : 100)} 
-        height={size === "small" ? 15 : (size === "medium" ? 50 : 100)} 
+        width={imgSize} 
+        height={imgSize} 
       />
     </Box>
     {caption && <Typography sx={{fontSize: 8}} variant="caption" color="initial">{user.username}</Typography>}

@@ -13,8 +13,6 @@ import Typography from '@mui/material/Typography'
 
 function EventTask({userAttendee}) {
 
-  const [ showDescription, setshowDescription ] = useState(false)
-
   return (
     <>
       <hr />
@@ -29,7 +27,7 @@ function EventTask({userAttendee}) {
 
       {userAttendee.task && <Card sx={{width: "100%"}}>
         <CardHeader
-          avatar={<AssignmentIcon />}
+          avatar={<AssignmentIcon color="success"/>}
           title={userAttendee.task}
           sx={{pr: 8}}
           />

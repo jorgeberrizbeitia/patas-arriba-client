@@ -4,7 +4,7 @@ import service from "@service/config"
 import { useParams } from "react-router-dom"
 import Loading from "@components/ui/Loading"
 import Alert from "@mui/material/Alert"
-import AttendeeCarGroupCard from "./AttendeeCarGroupCar"
+import AttendeeCarGroupCard from "./AttendeeCarGroupCard"
 
 
 function AttendeeCarGroups({attendees, carGroups}) {

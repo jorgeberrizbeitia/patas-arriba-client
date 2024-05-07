@@ -15,6 +15,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
 import CornerChip from '@components/ui/CornerChip';
 import capitalizeAll from '@utils/capitalizeAll';
+import formatDate from "@utils/formatDate.js"
 
 
 
@@ -98,13 +99,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Fecha:</Typography>
-          <Typography variant="span" color="initial"> {new Date(event.date).toLocaleDateString('es-ES', {
-            weekday: 'long', // Display the full name of the weekday (e.g., "lunes")
-            year: 'numeric', // Display the year (e.g., "2024")
-            month: 'long', // Display the full name of the month (e.g., "abril")
-            day: 'numeric', // Display the day of the month (e.g., "21")
-          })}
-          </Typography>
+          <Typography>{formatDate(event.date, "event")}</Typography>
         </Typography>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -142,7 +137,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
       {!fromDetails && 
         <CardActions sx={{ justifyContent: 'center'}}>
-          <Button size="small" onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
+          <Button size="medium" onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
         </CardActions>
       }
 

@@ -10,7 +10,6 @@ import { useState } from "react";
 import service from "@service/config";
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 
-
 function AttendeeCarGroupCard({attendee}) {
 
   const navigate = useNavigate()
