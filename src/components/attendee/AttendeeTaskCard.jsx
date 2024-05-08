@@ -49,7 +49,9 @@ function AttendeeTaskCard({attendee, setAttendees}) {
       margin={0.5}
       borderRadius={1}
      >
+     <Box width="75px" overflow="hidden" display="flex">
       <UserIcon user={user} size="small" caption/>
+     </Box>
       <TextField
         fullWidth
         sx={{ml: 1}}

@@ -60,7 +60,7 @@ function UserDetails() {
       
       <Card sx={{width: "100%"}}>
         <CardHeader
-          avatar={<UserIcon size="medium" user={user}/>}
+          avatar={<UserIcon user={user}/>}
           title={username}
           subheader={capitalizeAll(fullName)}
         />

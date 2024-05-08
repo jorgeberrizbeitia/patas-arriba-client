@@ -34,53 +34,55 @@ function Message({message, type, handleDelete, eventOrCarGroup}) {
   const isSender = sender._id == loggedUserId
   const isAdmin = sender.role === "admin"
   const carOwner = type === "car-group" && sender._id === eventOrCarGroup.owner._id
-  console.log(carOwner);
+  const isOrganizer = type === "event" && eventOrCarGroup.owner._id == sender._id
   
 
   return (
     <>
-      <Box display="flex" textAlign={isSender ? "right" : "left"} padding={1} paddingRight={isDeleted ? 1 : 0}>
-
-        <Box width="100%" display="flex" flexDirection="column">
-
-          <Box width="100%" display="flex" alignItems="center" gap={1}>
-
-            {!isSender && <UserIcon user={sender} size="small"/>}
-
-            <Box width="100%" display="flex" flexDirection="column">
-              <Typography>
-                <Typography component="span" variant="caption" color={isSender ? "#2ECC71" : "#3498DB"}>
-                  {isSender ? "Tú" : sender.username}
-                </Typography>
-                {isAdmin && <Typography variant="caption" style={{color: "#F39C12"}}> (admin)</Typography>}
-                {carOwner && <Typography variant="caption" style={{color: "#F39C12"}}> (conductor)</Typography>}
+      <ListItem sx={{pr: 1}}>
+        {!isSender && 
+          <ListItemAvatar onClick={() => navigate(`/user/${sender._id}`)}>
+            <UserIcon user={sender} size="small"/>
+          </ListItemAvatar>
+        }
+        <Box display="flex" width="100%" textAlign={isSender ? "right" : "left"}>
+          <ListItemText
+            primary={<>
+              <Typography component="span" variant="caption" color={isSender ? "#2ECC71" : "#3498DB"}>
+                {isSender ? "Tú" : sender.username}
               </Typography>
-              <Typography variant="caption" color="textSecondary">{formatDate(createdAt, "chat")}</Typography>
-            </Box>
+              {/* <Typography component="span" variant="caption"> - </Typography> */}
+              {isOrganizer && <Typography variant="caption" style={{color: "#F39C12"}}> - organizador </Typography>}
+              {carOwner && <Typography variant="caption" style={{color: "#F39C12"}}> - conductor </Typography>}
+              {isAdmin && !carOwner && !isOrganizer && <Typography variant="caption" style={{color: "#F39C12"}}> - admin </Typography>}
+              {/* {(isAdmin || carOwner) && <Typography component="span" variant="caption"> - </Typography>} */}
+              <Typography variant="caption" color="textSecondary">
+                {", "}{formatDate(createdAt, "chat")}
+              </Typography>
+            </>
+            }
+            sx={{ wordBreak: 'break-word' }}
+            secondary={
+              <Typography variant='body2' color={isDeleted ? "error" : "text"}>{text}</Typography>
+            }/>
 
-          </Box>
-
-          <Typography sx={{marginTop: 1}} variant='body2' color={isDeleted ? "error" : "text"}>{text}</Typography>
-
+          {isSender && !isDeleted && (
+            <>
+              <IconButton onClick={handleMenuOpen} size='small' sx={{p: 0, borderRadius: 2}}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={() => handleDelete(_id)}>Delete</MenuItem>
+              </Menu>
+            </>
+          )}
         </Box>
-
-        {isSender && !isDeleted && (
-          <>
-            <IconButton onClick={handleMenuOpen} size='small' sx={{p: 0, borderRadius: 2}}>
-              <MoreVertIcon />
-            </IconButton>
-             <Menu
-              anchorEl={anchorEl}
-               open={Boolean(anchorEl)}
-               onClose={handleMenuClose}
-            >
-              <MenuItem onClick={() => handleDelete(_id)}>Delete</MenuItem>
-            </Menu>
-          </>
-        )}
-
-      </Box>
-      <Divider />
+      </ListItem>
+      <Divider variant="middle" component="li" />
     </>
   )
 }

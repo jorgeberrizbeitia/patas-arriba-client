@@ -66,7 +66,9 @@ function AttendeeAttendanceCard({attendee, setAttendees}) {
       margin={0.5}
       borderRadius={1}
      >
-      <UserIcon user={user} size="small" caption/>
+      <Box width="75px" overflow="hidden" display="flex">
+        <UserIcon user={user} size="small" caption/>
+     </Box>
       <TextField
         select
         fullWidth

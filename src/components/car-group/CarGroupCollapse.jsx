@@ -12,8 +12,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CarGroupListItem from "./CarGroupListItem";
 
 function EventParticipantsCollapse({carGroups}) {
-  console.log(carGroups);
-  
+
 
   const [ showCarGroups, setShowCarGroups ] = useState(false)
 

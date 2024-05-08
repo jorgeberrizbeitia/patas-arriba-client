@@ -42,8 +42,12 @@ function CarGroupDelete({carGroup}) {
   
         <Alert severity='error' sx={{mt: 2}}>
           <Typography variant="body2" color="error">Estas seguro que quieres eliminar el Grupo de Coche?</Typography>
-          <Button onClick={handleDelete} variant="contained" color="error" sx={{mt: 2}} >
-            Si, eliminalo!
+          <Button 
+            onClick={handleDelete} 
+            variant="contained" 
+            color="error" 
+            sx={{mt: 2}} 
+          >Si, eliminalo!
           </Button>
         </Alert>
   

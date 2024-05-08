@@ -39,15 +39,16 @@ function CarGroupListItem({carGroup}) {
         avatar={ 
           <Box display="flex" flexDirection="column">
             <DirectionsCarIcon />
-            {/* <UserIcon user={owner} size="small" caption/> */}
             <Typography variant="caption">{passengers.length + 1} / {roomAvailable + 1}</Typography>
           </Box>
          }
         
-        title={<Typography variant="body2">Conductor: {owner.username}</Typography>}
-        //* +1 to account for driver
+        title={<Typography variant="body2">
+          <Typography variant='span' fontWeight="bold">Conductor: </Typography>
+          <Typography variant='span'>{owner.username}</Typography>
+        </Typography>}
         subheader={<Typography variant='body2'>
-          <Typography variant="span">Pasajeros: </Typography>
+          <Typography variant="span" fontWeight="bold">Pasajeros: </Typography>
           {passengers.map((passenger, index) => {
             return <Typography key={passenger._id} variant="span">{passenger.username}{index === passengers.length - 1 ? "" : ", "}</Typography>
           })}

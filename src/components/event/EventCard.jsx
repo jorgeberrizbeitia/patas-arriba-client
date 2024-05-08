@@ -68,7 +68,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   }
 
   return (
-    <Card raised sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
+    <Card raised={fromDetails ? false : true} sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
       
       {cornerTimeFrameChip}
 
@@ -99,7 +99,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Fecha:</Typography>
-          <Typography>{formatDate(event.date, "event")}</Typography>
+          <Typography variant="span" color="initial"> {formatDate(event.date, "event")}</Typography>
         </Typography>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -128,7 +128,6 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
         <Box display="flex" justifyContent="center" gap="5px">
           {timeFrameChip}
-          {/* {categoryChip} */}
           {statusChip}
           {joinedChip}
         </Box>
@@ -137,7 +136,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
       {!fromDetails && 
         <CardActions sx={{ justifyContent: 'center'}}>
-          <Button size="medium" onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
+          <Button onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
         </CardActions>
       }
 

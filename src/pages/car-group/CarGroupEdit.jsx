@@ -57,7 +57,7 @@ function CarGroupEdit() {
           onClick={() => setEditType(1)} 
           variant={editType === 1 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "35%", height: 80}}
+          sx={{width: "35%", height: 55}}
         > Editar info </Button>
         {/* //todo cambiar todos los editar, modificar, actualizar a la misma palabra */}
 
@@ -65,7 +65,7 @@ function CarGroupEdit() {
           onClick={() => setEditType(2)} 
           variant={editType === 2 ? "contained" : "outlined"} 
           color="error" 
-          sx={{width: "35%", height: 80}}
+          sx={{width: "35%", height: 55}}
         >Eliminar</Button>
 
       </Box>

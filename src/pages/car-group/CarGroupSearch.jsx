@@ -48,7 +48,8 @@ function CarGroupSearch () {
     try {
       
       await service.patch(`car-group/${selectedCarGroupId}/join`)
-      navigate(`/car-group/${selectedCarGroupId}`)
+      // navigate(`/car-group/${selectedCarGroupId}`)
+      navigate(-1)
 
     } catch (error) {
       navigate("/server-error")
@@ -82,11 +83,11 @@ function CarGroupSearch () {
             selectedCarGroupId={selectedCarGroupId}
           />
         )}
-        <Button 
-            sx={{margin: "30px"}}
+        <Button
             variant="contained"
             disabled={!selectedCarGroupId}
             onClick={handleJoinCarGroup}
+            sx={{mt: 2}}
           >{selectedCarGroupId ? "Unete al grupo de coche!" : "Selecciona un grupo de coche"}</Button>
       </>}
       

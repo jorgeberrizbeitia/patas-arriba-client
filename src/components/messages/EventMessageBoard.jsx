@@ -117,6 +117,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           variant="outlined"
+          inputProps={{ maxLength: 140 }}
           multiline
           rows={1}
           margin="normal"

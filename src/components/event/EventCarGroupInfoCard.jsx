@@ -59,11 +59,11 @@ function EventCarGroupInfoCard({myCarGroup}) {
 
         <Box display="flex" justifyContent="space-evenly" width="100%">
 
-          <Button size="medium" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
+          <Button variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
             Voy con mi coche
           </Button>
 
-          <Button size="medium" variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
+          <Button variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
             Buscar coche
           </Button>
           

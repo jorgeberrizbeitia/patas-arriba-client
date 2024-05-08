@@ -51,9 +51,6 @@ const theme = createTheme({
     overline: {
       fontSize: '0.625rem', 
     },
-    // button: {
-    //   fontSize: '0.625rem',
-    // },
     icon: {
       fontSize: '0.5rem', 
     },

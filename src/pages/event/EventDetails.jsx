@@ -33,7 +33,6 @@ function EventDetails() {
   const [ eventCarGroups, setEventCarGroups ] = useState(null)
   const [ eventMessages, setEventMessages ] = useState(null)
   const [ userAttendee, setUserAttendee ] = useState(null)
-  console.log(userAttendee)
   useEffect(() => {
     getEventDetails()
   }, [])
@@ -91,7 +90,6 @@ function EventDetails() {
     const loggedUserIsCarGroupParticipant = eachCarGroup.passengers.some((passenger) => passenger._id == loggedUserId)
     return loggedUserIsCarGroupOwner || loggedUserIsCarGroupParticipant
   })
-  console.log(myCarGroup);
   
   const totalRoomAvailableInCarGroups = eventCarGroups.reduce((acc, group) => acc + (group.roomAvailable - group.passengers.length), 0)
 
@@ -118,14 +116,13 @@ function EventDetails() {
 
       {loggedUserRole === "admin" && userAttendee && <Button 
         variant="contained"
-        size="medium"
         sx={{mb: 2}}
         color="primary" 
         onClick={() => navigate(`/event/${event._id}/manage`)}
         > Gestiona los participantes</Button>}
 
       {!userAttendee && !isEventInThePast && <Box>
-        <Button size="large" variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
+        <Button variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
           {event.status === "open" && "¡Unete al evento!"}
           {event.status === "closed" && "Evento cerrado"}
           {event.status === "cancelled" && "Evento cancelado"}
@@ -133,7 +130,6 @@ function EventDetails() {
       </Box>}
 
       {isEventInThePast && !userAttendee && <Button 
-        size="large" 
         variant="contained" 
         disabled={true}
         > este evento ya ha pasado</Button>}

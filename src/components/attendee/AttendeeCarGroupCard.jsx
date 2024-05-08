@@ -38,12 +38,14 @@ function AttendeeCarGroupCard({attendee}) {
         justifyContent="center"
         alignItems="center"
       >
-        <UserIcon user={user} size="small" caption/>
+        <Box width="75px" minWidth="75px" overflow="hidden" display="flex">
+          <UserIcon user={user} size="small" caption/>
+        </Box>
 
         <Typography 
           variant="body1" 
           color={(isCarOwner || isCarPassenger) ? "success.main" : "error.main"}
-          sx={{pl: 2}}
+          textAlign="start"
         >
           {!carGroup && `No tiene coche asignado` }
           {carGroup && isCarOwner && "Va en coche propio"}

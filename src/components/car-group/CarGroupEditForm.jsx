@@ -2,8 +2,6 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import service from "@service/config";
 
-import mapExample from "@assets/images/map-example.png"
-
 // MUI Components
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";

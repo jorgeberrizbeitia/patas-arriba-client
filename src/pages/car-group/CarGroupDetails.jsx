@@ -15,7 +15,6 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import mapExample from "@assets/images/map-example.png"
 import Loading from "@components/ui/Loading";
 
 import { useNavigate, useParams } from 'react-router-dom';
