@@ -15,11 +15,12 @@ function AttendeeCarGroupCard({attendee}) {
   const navigate = useNavigate()
 
   const { user, carGroup } = attendee
+  
   //* this attendee includes car groups. Check AttendeeCarGroups
   const { _id, username, fullName, role } = user
 
   const isCarOwner = user._id == carGroup?.owner._id
-  const isCarPassenger = carGroup?.passengers?.some((passenger) =>  passenger == user._id)
+  const isCarPassenger = carGroup?.passengers?.some((passenger) => passenger._id == user._id)
   
   return (
     <Box 

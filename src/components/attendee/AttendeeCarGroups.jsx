@@ -9,11 +9,11 @@ import AttendeeCarGroupCard from "./AttendeeCarGroupCard"
 
 function AttendeeCarGroups({attendees, carGroups}) {
 
-  const attendeesWithCarGroups = attendees.map((attendee) => {
+  const attendeesWithCarGroupsProperty = attendees.map((attendee) => {
     //* map to add car group information to the attendee objects
     attendee.carGroup = carGroups.find((carGroup) => {
       const isAttendeeCar = carGroup.owner._id == attendee.user._id
-      const isAttendeeAsPassenger = carGroup.passengers.some((passenger) => passenger == attendee.user._id)
+      const isAttendeeAsPassenger = carGroup.passengers.some((passenger) => passenger._id == attendee.user._id)
       return (isAttendeeCar || isAttendeeAsPassenger)
     })
     return attendee
@@ -21,8 +21,10 @@ function AttendeeCarGroups({attendees, carGroups}) {
 
   return (
     <>
-      {attendeesWithCarGroups.map((attendee) => <AttendeeCarGroupCard key={attendee._id} attendee={attendee}/>)}
+      {attendeesWithCarGroupsProperty.map((attendee) => <AttendeeCarGroupCard key={attendee._id} attendee={attendee}/>)}
       {/* //* not sorting by no car assigned because it changes order compared to other two manage types */}
+
+      {attendeesWithCarGroupsProperty.some((attendee) => !attendee.carGroup) && <Alert severity="warning">Aun hay usuarios sin coche asignado</Alert>}
     </>
   )
 }
