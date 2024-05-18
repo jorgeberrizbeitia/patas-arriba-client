@@ -132,7 +132,7 @@ function EventCreate() {
     const dateWithTime = new Date(`${date.value}T${time.value}:00`)
 
     try {
-      await service.post("/event", {
+      const response = await service.post("/event", {
         title: title.value,
         location: location.value,
         date: dateWithTime,
@@ -140,7 +140,7 @@ function EventCreate() {
         hasCarOrganization: hasCarOrganization.value,
         hasTaskAssignments: hasTaskAssignments.value
       });
-      navigate("/");
+      navigate(`/event/${response.data.createdEventId}`);
     } catch (error) {
       navigate("/server-error");
     }
