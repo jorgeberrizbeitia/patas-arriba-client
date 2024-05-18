@@ -11,7 +11,7 @@ function UserIcon({size, user, caption}) {
   if (size === "small") {
     boxSize = 30
     imgSize = 15
-  } else if (size === "small") {
+  } else if (size === "medium") {
     boxSize = 100
     imgSize = 50
   } else {

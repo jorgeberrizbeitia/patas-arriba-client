@@ -25,7 +25,7 @@ function CarGroupListItem({carGroup}) {
   
   const navigate = useNavigate()
 
-  const {_id, roomAvailable, owner, passengers} = carGroup
+  const {_id, pickupLocation, roomAvailable, owner, passengers} = carGroup
   const {loggedUser} = useContext(AuthContext)
 
   //todo color code: green available, 
@@ -44,15 +44,21 @@ function CarGroupListItem({carGroup}) {
          }
         
         title={<Typography variant="body2">
-          <Typography variant='span' fontWeight="bold">Conductor: </Typography>
-          <Typography variant='span'>{owner.username}</Typography>
+          <Typography variant='span' fontWeight="bold">Lugar de Recogida: </Typography>
+          <Typography variant='span'>{pickupLocation}</Typography>
         </Typography>}
-        subheader={<Typography variant='body2'>
-          <Typography variant="span" fontWeight="bold">Pasajeros: </Typography>
-          {passengers.map((passenger, index) => {
-            return <Typography key={passenger._id} variant="span">{passenger.username}{index === passengers.length - 1 ? "" : ", "}</Typography>
-          })}
-        </Typography>}
+        subheader={<>
+          <Typography variant="body2">
+            <Typography variant='span' fontWeight="bold">Conductor: </Typography>
+            <Typography variant='span'>{owner.username}</Typography>
+          </Typography>
+          <Typography variant="body2">
+            <Typography variant="span" fontWeight="bold">Pasajeros: </Typography>
+            {passengers.map((passenger, index) => {
+              return <Typography key={passenger._id} variant="span">{passenger.username}{index === passengers.length - 1 ? "" : ", "}</Typography>
+            })}
+            </Typography>
+          </>}
          action={loggedUser.role === "admin" &&
           <IconButton 
             onClick={() => navigate(`/car-group/${_id}`)}
