@@ -3,11 +3,11 @@ import { useContext } from "react"
 import { AuthContext } from "@context/auth.context"
 import { Navigate } from "react-router-dom"
 
-function IsAdmin(props) {
+function OnlyOrganizerOrAdmin(props) {
 
-  const { loggedUserRole, isLoggedIn } = useContext(AuthContext)
+  const { isOrganizerOrAdmin, isLoggedIn } = useContext(AuthContext)
 
-  if (isLoggedIn && loggedUserRole === "admin") {
+  if (isLoggedIn && isOrganizerOrAdmin) {
     return props.children
   } else {
     return <Navigate to="/login"/>
@@ -15,4 +15,4 @@ function IsAdmin(props) {
 
 }
 
-export default IsAdmin
+export default OnlyOrganizerOrAdmin

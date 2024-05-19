@@ -22,7 +22,7 @@ import formatDate from "@utils/formatDate.js"
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   const navigate = useNavigate()
-  const {loggedUserId, loggedUserRole} = useContext(AuthContext)
+  const {loggedUserId, isOrganizerOrAdmin} = useContext(AuthContext)
 
   const eventDateStartOfDay = new Date(event.date)
   eventDateStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
@@ -73,10 +73,10 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
       {cornerTimeFrameChip}
 
       <CardHeader 
-        sx={{ pl: (fromDetails && loggedUserRole === "admin") ? 7.5 : 2}}
-        // * above is to account for the icon on the right side when user is admin
+        sx={{ pl: (fromDetails && isOrganizerOrAdmin) ? 7.5 : 2}}
+        // * above is to account for the icon on the right side when user is organizer or admin
         title={<Typography variant="h4" sx={{px: "8%"}}>{event.title}</Typography>}
-        action={(fromDetails && loggedUserRole === "admin") && 
+        action={(fromDetails && isOrganizerOrAdmin) && 
           <IconButton 
             onClick={() => navigate(`/event/${event._id}/edit`)} 
             color="primary"

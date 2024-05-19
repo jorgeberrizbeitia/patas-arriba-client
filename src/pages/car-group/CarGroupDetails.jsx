@@ -68,6 +68,7 @@ function CarGroupDetails() {
   const {pickupLocation, roomAvailable, pickupTime, carBrand, carColor, owner, passengers, event} = carGroup
 
   const isOwner = owner._id == loggedUserId
+  const isPassenger = passengers.some((eachPassenger) => eachPassenger._id == loggedUserId)
 
   return (
     <>
@@ -147,7 +148,7 @@ function CarGroupDetails() {
 
       <EventMessageBoard type="car-group" eventOrCarGroup={carGroup} messages={carGroupMessages} setMessages={setCarGroupMessages}/>
 
-      {!isOwner && <CarGroupLeaveButton carGroup={carGroup}/>}
+      {isPassenger && <CarGroupLeaveButton carGroup={carGroup}/>}
 
     </>
   )

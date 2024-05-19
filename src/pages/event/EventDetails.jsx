@@ -23,7 +23,7 @@ import CarGroupCollapse from "@components/car-group/CarGroupCollapse";
 
 function EventDetails() {
 
-  const { loggedUserId, loggedUserRole } = useContext(AuthContext)
+  const { loggedUserId, isOrganizerOrAdmin, isAdmin } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const { eventId } = useParams() 
@@ -114,7 +114,7 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      {loggedUserRole === "admin" && userAttendee && <Button 
+      {(isAdmin || loggedUserId == event.owner._id) && <Button 
         variant="contained"
         sx={{mb: 2}}
         color="primary" 
@@ -134,22 +134,23 @@ function EventDetails() {
         disabled={true}
         > este evento ya ha pasado</Button>}
 
-      <hr />
+      {userAttendee && <>
+        <hr />
+        <Typography sx={{width: "100%"}} variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>
+      </>}
 
-      {userAttendee && <Typography sx={{width: "100%"}} variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
+      {(isAdmin || userAttendee) && event.description && <EventDescription event={event}/> }
 
-      {userAttendee && event.description && <EventDescription event={event}/> }
-
-      {userAttendee && <EventParticipantsCollapse attendees={event.attendees}/> }
+      {(isAdmin || userAttendee) && <EventParticipantsCollapse attendees={event.attendees}/> }
       {/* //todo change name to attendees */}
 
-      {userAttendee && event.hasCarOrganization && <CarGroupCollapse carGroups={eventCarGroups}/> }
+      {(isAdmin || userAttendee) && event.hasCarOrganization && <CarGroupCollapse carGroups={eventCarGroups}/> }
 
-      {(userAttendee && event.hasCarOrganization) && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
+      {userAttendee && event.hasCarOrganization && <EventCarGroupInfoCard myCarGroup={myCarGroup}/>}
 
       {userAttendee && event.hasTaskAssignments && <EventTask userAttendee={userAttendee}/> }
 
-      {userAttendee && (<EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>)}
+      {(isAdmin || userAttendee) && <EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>}
 
       {userAttendee && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event}/>}
 

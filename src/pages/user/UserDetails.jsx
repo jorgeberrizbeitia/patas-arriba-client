@@ -15,7 +15,7 @@ import formatDate from '@utils/formatDate'
 
 function UserDetails() {
 
-  const { loggedUserRole } = useContext(AuthContext)
+  const { isOrganizerOrAdmin } = useContext(AuthContext)
   const { userId } = useParams()
   const navigate = useNavigate()
 
@@ -68,18 +68,21 @@ function UserDetails() {
         <hr />
 
         <CardContent sx={{display: "flex", flexDirection: "column"}}>
-          <Typography variant="body">
-            +{phoneCode} {phoneNumber}
-          </Typography>
           {role === "admin" && <Typography variant="body" color="warning.main">
             Este usuario es admin
           </Typography>}
+          {role === "organizer" && <Typography variant="body" color="warning.main">
+            Este usuario es organizador
+          </Typography>}
           <Typography variant="body">
-            Desde: {formatDate(createdAt)}
+            +{phoneCode} {phoneNumber}
+          </Typography>
+          <Typography variant="body">
+            Registro desde: {formatDate(createdAt, "member-since")}
           </Typography>
 
           <hr />
-          {loggedUserRole === "admin" && <>
+          {isOrganizerOrAdmin && <>
 
             {role === "pending" ? 
               <>

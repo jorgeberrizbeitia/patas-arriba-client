@@ -11,7 +11,9 @@ function AuthWrapper(props) {
 
   const [ isLoggedIn, setIsLoggedIn ] = useState(false)
   const [ loggedUserId, setLoggedUserId ] = useState(null)
-  const [ loggedUserRole, setLoggedUserRole ] = useState(null)
+  // const [ loggedUserRole, setLoggedUserRole ] = useState(null)
+  const [ isOrganizerOrAdmin, setIsOrganizerOrAdmin ] = useState(false)
+  const [ isAdmin, setIsAdmin ] = useState(false)
   //todo maybe above 2 states are not needed since we have loggedUser
   const [ isAuthenticating, setIsAuthenticating ] = useState(true)
   const [ loggedUser, setLoggedUser ] = useState(null) // all user info
@@ -22,7 +24,9 @@ function AuthWrapper(props) {
     if (!storedToken) {
       setIsLoggedIn(false)
       setLoggedUserId(null)
-      setLoggedUserRole(null)
+      // setLoggedUserRole(null)
+      setIsOrganizerOrAdmin(false)
+      setIsAdmin(false)
       setLoggedUser(null)
       setIsAuthenticating(false)
       return
@@ -38,7 +42,9 @@ function AuthWrapper(props) {
         localStorage.removeItem("authToken")
         setIsLoggedIn(false)
         setLoggedUserId(null)
-        setLoggedUserRole(null)
+        // setLoggedUserRole(null)
+        setIsOrganizerOrAdmin(false)
+        setIsAdmin(false)
         setLoggedUser(null)
         setIsAuthenticating(false)
         return
@@ -46,13 +52,20 @@ function AuthWrapper(props) {
       
       setIsLoggedIn(true)
       setLoggedUserId(responsePayload.data.payload._id)
-      setLoggedUserRole(responsePayload.data.payload.role)
+      // setLoggedUserRole(responsePayload.data.payload.role)
+      const { role } = responsePayload.data.payload
+      setIsOrganizerOrAdmin(role === "organizer" || role === "admin")
+      setIsAdmin(role === "admin")
       setLoggedUser(responseOwnUserDetails.data)
       setIsAuthenticating(false)
     } catch (error) {
+      console.log(error);
+      
       setIsLoggedIn(false)
       setLoggedUserId(null)
-      setLoggedUserRole(null)
+      // setLoggedUserRole(null)
+      setIsOrganizerOrAdmin(false)
+      setIsAdmin(false)
       setLoggedUser(null)
       setIsAuthenticating(false)
     }
@@ -61,7 +74,9 @@ function AuthWrapper(props) {
   const passedContext = {
     isLoggedIn,
     loggedUserId,
-    loggedUserRole,
+    // loggedUserRole,
+    isOrganizerOrAdmin,
+    isAdmin,
     authenticateUser,
     loggedUser,
     setLoggedUser

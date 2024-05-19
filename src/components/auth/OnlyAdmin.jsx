@@ -3,16 +3,16 @@ import { useContext } from "react"
 import { AuthContext } from "@context/auth.context"
 import { Navigate } from "react-router-dom"
 
-function IsAnon(props) {
+function OnlyAdmin(props) {
 
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isAdmin, isLoggedIn } = useContext(AuthContext)
 
-  if (isLoggedIn === false) {
+  if (isLoggedIn && isAdmin) {
     return props.children
   } else {
-    return <Navigate to="/"/>
+    return <Navigate to="/login"/>
   }
 
 }
 
-export default IsAnon
+export default OnlyAdmin

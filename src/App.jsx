@@ -2,9 +2,9 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import Navbar from "@components/navigation/Navbar.jsx"
-import IsPrivate from "@components/auth/IsPrivate.jsx"
-import IsAnon from './components/auth/IsAnon'
-import IsAdmin from './components/auth/IsAdmin'
+import OnlyPrivate from "@components/auth/OnlyPrivate.jsx"
+import OnlyAnon from './components/auth/OnlyAnon'
+import OnlyOrganizerOrAdmin from './components/auth/OnlyOrganizerOrAdmin'
 
 import Home from '@pages/Home'
 import About from '@pages/About'
@@ -44,24 +44,24 @@ function App() {
           {/* <Route path="/about" element={<About />}/> */}
 
           {/* //* anon routes */}
-          <Route path="/signup" element={<IsAnon> <Signup /> </IsAnon>}/>
-          <Route path="/login" element={<IsAnon> <Login /> </IsAnon>}/>
+          <Route path="/signup" element={<OnlyAnon> <Signup /> </OnlyAnon>}/>
+          <Route path="/login" element={<OnlyAnon> <Login /> </OnlyAnon>}/>
 
           {/* //* admin routes */}
-          <Route path="/event/create" element={ <IsAdmin> <EventCreate /> </IsAdmin>}/>
-          <Route path="/event/:eventId/edit" element={ <IsAdmin> <EventEdit /> </IsAdmin> }/>
-          <Route path="/event/:eventId/manage" element={ <IsAdmin> <EventManage /> </IsAdmin>}/>
-          <Route path="/user" element={ <IsAdmin> <UserList /> </IsAdmin>}/>
+          <Route path="/event/create" element={ <OnlyOrganizerOrAdmin> <EventCreate /> </OnlyOrganizerOrAdmin>}/>
+          <Route path="/event/:eventId/edit" element={ <OnlyOrganizerOrAdmin> <EventEdit /> </OnlyOrganizerOrAdmin> }/>
+          <Route path="/event/:eventId/manage" element={ <OnlyOrganizerOrAdmin> <EventManage /> </OnlyOrganizerOrAdmin>}/>
+          <Route path="/user" element={ <OnlyOrganizerOrAdmin> <UserList /> </OnlyOrganizerOrAdmin>}/>
 
           {/* //* private routes */}
-          <Route path="/event" element={ <IsPrivate> <EventList /> </IsPrivate>}/>
-          <Route path="/event/:eventId" element={ <IsPrivate> <EventDetails /> </IsPrivate> }/>
-          <Route path="/event/:eventId/add-car-group" element={  <IsPrivate> <CarGroupCreate /> </IsPrivate>  }/>
-          <Route path="/event/:eventId/search-car-group" element={  <IsPrivate> <CarGroupSearch /> </IsPrivate>  }/>
-          <Route path="/car-group/:carGroupId" element={<IsPrivate> <CarGroupDetails /> </IsPrivate>}/>
-          <Route path="/car-group/:carGroupId/edit" element={<IsPrivate> <CarGroupEdit /> </IsPrivate>}/>
-          <Route path="/user/own" element={ <IsPrivate> <OwnUserDetails /> </IsPrivate> }/>
-          <Route path="/user/:userId" element={ <IsPrivate> <UserDetails /> </IsPrivate> }/>
+          <Route path="/event" element={ <OnlyPrivate> <EventList /> </OnlyPrivate>}/>
+          <Route path="/event/:eventId" element={ <OnlyPrivate> <EventDetails /> </OnlyPrivate> }/>
+          <Route path="/event/:eventId/add-car-group" element={  <OnlyPrivate> <CarGroupCreate /> </OnlyPrivate>  }/>
+          <Route path="/event/:eventId/search-car-group" element={  <OnlyPrivate> <CarGroupSearch /> </OnlyPrivate>  }/>
+          <Route path="/car-group/:carGroupId" element={<OnlyPrivate> <CarGroupDetails /> </OnlyPrivate>}/>
+          <Route path="/car-group/:carGroupId/edit" element={<OnlyPrivate> <CarGroupEdit /> </OnlyPrivate>}/>
+          <Route path="/user/own" element={ <OnlyPrivate> <OwnUserDetails /> </OnlyPrivate> }/>
+          <Route path="/user/:userId" element={ <OnlyPrivate> <UserDetails /> </OnlyPrivate> }/>
           
           {/* //* error routes */}
           <Route path="/server-error" element={<ServerError />}/>

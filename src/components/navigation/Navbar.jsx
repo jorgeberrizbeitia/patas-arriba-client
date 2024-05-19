@@ -37,7 +37,7 @@ import UserIcon from "@components/user/UserIcon";
 function Navbar() {
 
   const navigate = useNavigate()
-  const { authenticateUser, isLoggedIn, loggedUserRole, loggedUser} = useContext(AuthContext)
+  const { authenticateUser, isLoggedIn, isOrganizerOrAdmin, isAdmin, loggedUser} = useContext(AuthContext)
 
   const [open, setOpen] = useState(false);
 
@@ -60,7 +60,8 @@ function Navbar() {
         {isLoggedIn && <>
           <Box>
             <Typography variant="caption">{loggedUser.username}</Typography>
-            {loggedUserRole === "admin" && <Typography variant="caption">, Admin</Typography>}
+            {isAdmin && <Typography variant="caption">, Admin</Typography>}
+            {!isAdmin && isOrganizerOrAdmin && <Typography variant="caption">, Organizador</Typography>}
             <Tooltip title="Ver Perfil">
                 <IconButton onClick={() => navigate("/user/own")}>
                 <UserIcon size="small" user={loggedUser}/>
@@ -144,9 +145,9 @@ function Navbar() {
             </ListItem>
           </List>}
 
-          {loggedUserRole === "admin" && <Divider><Chip label="Admin" size="small" /></Divider>}
+          {isOrganizerOrAdmin && <Divider><Chip label="Organizador" size="small" /></Divider>}
 
-          {loggedUserRole === "admin" && <List>
+          {isOrganizerOrAdmin && <List>
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/event/create")}>
                 <ListItemIcon>
@@ -157,7 +158,7 @@ function Navbar() {
             </ListItem>
           </List>}
 
-          {loggedUserRole === "admin" && <List>
+          {isOrganizerOrAdmin && <List>
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/user")}>
                 <ListItemIcon>
