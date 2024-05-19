@@ -117,14 +117,12 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           variant="outlined"
-          inputProps={{ maxLength: 140 }}
+          inputProps={{ maxLength: 300 }}
           multiline
           rows={1}
           margin="normal"
           sx={{width: "80%", m: 0}}
         />
-        
-        {/* //todo limit to only 140 characters */}
 
         <Button 
           variant="contained" 
