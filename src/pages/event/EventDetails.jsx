@@ -136,7 +136,7 @@ function EventDetails() {
 
       {userAttendee && <Typography sx={{width: "100%"}} variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
-      {(isAdmin || userAttendee) && event.description && <EventDescription event={event}/> }
+      {(isAdmin || userAttendee) && <EventDescription event={event}/> }
 
       {(isAdmin || userAttendee) && <EventParticipantsCollapse attendees={event.attendees}/> }
       {/* //todo change name to attendees */}

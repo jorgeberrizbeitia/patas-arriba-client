@@ -49,8 +49,10 @@ function EventDescriptionForm({ event }) {
       onSubmit={handleSubmit}
     >
 
+      <Alert severity="info">Añade aqui información adicional sobre la organización del evento. Puedes agregar cualquier cantidad de texto y será visible a todos los participantes.</Alert>
+
       <TextField
-        label="Información adicional"
+        label="Info organización del evento"
         multiline
         maxRows={15}
         variant="outlined"
@@ -67,7 +69,7 @@ function EventDescriptionForm({ event }) {
         type="submit"
         sx={{ my: 1 }}
       >
-        Editar Información extra
+        Editar información
       </Button>
 
       {serverError && <Alert severity="error">{serverError}</Alert>}

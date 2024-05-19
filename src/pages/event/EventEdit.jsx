@@ -67,7 +67,7 @@ function EventEdit() {
           variant={editType === 2 ? "contained" : "outlined"} 
           color="info" 
           sx={{width: "20%", height: 60}}
-        > Info extra</Button>
+        > Info org.</Button>
 
         <Button 
           onClick={() => setEditType(3)} 

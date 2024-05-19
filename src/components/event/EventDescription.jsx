@@ -8,6 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Typography from '@mui/material/Typography'
+import Alert from "@mui/material/Alert";
+
+import Linkify from 'react-linkify';
 
 function EventDescription({event}) {
 
@@ -16,25 +19,31 @@ function EventDescription({event}) {
   return (
     <>
       <hr />
-      <Card sx={{width: "100%"}}>
-        <CardHeader
-          subheader={`Información Adicional`}
-          action={
-            <IconButton onClick={() => setshowDescription(!showDescription)}>
-              {showDescription ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          }
-        />
-        <Collapse in={showDescription}>
+      {event.description 
+        ? 
+        <Card sx={{width: "100%"}}>
+          <CardHeader
+            subheader={`Info Organización del evento`}
+            action={
+              <IconButton onClick={() => setshowDescription(!showDescription)}>
+                {showDescription ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            }
+          />
+          <Collapse in={showDescription}>
 
-          <Box display="flex" flexDirection="column" alignItems="center" p={3}>
+            <Box display="flex" flexDirection="column" alignItems="center" p={3}>
+              <Linkify>
+                <Typography variant="body2" color="initial" style={{ whiteSpace: 'pre-wrap', textAlign: "start", wordBreak: 'break-word',}}>{event.description}</Typography>  
+              </Linkify>
+            </Box>
 
-            <Typography variant="body1" color="initial" style={{ whiteSpace: 'pre-wrap', textAlign: "start" }}>{event.description}</Typography>
-
-          </Box>
-
-        </Collapse>
-      </Card>
+          </Collapse>
+        </Card>
+        : 
+        <Alert severity="warning">Revisa más cerca de la fecha del evento para ver información sobre la organización aqui</Alert>
+      }
+      
     </>
   )
 }
