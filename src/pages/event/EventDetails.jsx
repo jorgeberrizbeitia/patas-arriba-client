@@ -114,30 +114,27 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      {(isAdmin || loggedUserId == event.owner._id) && <Button 
-        variant="contained"
-        sx={{mb: 2}}
-        color="primary" 
-        onClick={() => navigate(`/event/${event._id}/manage`)}
-        > Gestiona los participantes</Button>}
+      {(isAdmin || loggedUserId == event.owner._id) && <>
+        <Button 
+          variant="contained"
+          color="primary" 
+          onClick={() => navigate(`/event/${event._id}/manage`)}
+          > Gestiona los participantes</Button>
+          <hr />
+      </>}
 
-      {!userAttendee && !isEventInThePast && <Box>
-        <Button variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
-          {event.status === "open" && "¡Unete al evento!"}
-          {event.status === "closed" && "Evento cerrado"}
-          {event.status === "cancelled" && "Evento cancelado"}
-        </Button>
-      </Box>}
+      {!userAttendee && !isEventInThePast && <Button variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
+        {event.status === "open" && "¡Unete al evento!"}
+        {event.status === "closed" && "Evento cerrado"}
+        {event.status === "cancelled" && "Evento cancelado"}
+      </Button>}
 
       {isEventInThePast && !userAttendee && <Button 
         variant="contained" 
         disabled={true}
         > este evento ya ha pasado</Button>}
 
-      {userAttendee && <>
-        <hr />
-        <Typography sx={{width: "100%"}} variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>
-      </>}
+      {userAttendee && <Typography sx={{width: "100%"}} variant="h3" color="success.main">¡Ya estas apuntado al evento!</Typography>}
 
       {(isAdmin || userAttendee) && event.description && <EventDescription event={event}/> }
 
