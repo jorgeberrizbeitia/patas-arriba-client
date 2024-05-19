@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Typography from '@mui/material/Typography'
 import Alert from "@mui/material/Alert";
 
-import Linkify from 'react-linkify';
+import Linkify from "react-linkify";
 
 function EventDescription({event}) {
 

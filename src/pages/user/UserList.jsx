@@ -4,11 +4,13 @@ import service from '@service/config'
 import { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import { useNavigate } from 'react-router-dom'
+import UserSearch from '@components/user/UserSearch'
 
 function UserList() {
 
   const [ users, setUsers ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
+  const [ searchQuery, setSearchQuery ] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -38,7 +40,12 @@ function UserList() {
   .map((eachUser) => <UserCard key={eachUser._id} user={eachUser}/>)
 
   const allowedUsers = users
-  .filter((eachUser) => eachUser.role !== "pending")
+  .filter((eachUser) => {
+    const isNotPending = eachUser.role !== "pending"
+    const isFoundByUsername = eachUser.username.toLowerCase().includes(searchQuery.toLowerCase())
+    const isFoundByFullName = eachUser.fullName.toLowerCase().includes(searchQuery.toLowerCase())
+    return isNotPending && (isFoundByUsername || isFoundByFullName)
+  })
   .map((eachUser) => <UserCard key={eachUser._id} user={eachUser}/>)
 
   return (
@@ -53,8 +60,11 @@ function UserList() {
         <hr />
       </>}
 
-
       <Typography variant="h1" gutterBottom>Usuarios</Typography>
+
+      <UserSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+
+      <br />
       
       {allowedUsers}
 

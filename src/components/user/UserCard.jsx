@@ -16,7 +16,21 @@ function UserCard({user}) {
   const { _id, username, role } = user
   const { loggedUserId } = useContext(AuthContext)
 
-  const color = role === "admin" ? "warning.main" : (role === "pending" ? "error.main" : "success")
+  let color;
+  let roleToDisplay;
+  if (role === "admin") {
+    color = "primary.main"
+    roleToDisplay = "Admin"
+  } else if (role === "pending") {
+    color = "warning.main"
+    roleToDisplay = "Pendiente por aprobar"
+  } else if (role === "organizer"){
+    color = "info.main"
+    roleToDisplay = "Organizador"
+  } else if (role === "blocked") {
+    color = "error.main"
+    roleToDisplay = "Bloqueado"
+  }
 
   return (
     <Card sx={{bgcolor: "gray.transparent", width:"100%"}}>
@@ -28,7 +42,7 @@ function UserCard({user}) {
         <Typography variant="span">{user.username}</Typography>
         <Typography variant="span" color={"success.main"}>{user._id == loggedUserId && " (tú)"}</Typography>
       </Typography>}
-      subheader={<Typography variant="caption" color={color}>{role}</Typography>}
+      subheader={<Typography variant="caption" color={color}>{roleToDisplay}</Typography>}
       action={<IconButton onClick={() => navigate(`/user/${_id}`)}>
         <ReadMoreIcon />
         <Typography variant="icon">Ver info</Typography>
