@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
+import Button from '@mui/material/Button';
 import Card from "@mui/material/Card";
 import Alert from "@mui/material/Alert";
 
-function EventLeaveButton({handleLeaveEvent, event}) {
+function EventLeaveButton({handleLeaveEvent, event, isSending}) {
 
   const [ showAreYouSureButtons, setShowAreYouSureButtons ] = useState(false)
 
@@ -47,9 +48,9 @@ function EventLeaveButton({handleLeaveEvent, event}) {
             esto eliminará el grupo.
           </Alert>
 
-          <Button color="error" onClick={handleLeaveEvent}>
+          <LoadingButton loading={isSending} color="error" onClick={handleLeaveEvent}>
             Si
-          </Button>
+          </LoadingButton>
 
           <Button color="primary" onClick={() => setShowAreYouSureButtons(false)}>
             No

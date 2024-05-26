@@ -6,8 +6,9 @@ import service from "@service/config"
 import Loading from "@components/ui/Loading";
 import GoBack from "@components/navigation/GoBack";
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { AuthContext } from "@context/auth.context"
 
@@ -29,10 +30,12 @@ function EventDetails() {
   const { eventId } = useParams() 
 
   const [ isLoading, setIsLoading ] = useState(true);
-  const [ event, setEvent ] = useState(null)
-  const [ eventCarGroups, setEventCarGroups ] = useState(null)
-  const [ eventMessages, setEventMessages ] = useState(null)
-  const [ userAttendee, setUserAttendee ] = useState(null)
+  const [ event, setEvent ] = useState(null);
+  const [ eventCarGroups, setEventCarGroups ] = useState(null);
+  const [ eventMessages, setEventMessages ] = useState(null);
+  const [ userAttendee, setUserAttendee ] = useState(null);
+  const [ isSending, setIsSending ] = useState(false);
+
   useEffect(() => {
     getEventDetails()
   }, [])
@@ -61,20 +64,24 @@ function EventDetails() {
   }
 
   const handleJoinEvent = async () => {
+    setIsSending(true)
     try {
       const response = await service.post(`/attendee/${eventId}`)
       setEvent({...event, attendees: [...event.attendees, response.data]})
       setUserAttendee(response.data)
+      setIsSending(false)
     } catch (error) {
       navigate("/server-error")
     }
   }
 
   const handleLeaveEvent = async () => {
+    setIsSending(true)
     try {
       await service.delete(`/attendee/${event._id}`)
       setEvent({...event, attendees: event.attendees.filter((attendee) => attendee.user._id != loggedUserId)})
       setUserAttendee(null)
+      setIsSending(false)
     } catch (error) {
       navigate("/server-error")
     }
@@ -123,11 +130,13 @@ function EventDetails() {
           <hr />
       </>}
 
-      {!userAttendee && !isEventInThePast && <Button variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
+      {!userAttendee && !isEventInThePast && <LoadingButton loading={isSending} variant="contained" onClick={handleJoinEvent} disabled={event.status === "closed" || event.status === "cancelled" || isEventInThePast}>
         {event.status === "open" && "¡Unete al evento!"}
         {event.status === "closed" && "Evento cerrado"}
         {event.status === "cancelled" && "Evento cancelado"}
-      </Button>}
+      </LoadingButton>}
+
+      {isAdmin && !userAttendee && <Alert severity="info">Como admin, puedes ver toda la información del evento sin estar apuntado.</Alert>}
 
       {isEventInThePast && !userAttendee && <Button 
         variant="contained" 
@@ -149,7 +158,7 @@ function EventDetails() {
 
       {(isAdmin || userAttendee) && <EventMessageBoard type="event" eventOrCarGroup={event} messages={eventMessages} setMessages={setEventMessages}/>}
 
-      {userAttendee && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event}/>}
+      {userAttendee && <EventLeaveButton handleLeaveEvent={handleLeaveEvent} event={event} isSending={isSending}/>}
 
     </>
   )

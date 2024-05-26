@@ -8,7 +8,7 @@ import { AuthContext } from "@context/auth.context";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -34,6 +34,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState();
   const [canSubmit, setCanSubmit] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleCredential = (e) => {
     const updatedstate = validateField(e.target.value, credential, true);
@@ -62,7 +63,8 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsSending(true)
+    
     try {
       const response = await service.post("/auth/login", {
         credential: credential.value,
@@ -86,6 +88,7 @@ function Login() {
           setPassword({ ...password, error: errorMessage });
         }
         setTimeout(() => setServerError(null), 5000);
+        setIsSending(false)
       } else {
         navigate("/server-error");
       }
@@ -149,9 +152,9 @@ function Login() {
           }}
         />
 
-        <Button variant="contained" type="submit" disabled={!canSubmit}>
+        <LoadingButton loading={isSending} variant="contained" type="submit" disabled={!canSubmit}>
           Accede
-        </Button>
+        </LoadingButton>
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
       </Box>

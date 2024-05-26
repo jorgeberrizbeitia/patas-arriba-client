@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from "@mui/material/Alert";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -35,7 +35,8 @@ function PasswordReset() {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState();
   const [canSubmit, setCanSubmit] = useState(false);
-  const [showEmailSetAlert, setShowEmailSentAlert] = useState(false)
+  const [showEmailSetAlert, setShowEmailSentAlert] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
 
   useEffect(() => {
@@ -87,6 +88,7 @@ function PasswordReset() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true)
 
     try {
       //* not using services as the temporary token needs to be passed manually
@@ -97,6 +99,7 @@ function PasswordReset() {
       });
 
       setShowEmailSentAlert(true)
+      setIsSending(false)
 
     } catch (error) {
       const errorCode = error?.response?.status;
@@ -104,6 +107,7 @@ function PasswordReset() {
       if (errorCode === 400 || errorCode === 401) {
         setServerError(errorMessage);
         setTimeout(() => setServerError(null), 5000);
+        setIsSending(false)
       } else {
         navigate("/server-error");
       }
@@ -189,9 +193,9 @@ function PasswordReset() {
           }}
         />
 
-        <Button variant="contained" type="submit" disabled={!canSubmit}>
+        <LoadingButton loading={isSending} variant="contained" type="submit" disabled={!canSubmit}>
           enviar
-        </Button>
+        </LoadingButton>
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
 

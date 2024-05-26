@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from "@mui/material/Alert";
 
 import { useEffect, useState } from "react";
@@ -59,6 +59,7 @@ function EventCreate() {
 
   const [serverError, setServerError] = useState();
   const [canSubmit, setCanSubmit] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
@@ -128,6 +129,7 @@ function EventCreate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true)
 
     const dateWithTime = new Date(`${date.value}T${time.value}:00`)
 
@@ -142,6 +144,7 @@ function EventCreate() {
       });
       navigate(`/event/${response.data.createdEventId}`);
     } catch (error) {
+      //todo handle server validations
       navigate("/server-error");
     }
   };
@@ -275,14 +278,15 @@ function EventCreate() {
         )}
       </Box>
 
-      <Button
+      <LoadingButton
+        loading={isSending}
         variant="contained"
         type="submit"
         disabled={!canSubmit}
         sx={{ my: 1 }}
       >
         Crear Evento
-      </Button>
+      </LoadingButton>
 
       {serverError && <Alert severity="error">{serverError}</Alert>}
     </Box>

@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -62,6 +62,7 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState();
   const [canSubmit, setCanSubmit] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
@@ -149,7 +150,6 @@ function Signup() {
     setPhoneNumber(updatedstate);
   };
 
-
   const handlePassword = (e) => {
     const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
     const updatedstate = validateField(
@@ -178,6 +178,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true)
 
     try {
       await service.post("/auth/signup", {
@@ -205,6 +206,7 @@ function Signup() {
           setUsername({ ...username, error: errorMessage });
         }
         setTimeout(() => setServerError(null), 5000);
+        setIsSending(false)
       } else {
         navigate("/server-error");
       }
@@ -356,13 +358,13 @@ function Signup() {
           }}
         />
 
-        <Button variant="contained" type="submit" disabled={!canSubmit}>
+        <LoadingButton loading={isSending} variant="contained" type="submit" disabled={!canSubmit}>
           registrate
-        </Button>
+        </LoadingButton>
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
 
-        <Alert sx={{mt: 2}} severity="info">Luego de registrarte deberas contactar a algún fundador de Patas Arriba para habilitar tu usuario y poder acceder</Alert>
+        <Alert sx={{mt: 2}} severity="info">Luego de registrarte deberas contactar a algún admin u organizador para habilitar tu usuario y poder acceder</Alert>
       </Box>
 
       <br />

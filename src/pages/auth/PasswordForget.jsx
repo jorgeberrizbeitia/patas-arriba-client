@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from "@mui/material/Alert";
 
 import validateField from "@utils/validateField";
@@ -21,7 +21,8 @@ function PasswordForget() {
 
   const [serverError, setServerError] = useState();
   const [canSubmit, setCanSubmit] = useState(false);
-  const [showEmailSetAlert, setShowEmailSentAlert] = useState(false)
+  const [showEmailSetAlert, setShowEmailSentAlert] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const handleEmail = (e) => {
     const updatedstate = validateField(e.target.value, email, true);
@@ -38,6 +39,7 @@ function PasswordForget() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSending(true)
 
     try {
       await service.post("/auth/password-forget", {
@@ -45,6 +47,7 @@ function PasswordForget() {
       });
 
       setShowEmailSentAlert(true)
+      setIsSending(false)
 
     } catch (error) {
       const errorCode = error?.response?.status;
@@ -53,6 +56,7 @@ function PasswordForget() {
         setServerError(errorMessage);
         setEmail({ ...email, error: errorMessage });
         setTimeout(() => setServerError(null), 5000);
+        setIsSending(false)
       } else {
         navigate("/server-error");
       }
@@ -94,9 +98,9 @@ function PasswordForget() {
           helperText={email.error}
         />
 
-        <Button variant="contained" type="submit" disabled={!canSubmit}>
+        <LoadingButton loading={isSending} variant="contained" type="submit" disabled={!canSubmit}>
           enviar
-        </Button>
+        </LoadingButton>
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
 
