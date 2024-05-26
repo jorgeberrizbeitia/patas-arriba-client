@@ -161,7 +161,7 @@ function Login() {
 
       <br />
 
-      <Link style={{marginBottom: "20px"}} to="/password-forget">Olvidaste tu contraseña?</Link>
+      <Link style={{marginBottom: "20px"}} to="/password-forget">¿Olvidaste tu contraseña?</Link>
       <Link style={{marginBottom: "20px"}} to="/signup">Si no tienes cuenta, registrate aqui</Link>
     </>
   );
