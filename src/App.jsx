@@ -10,6 +10,8 @@ import Home from '@pages/Home'
 import About from '@pages/About'
 import Signup from '@pages/auth/Signup'
 import Login from '@pages/auth/Login'
+import PasswordForget from '@pages/auth/PasswordForget'
+import PasswordReset from '@pages/auth/PasswordReset'
 import NotFound from '@pages/error/NotFound'
 import ServerError from '@pages/error/ServerError'
 import EventList from './pages/event/EventList'
@@ -46,6 +48,8 @@ function App() {
           {/* //* anon routes */}
           <Route path="/signup" element={<OnlyAnon> <Signup /> </OnlyAnon>}/>
           <Route path="/login" element={<OnlyAnon> <Login /> </OnlyAnon>}/>
+          <Route path="/password-forget" element={<OnlyAnon> <PasswordForget /> </OnlyAnon>}/>
+          <Route path="/password-reset/:token" element={<OnlyAnon> <PasswordReset /> </OnlyAnon>}/>
 
           {/* //* admin routes */}
           <Route path="/event/create" element={ <OnlyOrganizerOrAdmin> <EventCreate /> </OnlyOrganizerOrAdmin>}/>
