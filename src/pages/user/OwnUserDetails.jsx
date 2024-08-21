@@ -12,10 +12,12 @@ import UserIcon from "@components/user/UserIcon";
 import GoBack from "@components/navigation/GoBack";
 import Alert from "@mui/material/Alert";
 import formatDate from "@utils/formatDate.js"
+import NotificationSettings from "@components/user/NotificationSettings";
 
 function OwnUserDetails() {
 
   const { loggedUser } = useContext(AuthContext)
+  const { isOrganizerOrAdmin } = useContext(AuthContext)
 
   const [propertyToEdit, setPropertyToEdit] = useState(null)
 
@@ -46,10 +48,10 @@ function OwnUserDetails() {
           <Typography variant="caption" color="main">Cambiar</Typography>
         </IconButton>
         { propertyToEdit === "username" && <>
-          <UpdateSingleField 
-            value={username} 
-            setPropertyToEdit={setPropertyToEdit} 
-            propertyToEdit={propertyToEdit} 
+          <UpdateSingleField
+            value={username}
+            setPropertyToEdit={setPropertyToEdit}
+            propertyToEdit={propertyToEdit}
           />
         </>}
       </Typography>
@@ -62,10 +64,10 @@ function OwnUserDetails() {
           <Typography variant="caption" color="main">Cambiar</Typography>
         </IconButton>
         { propertyToEdit === "fullName" && <>
-          <UpdateSingleField 
-            value={fullName} 
-            setPropertyToEdit={setPropertyToEdit} 
-            propertyToEdit={propertyToEdit} 
+          <UpdateSingleField
+            value={fullName}
+            setPropertyToEdit={setPropertyToEdit}
+            propertyToEdit={propertyToEdit}
           />
         </>}
       </Typography>
@@ -92,7 +94,12 @@ function OwnUserDetails() {
         <span>Usuario desde: </span>
         <span>{formatDate(createdAt, "member-since")}</span>
       </Typography>
-    </>
+
+        {isOrganizerOrAdmin && <>
+          <hr/>
+            <NotificationSettings/>
+          </>}
+        </>
   )
 }
 
