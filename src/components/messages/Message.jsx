@@ -76,7 +76,7 @@ function Message({message, type, handleDelete, eventOrCarGroup}) {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={() => handleDelete(_id)}>Delete</MenuItem>
+                <MenuItem onClick={() => handleDelete(message)}>Delete</MenuItem>
               </Menu>
             </>
           )}

@@ -20,7 +20,6 @@ import io from 'socket.io-client';
 
 function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
-  const {loggedUser} = useContext(AuthContext)
   const navigate = useNavigate()
   const listRef = useRef(null);
 
@@ -58,9 +57,26 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     //* to join only the chat room for this event or car group
     socketConnection.emit('joinRoom', eventOrCarGroup._id);
 
-    //* Listen for incoming messages
+    //* Listen for incoming created messages
     socketConnection.on(`chat message`, (receivedMessage) => {
       setMessages((messages) => [...messages, receivedMessage]);
+    });
+
+    //* Listen for incoming delete messages
+    socketConnection.on(`message delete`, (deletedMessage) => {
+      setMessages((messages) => {
+        return messages.map((eachMessage) => {
+          if (eachMessage._id === deletedMessage._id) {
+            return {
+              ...deletedMessage,
+              isDeleted: true,
+              text: "Mensaje Borrado"
+            }
+          } else {
+            return eachMessage
+          }
+        })
+      })
     });
 
     //* disconnect to socket on componentWillUnmount
@@ -92,12 +108,10 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
   }
 
-  const handleDelete = async (messageId) => {
+  const handleDelete = async (message) => {
     try {
-      await service.patch(`/message/${messageId}/delete`)
-
-      //TODO socket emit to delete message
-      refreshMessages()
+      await service.patch(`/message/${message._id}/delete`)
+      socket.emit('message delete', message);
     } catch (error) {
       navigate("/server-error")
     }
