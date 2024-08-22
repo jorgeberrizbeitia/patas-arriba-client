@@ -55,14 +55,18 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     const socketConnection = io(import.meta.env.VITE_SERVER_URL); //! pending sending token
     setSocket(socketConnection);
 
+    //* to join only the chat room for this event or car group
+    socketConnection.emit('joinRoom', eventOrCarGroup._id);
+
     //* Listen for incoming messages
-    socketConnection.on('chat message', (receivedMessage) => {
-      console.log(receivedMessage)
+    socketConnection.on(`chat message`, (receivedMessage) => {
       setMessages((messages) => [...messages, receivedMessage]);
     });
 
     //* disconnect to socket on componentWillUnmount
-    return () => socketConnection.disconnect();
+    return () => {
+      socketConnection.disconnect()
+    }
 
   }, [])
 
@@ -91,6 +95,8 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
   const handleDelete = async (messageId) => {
     try {
       await service.patch(`/message/${messageId}/delete`)
+
+      //TODO socket emit to delete message
       refreshMessages()
     } catch (error) {
       navigate("/server-error")
