@@ -20,6 +20,7 @@ import EventCarGroupInfoCard from "../../components/event/EventCarGroupInfoCard"
 import EventDescription from "@components/event/EventDescription";
 import EventTask from "@components/event/EventTask";
 import CarGroupCollapse from "@components/car-group/CarGroupCollapse";
+import ChatBoard from "@components/chat/ChatBoard";
 
 
 function EventDetails() {
