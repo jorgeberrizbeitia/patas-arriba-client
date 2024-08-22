@@ -16,13 +16,15 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router-dom';
 import Message from './Message';
 
-
+import io from 'socket.io-client';
 
 function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
+  const {loggedUser} = useContext(AuthContext)
   const navigate = useNavigate()
   const listRef = useRef(null);
 
+  const [socket, setSocket] = useState(null);
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false)
 
@@ -33,9 +35,11 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     setIsSending(true)
 
     try {
-      await service.post(`/message/${type}/${eventOrCarGroup._id}`, {text})
-      const response = await service.get(`/${type}/${eventOrCarGroup._id}`)
-      setMessages(response.data.messages)
+
+      const response = await service.post(`/message/${type}/${eventOrCarGroup._id}`, {text})
+
+      socket.emit('chat message', response.data); //! testing sending through socket
+
       //todo why is it not working with getEventDetails?
       setText('')
       setIsSending(false)
@@ -44,6 +48,23 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
       //todo create an alert if there was an error
     }
   };
+
+  useEffect(() => {
+
+    //* connect to socket on componentDidMount
+    const socketConnection = io(import.meta.env.VITE_SERVER_URL); //! pending sending token
+    setSocket(socketConnection);
+
+    //* Listen for incoming messages
+    socketConnection.on('chat message', (receivedMessage) => {
+      console.log(receivedMessage)
+      setMessages((messages) => [...messages, receivedMessage]);
+    });
+
+    //* disconnect to socket on componentWillUnmount
+    return () => socketConnection.disconnect();
+
+  }, [])
 
   useEffect(() => {
     // Scroll to the bottom of the list after messages update
@@ -91,9 +112,9 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
         <Box>
           {messages.length === 0 && <Typography variant="body1" color="initial" sx={{pt: 1}}>No hay mensajes</Typography>}
 
-          {messages.map((message, index) => {
+          {messages.map((message) => {
             return <Message 
-              key={index} 
+              key={message._id} 
               message={message}
               type={type}
               handleDelete={handleDelete}
