@@ -81,10 +81,27 @@ function NotificationSettings() {
   const handleSubscribe = async () => {
 
     setIsLoading(true)
-    try {
-    
-      //! ERROR ON FIRST ATTEMPT. InvalidStateError: Subscribing for push requires an active service worker
 
+    if (!isAppInstalled) {
+      alert("Debes instalar la web como una aplicación para acceder a la funcion de notificaciones."); //todo cambiar a toast
+      setIsLoading(false)
+      return;
+    }
+
+    if ("Notification" in window) {
+      alert("Las notificaciones no estan soportadas en este dispositivo.");  //todo cambiar a toast
+      setIsLoading(false)
+      return;
+    }
+  
+    if (Notification.permission === "denied") {
+      alert("has denegado la posibilidad de notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación.");  //todo cambiar a toast
+      setIsLoading(false)
+      return;
+    }
+
+    try {
+  
       const swReg = await navigator.serviceWorker.register("/sw.js");
       
       const subscription = await swReg.pushManager.subscribe({
@@ -96,7 +113,7 @@ function NotificationSettings() {
       
       await service.post('/pushsubscription', { subscription });
 
-      setNotificationsEnabled(true);
+      setIsNotificationOn(true);
       setIsLoading(false)
 
     } catch (err) {
@@ -131,7 +148,7 @@ function NotificationSettings() {
         console.log('User unsubscribed successfully.');
         await service.delete('/pushsubscription');
         
-        setNotificationsEnabled(false);
+        setIsNotificationOn(false);
         setIsLoading(false)
       } else {
         console.log('Failed to unsubscribe.');
