@@ -21,6 +21,7 @@ function NotificationSettings() {
     setNotificationStatus()
   }, [])
 
+  //! change to getNotification status
   const setNotificationStatus = async () => {
 
     if (!isAppInstalled) {
@@ -83,19 +84,20 @@ function NotificationSettings() {
     setIsLoading(true)
 
     if (!isAppInstalled) {
-      alert("Debes instalar la web como una aplicación para acceder a la funcion de notificaciones."); //todo cambiar a toast
+      alert("Debes instalar la web como una aplicación para acceder a la funcion de notificaciones."); 
       setIsLoading(false)
       return;
     }
 
-    if ("Notification" in window) {
-      alert("Las notificaciones no estan soportadas en este dispositivo.");  //todo cambiar a toast
-      setIsLoading(false)
-      return;
-    }
+    //! this is showing if the user has denied them
+    // if ("Notification" in window) {
+    //   alert("Las notificaciones no estan soportadas en este dispositivo."); 
+    //   setIsLoading(false)
+    //   return;
+    // }
   
     if (Notification.permission === "denied") {
-      alert("has denegado la posibilidad de notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación.");  //todo cambiar a toast
+      alert("Has denegado la posibilidad de notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación.");  
       setIsLoading(false)
       return;
     }
