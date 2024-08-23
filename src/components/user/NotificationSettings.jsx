@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -6,13 +6,60 @@ import Alert from "@mui/material/Alert";
 import service from '@service/config';
 import {useNavigate} from "react-router-dom";
 
-// combines two approaches to detect if using browser version or PWA version of the web. Added outside of component scope as it should never change.
+// combined two approaches to detect if using browser version or PWA version of the web. 
+// Added outside of component scope as it should never change.
 const isAppInstalled = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone);
 
 function NotificationSettings() {
-  const [notificationsEnabled, setNotificationsEnabled] = useState(isAppInstalled ? Notification?.permission === "granted" : false);
-  const [isLoading, setIsLoading] = useState(false)
+  console.log("isAppInstalled", isAppInstalled)
   const navigate = useNavigate()
+
+  const [isNotificationOn, setIsNotificationOn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    setNotificationStatus()
+  }, [])
+
+  const setNotificationStatus = async () => {
+
+    if (!isAppInstalled) {
+      console.log("app not installed")
+      setIsNotificationOn(false)
+      return
+    }
+
+    if (Notification?.permission !== "granted") {
+      console.log("permision not granted")
+      setIsNotificationOn(false)
+      return
+    }
+
+    console.log(Notification.permission)
+
+    try {
+      const swReg = await navigator.serviceWorker.getRegistration();
+      if (!swReg) {
+        console.log('Service worker not found.');
+        setIsNotificationOn(false)
+        return;
+      }
+  
+      const subscription = await swReg.pushManager.getSubscription();
+      if (!subscription) {
+        console.log('No active subscription found.');
+        setIsNotificationOn(false)
+        return;
+      }
+
+      setIsNotificationOn(true) // only if notifications are allowed by user and notification subscription exist
+
+    } catch (err) {
+      console.error('Unable to check notification subscription status.', err);
+      navigate("/server-error");
+    }
+      
+  }
 
   function urlB64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -36,6 +83,8 @@ function NotificationSettings() {
     setIsLoading(true)
     try {
     
+      //! ERROR ON FIRST ATTEMPT. InvalidStateError: Subscribing for push requires an active service worker
+
       const swReg = await navigator.serviceWorker.register("/sw.js");
       
       const subscription = await swReg.pushManager.subscribe({
@@ -47,9 +96,7 @@ function NotificationSettings() {
       
       await service.post('/pushsubscription', { subscription });
 
-      console.log(Notification.permission)
-
-      setNotificationsEnabled(Notification.permission === "granted");
+      setNotificationsEnabled(true);
       setIsLoading(false)
 
     } catch (err) {
@@ -64,7 +111,7 @@ function NotificationSettings() {
       const swReg = await navigator.serviceWorker.getRegistration();
       if (!swReg) {
         console.log('Service worker not found.');
-        //todo handle error with toast
+        setIsNotificationOn(false)
         setIsLoading(true)
         return;
       }
@@ -72,7 +119,7 @@ function NotificationSettings() {
       const subscription = await swReg.pushManager.getSubscription();
       if (!subscription) {
         console.log('No active subscription found.');
-        //todo handle error with toast
+        setIsNotificationOn(false)
         setIsLoading(true)
         return;
       }
@@ -84,12 +131,10 @@ function NotificationSettings() {
         console.log('User unsubscribed successfully.');
         await service.delete('/pushsubscription');
         
-        console.log(Notification.permission)
-        setNotificationsEnabled(Notification.permission === "granted");
+        setNotificationsEnabled(false);
         setIsLoading(false)
       } else {
         console.log('Failed to unsubscribe.');
-        //todo handle error with toast
         setIsLoading(true)
       }
       
@@ -98,9 +143,6 @@ function NotificationSettings() {
       navigate("/server-error");
     }
   };
-
-  // const isNotificationPermissionDenied = Notification.permission === "denied";
-  // const isNotificationPermissionGranted = Notification.permission === "granted";
     
   return (
     <>
@@ -112,14 +154,14 @@ function NotificationSettings() {
 
       {isAppInstalled && <>
         
-        {!notificationsEnabled && <>
+        {!isNotificationOn && <>
           {/* <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center"> */}
           <LoadingButton loading={isLoading} onClick={handleSubscribe} variant="contained">Activar Notificaciones</LoadingButton>
           {/* </Box> */}
           <Alert severity="info">Estas notificaciones son solo para mensajes en eventos y grupos de coche. Luego se pueden desactivar.</Alert>
         </>}
 
-        {notificationsEnabled && <>
+        {isNotificationOn && <>
           <Alert severity="info">Notificaciones Activas. Las notificaciones se activan y envían solo al último dispositivo donde se activó esta opción. Estas notificaciones son solo para mensajes en eventos y grupos de coche.</Alert>
           {/* <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center"> */}
           <LoadingButton loading={isLoading} onClick={handleUnsubscribe} variant="contained">Desactivar Notificaciones</LoadingButton>
