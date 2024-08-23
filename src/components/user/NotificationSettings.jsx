@@ -10,8 +10,7 @@ import {useNavigate} from "react-router-dom";
 const isAppInstalled = (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone);
 
 function NotificationSettings() {
-
-  const [notificationsEnabled, setNotificationsEnabled] = useState(Notification.permission === "granted");
+  const [notificationsEnabled, setNotificationsEnabled] = useState(isAppInstalled ? Notification?.permission === "granted" : false);
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -33,6 +32,7 @@ function NotificationSettings() {
   }
 
   const handleSubscribe = async () => {
+
     setIsLoading(true)
     try {
     
