@@ -104,7 +104,7 @@ function NotificationSettings() {
 
     try {
   
-      const swReg = await navigator.serviceWorker.register("/sw.js");
+      const swReg = await navigator.serviceWorker.register('/sw.js?v=1.0.4');
       
       const subscription = await swReg.pushManager.subscribe({
         userVisibleOnly: true,

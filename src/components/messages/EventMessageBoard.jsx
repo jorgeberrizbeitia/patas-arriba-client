@@ -22,6 +22,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
   const navigate = useNavigate()
   const listRef = useRef(null);
+  const anchorRef = useRef(null);
 
   const [socket, setSocket] = useState(null);
   const [text, setText] = useState('');
@@ -90,6 +91,9 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     // Scroll to the bottom of the list after messages update
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
+    }
+    if (window.location.hash === '#bottom' && anchorRef.current) {
+      anchorRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -174,6 +178,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
         >Enviar</Button>
       </Box>
 
+      <div ref={anchorRef} id="bottom"/>
     </>
   );
 }

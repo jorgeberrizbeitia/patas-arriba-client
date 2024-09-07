@@ -6,7 +6,28 @@ self.addEventListener("install", function (event) {
 
 self.addEventListener("push", function (event) {
     const message = event.data.json();
-    self.registration.showNotification(message.title, {body: message.text});
+    const relativePath = message.data.path;
+    const notificationUrl = new URL(relativePath, self.location.origin).href;
+
+    // Check if the current path matches the notificationUrl
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (clientList) {
+        let isPathMatching = false;
+        for (let i = 0; i < clientList.length; i++) {
+            const client = clientList[i];
+            if (client.url === notificationUrl) {
+                isPathMatching = true;
+                break;
+            }
+        }
+
+        // Show notification only if the path does not match
+        if (!isPathMatching) {
+            self.registration.showNotification(message.title, {
+                body: message.body,
+                data: message.data
+            });
+        }
+    });
 });
 
 self.addEventListener("notificationclick", function (event) {
@@ -14,13 +35,15 @@ self.addEventListener("notificationclick", function (event) {
 
     event.notification.close();
 
-    var notificationData = event.notification;
-    var notificationUrl = notificationData.data.notificationUrl;
+    var notificationData = event.notification.data;
+    var relativePath = notificationData.path;
 
-    if (!notificationUrl) {
+    if (!relativePath) {
         console.log("no url to open");
         return;
     }
+
+    var notificationUrl = new URL(relativePath, self.location.origin).href;
 
     // This looks to see if the current page is already open and focuses if it is
     event.waitUntil(
