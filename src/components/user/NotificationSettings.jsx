@@ -104,14 +104,12 @@ function NotificationSettings() {
 
     try {
   
-      const swReg = await navigator.serviceWorker.register('/sw.js?v=1.0.4');
+      const swReg = await navigator.serviceWorker.register('/sw.js?v=1.0.5');
       
       const subscription = await swReg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlB64ToUint8Array(import.meta.env.VITE_VAPID_PUSH_PUBLIC_KEY),
       });
-      
-      console.log(JSON.stringify(subscription));
       
       await service.post('/pushsubscription', { subscription });
 

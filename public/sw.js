@@ -5,6 +5,9 @@ self.addEventListener("install", function (event) {
 });
 
 self.addEventListener("push", function (event) {
+
+    if (!event.data) return;
+
     const message = event.data.json();
     const relativePath = message.data.path;
     const notificationUrl = new URL(relativePath, self.location.origin).href;
@@ -22,10 +25,12 @@ self.addEventListener("push", function (event) {
 
         // Show notification only if the path does not match
         if (!isPathMatching) {
-            self.registration.showNotification(message.title, {
-                body: message.body,
-                data: message.data
-            });
+            event.waitUntil( // fixes issue with unsubscribe on iOS https://dev.to/progressier/how-to-fix-ios-push-subscriptions-being-terminated-after-3-notifications-39a7
+                self.registration.showNotification(message.title, {
+                    body: message.body,
+                    data: message.data
+                })
+            )
         }
     });
 });

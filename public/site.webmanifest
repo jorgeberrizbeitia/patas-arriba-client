@@ -26,10 +26,10 @@
   ],
   "url_handlers": [
     {
-      "origin": "https://patas-arriba.netlify.app/"
+      "origin": "https://patas-arriba.netlify.app"
     },
     {
-      "origin": "https://patas-arriba-beta-test.netlify.app/"
+      "origin": "https://patas-arriba-beta-test.netlify.app"
     }
   ]
 }
