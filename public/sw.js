@@ -5,34 +5,13 @@ self.addEventListener("install", function (event) {
 });
 
 self.addEventListener("push", function (event) {
-
-    if (!event.data) return;
-
     const message = event.data.json();
-    const relativePath = message.data.path;
-    const notificationUrl = new URL(relativePath, self.location.origin).href;
-
-    // Check if the current path matches the notificationUrl
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (clientList) {
-        let isPathMatching = false;
-        for (let i = 0; i < clientList.length; i++) {
-            const client = clientList[i];
-            if (client.url === notificationUrl) {
-                isPathMatching = true;
-                break;
-            }
-        }
-
-        // Show notification only if the path does not match
-        if (!isPathMatching) {
-            event.waitUntil( // fixes issue with unsubscribe on iOS https://dev.to/progressier/how-to-fix-ios-push-subscriptions-being-terminated-after-3-notifications-39a7
-                self.registration.showNotification(message.title, {
-                    body: message.body,
-                    data: message.data
-                })
-            )
-        }
-    });
+    event.waitUntil( // fixes issue with unsubscribe on iOS https://dev.to/progressier/how-to-fix-ios-push-subscriptions-being-terminated-after-3-notifications-39a7
+        self.registration.showNotification(message.title, {
+            body: message.body,
+            data: message.data
+        })
+    )
 });
 
 self.addEventListener("notificationclick", function (event) {
