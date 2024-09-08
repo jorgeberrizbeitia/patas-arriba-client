@@ -39,7 +39,7 @@ function NotificationSettings() {
     console.log(Notification.permission)
 
     try {
-      const swReg = await navigator.serviceWorker.getRegistration();
+      const swReg = await navigator.serviceWorker.ready;
       if (!swReg) {
         console.log('Service worker not found.');
         setIsNotificationOn(false)
