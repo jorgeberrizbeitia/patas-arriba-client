@@ -20,6 +20,8 @@ import io from 'socket.io-client';
 
 function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
+  const { loggedUserId } = useContext(AuthContext)
+
   const navigate = useNavigate()
   const listRef = useRef(null);
   const anchorRef = useRef(null);
@@ -56,7 +58,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     setSocket(socketConnection);
 
     //* to join only the chat room for this event or car group
-    socketConnection.emit('joinRoom', eventOrCarGroup._id);
+    socketConnection.emit('joinRoom', {room: eventOrCarGroup._id, userID: loggedUserId});
 
     //* Listen for incoming created messages
     socketConnection.on(`chat message`, (receivedMessage) => {
