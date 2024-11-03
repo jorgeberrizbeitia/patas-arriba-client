@@ -90,7 +90,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
     return () => {
       //* disconnect to socket and remove the event listener on componentWillUnmount
-      socketConnection.disconnect()
+      socket.current.disconnect()
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
 
