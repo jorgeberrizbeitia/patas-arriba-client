@@ -39,7 +39,7 @@ function NotificationSettings() {
     console.log(Notification.permission)
 
     try {
-      const swReg = await navigator.serviceWorker.getRegistration();
+      const swReg = await navigator.serviceWorker.ready;
       if (!swReg) {
         console.log('Service worker not found.');
         setIsNotificationOn(false)
@@ -79,49 +79,60 @@ function NotificationSettings() {
     return outputArray;
   }
 
-  const handleSubscribe = async () => {
-
-    setIsLoading(true)
+  const handleSubscribe = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
 
     if (!isAppInstalled) {
-      alert("Debes instalar la web como una aplicación para acceder a la funcion de notificaciones."); 
+      alert("Debes instalar la web como una aplicación para acceder a la funcion de notificaciones.");
       setIsLoading(false)
       return;
     }
-  
-    // Notification.permission possible status => "default", "granted", "denied"
+
+    //! this is showing if the user has denied them
+    // if ("Notification" in window) {
+    //   alert("Las notificaciones no estan soportadas en este dispositivo.");
+    //   setIsLoading(false)
+    //   return;
+    // }
+
     if (Notification.permission === "denied") {
-      alert("Tienes deshabilitada la posibilidad de tener notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación. Luego reinicia la aplicación.");  
+      alert("Has denegado la posibilidad de notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación.");
       setIsLoading(false)
       return;
     }
 
-    try {
-  
-      const swReg = await navigator.serviceWorker.register("/sw.js");
-      
-      const subscription = await swReg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlB64ToUint8Array(import.meta.env.VITE_VAPID_PUSH_PUBLIC_KEY),
-      });
-      
-      console.log(JSON.stringify(subscription));
-      
-      await service.post('/pushsubscription', { subscription });
+  event.waitUntil(
+    (async () => {
 
-      setIsNotificationOn(true);
-      setIsLoading(false)
+      try {
 
-    } catch (err) {
-      console.error('Unable to subscribe.', err);
-      navigate("/server-error");
-    }
-  };
+        const swReg = await navigator.serviceWorker.ready;
+
+        const subscription = await swReg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlB64ToUint8Array(import.meta.env.VITE_VAPID_PUSH_PUBLIC_KEY),
+        });
+
+        await service.post('/pushsubscription', { subscription });
+
+        setIsNotificationOn(true);
+        setIsLoading(false);
+
+      } catch (err) {
+        console.error('Unable to subscribe.', err);
+        navigate("/server-error");
+      }
+
+    })()
+  );
+};
+
 
   const handleUnsubscribe = async () => {
     setIsLoading(true)
     try {
-      const swReg = await navigator.serviceWorker.getRegistration();
+      const swReg = await navigator.serviceWorker.ready;
       if (!swReg) {
         console.log('Service worker not found.');
         setIsNotificationOn(false)
@@ -169,7 +180,7 @@ function NotificationSettings() {
         
         {!isNotificationOn && <>
           {/* <Box display="flex" flexDirection="column" justifyContent="space-evenly" alignItems="center"> */}
-          <LoadingButton loading={isLoading} onClick={handleSubscribe} variant="contained">Activar Notificaciones</LoadingButton>
+          <LoadingButton loading={isLoading} onClick={(event) => handleSubscribe(event)}  variant="contained">Activar Notificaciones</LoadingButton>
           {/* </Box> */}
           <Alert severity="info">Estas notificaciones son solo para mensajes en eventos y grupos de coche. Luego se pueden desactivar.</Alert>
         </>}
