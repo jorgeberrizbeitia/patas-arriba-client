@@ -26,47 +26,50 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
   const listRef = useRef(null);
   const anchorRef = useRef(null);
 
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
+  const socket = useRef(null); 
   const [text, setText] = useState('');
   const [isSending, setIsSending] = useState(false)
 
-  const handleSubmit = async () => {
-    
-    if (text.trim() === '') return;
-    
-    setIsSending(true)
+  // Handle visibility change
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      // Reconnect socket if not connected
+      if (socket.current && !socket.current.connected) {
+        socket.current.connect();
+      }
+      fetchMessages(); // Fetch messages when app comes back to the foreground
+    }
+  };
 
+  const fetchMessages = async () => {
+    setIsSending(true);
     try {
-
-      const response = await service.post(`/message/${type}/${eventOrCarGroup._id}`, {text})
-
-      socket.emit('chat message', response.data); //! testing sending through socket
-
-      //todo why is it not working with getEventDetails?
-      setText('')
-      setIsSending(false)
+      const response = await service.get(`/message/${type}/${eventOrCarGroup._id}`);
+      setMessages(response.data);
     } catch (error) {
-      navigate("/server-error")
-      //todo create an alert if there was an error
+      navigate("/server-error");
+    } finally {
+      setIsSending(false);
     }
   };
 
   useEffect(() => {
 
     //* connect to socket on componentDidMount
-    const socketConnection = io(import.meta.env.VITE_SERVER_URL); //! pending sending token
-    setSocket(socketConnection);
+    socket.current = io(import.meta.env.VITE_SERVER_URL); //! pending sending token
+    // setSocket(socketConnection);
 
     //* to join only the chat room for this event or car group
-    socketConnection.emit('joinRoom', {room: eventOrCarGroup._id, userID: loggedUserId});
+    socket.current.emit('joinRoom', {room: eventOrCarGroup._id, userID: loggedUserId});
 
     //* Listen for incoming created messages
-    socketConnection.on(`chat message`, (receivedMessage) => {
+    socket.current.on(`chat message`, (receivedMessage) => {
       setMessages((messages) => [...messages, receivedMessage]);
     });
 
     //* Listen for incoming delete messages
-    socketConnection.on(`message delete`, (deletedMessage) => {
+    socket.current.on(`message delete`, (deletedMessage) => {
       setMessages((messages) => {
         return messages.map((eachMessage) => {
           if (eachMessage._id === deletedMessage._id) {
@@ -85,8 +88,8 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     //* this will load new messages if user puts the PWA on te background and then comes back (this happens because the socket disconnects when on background)
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    //* disconnect to socket and remove the event listener on componentWillUnmount
     return () => {
+      //* disconnect to socket and remove the event listener on componentWillUnmount
       socketConnection.disconnect()
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
@@ -103,36 +106,32 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     }
   }, [messages]);
 
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      //* Check if the socket is disconnected and reconnect if necessary
-      if (!socket.connected) {
-        socket.connect();
-      }
-      //* Fetch all new messages
-      fetchMessages();
-    }
-  }
-
-  const fetchMessages = async () => {
-
+  const handleSubmit = async () => {
+    
+    if (text.trim() === '') return;
+    
     setIsSending(true)
-    try {
-      
-      const response = await service.get(`/message/${type}/${eventOrCarGroup._id}`)
-      setMessages(response.data)
-      setIsSending(false)
 
+    try {
+
+      const response = await service.post(`/message/${type}/${eventOrCarGroup._id}`, {text})
+
+      socket.current.emit('chat message', response.data); //! testing sending through socket
+
+      //todo why is it not working with getEventDetails?
+      setText('')
     } catch (error) {
       navigate("/server-error")
+      //todo create an alert if there was an error
+    } finally {
+      setIsSending(false)
     }
-
-  }
+  };
 
   const handleDelete = async (message) => {
     try {
       await service.patch(`/message/${message._id}/delete`)
-      socket.emit('message delete', message);
+      socket.current.emit('message delete', message);
     } catch (error) {
       navigate("/server-error")
     }
