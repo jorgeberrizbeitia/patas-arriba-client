@@ -82,9 +82,13 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
       })
     });
 
-    //* disconnect to socket on componentWillUnmount
+    //* this will load new messages if user puts the PWA on te background and then comes back (this happens because the socket disconnects when on background)
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    //* disconnect to socket and remove the event listener on componentWillUnmount
     return () => {
       socketConnection.disconnect()
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
 
   }, [])
@@ -99,7 +103,18 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
     }
   }, [messages]);
 
-  const refreshMessages = async () => {
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'visible') {
+      //* Check if the socket is disconnected and reconnect if necessary
+      if (!socket.connected) {
+        socket.connect();
+      }
+      //* Fetch all new messages
+      fetchMessages();
+    }
+  }
+
+  const fetchMessages = async () => {
 
     setIsSending(true)
     try {
@@ -152,7 +167,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
       </List>
 
       <Box sx={{bgcolor: 'primary.lighterSaturation', width: "100%"}}>
-        <IconButton onClick={refreshMessages} disabled={isSending} sx={{width: 200, height: 50, p: 0, borderRadius: 2}}>
+        <IconButton onClick={fetchMessages} disabled={isSending} sx={{width: 200, height: 50, p: 0, borderRadius: 2}}>
           <RefreshIcon/>
           <Typography variant="caption">refrescar mensajes</Typography>
         </IconButton>
