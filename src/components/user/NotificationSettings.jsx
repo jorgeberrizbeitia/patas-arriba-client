@@ -88,16 +88,10 @@ function NotificationSettings() {
       setIsLoading(false)
       return;
     }
-
-    //! this is showing if the user has denied them
-    // if ("Notification" in window) {
-    //   alert("Las notificaciones no estan soportadas en este dispositivo."); 
-    //   setIsLoading(false)
-    //   return;
-    // }
   
+    // Notification.permission possible status => "default", "granted", "denied"
     if (Notification.permission === "denied") {
-      alert("Has denegado la posibilidad de notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación.");  
+      alert("Tienes deshabilitada la posibilidad de tener notificaciones en esta aplicación. Debes ir a la configuración de tu sistema operativo y habilitarlas para esta aplicación. Luego reinicia la aplicación.");  
       setIsLoading(false)
       return;
     }
