@@ -1,7 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import service from "@service/config";
 
-import Loading from "@components/ui/Loading";
+// import Loading from "@components/ui/Loading";
+
+import dogSleepingGif from "../assets/animations/dog-sleeping.gif"
+import Typography from '@mui/material/Typography'
 
 // 1. componente que transmite el contexto
 const AuthContext = createContext()
@@ -28,7 +31,9 @@ function AuthWrapper(props) {
       setIsOrganizerOrAdmin(false)
       setIsAdmin(false)
       setLoggedUser(null)
-      setIsAuthenticating(false)
+      setTimeout(() => {
+        setIsAuthenticating(false)
+      }, 1000)
       return
     }
 
@@ -46,7 +51,9 @@ function AuthWrapper(props) {
         setIsOrganizerOrAdmin(false)
         setIsAdmin(false)
         setLoggedUser(null)
-        setIsAuthenticating(false)
+        setTimeout(() => {
+          setIsAuthenticating(false)
+        }, 1000)
         return
       }
       
@@ -57,7 +64,9 @@ function AuthWrapper(props) {
       setIsOrganizerOrAdmin(role === "organizer" || role === "admin")
       setIsAdmin(role === "admin")
       setLoggedUser(responseOwnUserDetails.data)
-      setIsAuthenticating(false)
+      setTimeout(() => {
+        setIsAuthenticating(false)
+      }, 1000)
     } catch (error) {
       console.log(error);
       
@@ -67,7 +76,9 @@ function AuthWrapper(props) {
       setIsOrganizerOrAdmin(false)
       setIsAdmin(false)
       setLoggedUser(null)
-      setIsAuthenticating(false)
+      setTimeout(() => {
+        setIsAuthenticating(false)
+      }, 1000)
     }
   }
 
@@ -87,7 +98,16 @@ function AuthWrapper(props) {
   }, [])
 
   if (isAuthenticating) {
-    return <Loading />
+    // return <Loading />
+    //TODO move this to it's own component
+    return (
+    <>
+      <Typography variant="h2" marginTop={4}>Estas accediento a</Typography>
+      <Typography variant="h1" marginBottom={3} fontWeight={"bold"} color={"primary"} >Patas Arriba</Typography>
+      <img src={dogSleepingGif} alt="dog-sleeping" width={"260px"}/>
+      <Typography variant="h5" marginTop={3}>Espera unos segundos, me estoy despertando</Typography>
+    </>
+    )
   }
 
   return (

@@ -28,6 +28,7 @@ import OwnUserDetails from './pages/user/OwnUserDetails'
 
 import Container from '@mui/material/Container'
 import EventManage from '@pages/event/EventManage'
+import Glossary from '@pages/Glossary'
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
           <Route path="/car-group/:carGroupId/edit" element={<OnlyPrivate> <CarGroupEdit /> </OnlyPrivate>}/>
           <Route path="/user/own" element={ <OnlyPrivate> <OwnUserDetails /> </OnlyPrivate> }/>
           <Route path="/user/:userId" element={ <OnlyPrivate> <UserDetails /> </OnlyPrivate> }/>
+          <Route path="/glossary" element={ <OnlyPrivate> <Glossary /> </OnlyPrivate>}/>
           
           {/* //* error routes */}
           <Route path="/server-error" element={<ServerError />}/>

@@ -145,6 +145,17 @@ function Navbar() {
             </ListItem>
           </List>}
 
+          {isLoggedIn && <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => navigate("/glossary")}>
+                <ListItemIcon>
+                  <CalendarMonthIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Glosario"} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
           {isOrganizerOrAdmin && <Divider><Chip label="Organizador" size="small" /></Divider>}
 
           {isOrganizerOrAdmin && <List>
