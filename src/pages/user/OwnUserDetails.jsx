@@ -95,11 +95,9 @@ function OwnUserDetails() {
         <span>{formatDate(createdAt, "member-since")}</span>
       </Typography>
 
-        {isOrganizerOrAdmin && <>
-          <hr/>
-            <NotificationSettings/>
-          </>}
-        </>
+      <hr/>
+      <NotificationSettings/>
+    </>
   )
 }
 
