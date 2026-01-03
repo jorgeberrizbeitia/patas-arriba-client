@@ -107,7 +107,7 @@ function PasswordForget() {
 
         {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
 
-        {showEmailSetAlert && <Alert sx={{mt: 2}} severity="success">Revisa tu bandeja de entrada o bandeja de spam por un correo enviado desde: <Typography variant="span" fontWeight="bold">soporte.patasarriba@gmail.com</Typography> y sigue las instrucciones. Este correo podría tardar unos minutos en ser enviado.</Alert>}
+        {showEmailSetAlert && <Alert sx={{mt: 2}} severity="success">Revisa tu bandeja de entrada o bandeja de spam por un correo enviado desde: <Typography variant="span" fontWeight="bold">soporte.patasarriba@XXXXXXXX.brevosend.com</Typography> y sigue las instrucciones. Este correo podría tardar unos minutos en ser enviado.</Alert>}
 
       </Box>
     
