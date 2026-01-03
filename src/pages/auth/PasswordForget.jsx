@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -12,6 +13,8 @@ import GoBack from "@components/navigation/GoBack";
 import service from "@service/config";
 
 function PasswordForget() {
+
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState({
     value: "",
