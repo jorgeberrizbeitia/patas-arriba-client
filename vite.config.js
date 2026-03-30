@@ -5,6 +5,11 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./tests/setup.js"],
+  },
   resolve: {
     alias: {
       "@assets": path.resolve(__dirname, "src/assets"),
@@ -14,9 +19,6 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "src/pages"),
       "@service": path.resolve(__dirname, "src/service"),
       "@utils": path.resolve(__dirname, "src/utils"),
-      
-      '@mui/material': path.resolve(__dirname, "node_modules/@mui/material"),
-      '@mui/icons-material': path.resolve(__dirname, "node_modules/@mui/icons-material"),
     }
   }
 })

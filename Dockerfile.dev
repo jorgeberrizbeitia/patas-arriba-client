@@ -4,4 +4,4 @@ WORKDIR /app
 
 EXPOSE 5173
 
-CMD ["sh", "-c", "npm install && npx vite --host 0.0.0.0"]
+CMD ["sh", "-c", "npm install --legacy-peer-deps && npx vite --host 0.0.0.0"]
