@@ -23,6 +23,7 @@ const categoryColors = {
   Plataforma: "warning",
   Rol: "secondary",
   Evento: "primary",
+  Lugar: "default",
 };
 
 function Glossary() {

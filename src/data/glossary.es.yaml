@@ -10,15 +10,16 @@ categories:
   Plataforma: Plataforma
   Rol: Rol
   Evento: Evento
+  Lugar: Lugar
 
 entries:
   - term: SO
     fullName: Segundas Oportunidades
-    category: Programa
+    category: Lugar
     definition: >
-      Programa dedicado a dar una segunda oportunidad a animales que han sido
-      abandonados o maltratados. Los voluntarios participan en actividades de
-      socialización, paseos y cuidado de estos animales.
+      Refugio de animales ubicado cerca de l'Arboç, Tarragona, que acoge
+      tanto perros como animales de granja. Es uno de los refugios donde los
+      voluntarios de Fundación Patas Arriba acuden regularmente a ayudar.
 
   - term: ASS
     fullName: Animals Sense Sostre

@@ -10,15 +10,16 @@ categories:
   Plataforma: Platform
   Rol: Role
   Evento: Event
+  Lugar: Place
 
 entries:
   - term: SO
     fullName: Segundas Oportunidades (Second Chances)
-    category: Programa
+    category: Lugar
     definition: >
-      Program dedicated to giving a second chance to animals that have been
-      abandoned or mistreated. Volunteers participate in socialization
-      activities, walks, and care for these animals.
+      Animal shelter located near l'Arboç, Tarragona, that houses both dogs
+      and farm animals. One of the shelters where Fundación Patas Arriba
+      volunteers regularly go to help.
 
   - term: ASS
     fullName: Animals Sense Sostre (Animals Without Shelter)
