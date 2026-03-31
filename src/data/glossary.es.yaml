@@ -1,0 +1,107 @@
+label:
+  title: Glosario
+  subtitle: Términos y abreviaturas usados en la fundación
+  searchPlaceholder: Buscar término...
+  noResults: No se encontraron resultados
+
+categories:
+  Programa: Programa
+  Organización: Organización
+  Plataforma: Plataforma
+  Rol: Rol
+  Evento: Evento
+
+entries:
+  - term: SO
+    fullName: Segundas Oportunidades
+    category: Programa
+    definition: >
+      Programa dedicado a dar una segunda oportunidad a animales que han sido
+      abandonados o maltratados. Los voluntarios participan en actividades de
+      socialización, paseos y cuidado de estos animales.
+
+  - term: ASS
+    fullName: Animals Sense Sostre
+    category: Organización
+    definition: >
+      Organización colaboradora que trabaja con animales sin hogar. Fundación
+      Patas Arriba coordina voluntarios para apoyar sus actividades y eventos
+      de adopción.
+
+  - term: Evento
+    fullName:
+    category: Plataforma
+    definition: >
+      Actividad organizada por la fundación donde los voluntarios pueden
+      participar. Cada evento tiene fecha, ubicación, y un número máximo de
+      plazas disponibles.
+
+  - term: Grupo de Coches
+    fullName:
+    category: Plataforma
+    definition: >
+      Sistema para coordinar el transporte compartido entre voluntarios que
+      asisten a un mismo evento. Un conductor crea un grupo indicando las
+      plazas disponibles y los demás voluntarios pueden unirse.
+
+  - term: Organizador
+    fullName:
+    category: Rol
+    definition: >
+      Voluntario con permisos especiales para crear y gestionar eventos,
+      activar usuarios nuevos y ver la lista completa de voluntarios
+      registrados.
+
+  - term: Admin
+    fullName: Administrador
+    category: Rol
+    definition: >
+      Rol con el nivel más alto de permisos en la plataforma. Puede gestionar
+      todos los aspectos del sistema, incluyendo la promoción de usuarios a
+      organizadores.
+
+  - term: Activación
+    fullName:
+    category: Plataforma
+    definition: >
+      Proceso por el cual un organizador o admin aprueba la cuenta de un nuevo
+      voluntario. Hasta ser activado, el usuario no puede ver ni unirse a
+      eventos.
+
+  - term: Acogida
+    fullName:
+    category: Programa
+    definition: >
+      Programa en el que un voluntario cuida temporalmente a un animal en su
+      hogar hasta que se le encuentre una familia adoptiva definitiva.
+
+  - term: Apadrinamiento
+    fullName:
+    category: Programa
+    definition: >
+      Compromiso de un voluntario para contribuir económicamente o con tiempo
+      de forma regular al cuidado de un animal específico en el refugio.
+
+  - term: Jornada de Adopción
+    fullName:
+    category: Evento
+    definition: >
+      Evento especial donde se presentan animales disponibles para adopción al
+      público. Los voluntarios ayudan con la logística, atención al público y
+      cuidado de los animales durante la jornada.
+
+  - term: Colonia Felina
+    fullName:
+    category: Programa
+    definition: >
+      Grupo de gatos callejeros gestionados mediante el método CES (Captura,
+      Esterilización, Suelta). Los voluntarios alimentan y monitorizan la
+      salud de los gatos de la colonia.
+
+  - term: CES
+    fullName: Captura, Esterilización, Suelta
+    category: Programa
+    definition: >
+      Método ético de control de poblaciones de gatos callejeros. Se captura
+      al animal, se esteriliza en una clínica veterinaria y se devuelve a su
+      colonia de origen.
