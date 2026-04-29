@@ -7,31 +7,22 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import InputAdornment from "@mui/material/InputAdornment";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
 
-import glossaryEs from "@data/glossary.es.yaml";
-import glossaryEn from "@data/glossary.en.yaml";
-
-const glossaries = { es: glossaryEs, en: glossaryEn };
+import glossary from "@data/glossary.es.yaml";
 
 const categoryColors = {
-  Programa: "success",
-  Organización: "info",
+  "Refugio/Protectora": "info",
   Plataforma: "warning",
   Rol: "secondary",
   Evento: "primary",
-  Lugar: "default",
 };
 
 function Glossary() {
-  const [lang, setLang] = useState("es");
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const glossary = glossaries[lang];
   const { label, categories, entries } = glossary;
 
   const categoryKeys = [...new Set(entries.map((e) => e.category))];
@@ -49,41 +40,18 @@ function Glossary() {
           !selectedCategory || entry.category === selectedCategory;
         return matchesSearch && matchesCategory;
       })
-      .sort((a, b) => a.term.localeCompare(b.term, lang));
-  }, [search, selectedCategory, entries, lang]);
+      .sort((a, b) => a.term.localeCompare(b.term, "es"));
+  }, [search, selectedCategory, entries]);
 
   return (
     <div>
       <hr style={{ maxWidth: "initial" }} />
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          mb: 1,
-        }}
-      >
-        <Box>
-          <Typography variant="h1">{label.title}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {label.subtitle}
-          </Typography>
-        </Box>
-        <ToggleButtonGroup
-          value={lang}
-          exclusive
-          onChange={(_, v) => {
-            if (v) {
-              setLang(v);
-              setSelectedCategory(null);
-            }
-          }}
-          size="small"
-        >
-          <ToggleButton value="es" aria-label="Español">🇪🇸</ToggleButton>
-          <ToggleButton value="en" aria-label="English">🇬🇧</ToggleButton>
-        </ToggleButtonGroup>
+      <Box sx={{ mb: 1 }}>
+        <Typography variant="h1">{label.title}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          {label.subtitle}
+        </Typography>
       </Box>
 
       <TextField
