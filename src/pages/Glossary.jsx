@@ -6,8 +6,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
+import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SearchIcon from "@mui/icons-material/Search";
 
 import glossary from "@data/glossary.es.yaml";
@@ -132,7 +134,23 @@ function Glossary() {
             </Box>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography variant="body1">{entry.definition}</Typography>
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: entry.definition }}
+            />
+            {entry.link && (
+              <Button
+                href={entry.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                size="small"
+                startIcon={<OpenInNewIcon />}
+                sx={{ mt: 1 }}
+              >
+                Abrir enlace
+              </Button>
+            )}
           </AccordionDetails>
         </Accordion>
       ))}

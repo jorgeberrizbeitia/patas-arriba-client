@@ -24,9 +24,13 @@ entries:
     fullName: Animals Sense Sostre
     category: Refugio/Protectora
     definition: >
-      Refugio ubicado en VALLIRANA donde hace casi 10 años que colaboramos, 
-      es como nuestra segunda casa y gestionamos todo el tema de voluntariado 
+      Refugio ubicado en VALLIRANA donde hace casi 10 años que colaboramos,
+      es como nuestra segunda casa y gestionamos todo el tema de voluntariado
       los viernes y domingos y eventos donde necesitan ayuda.
+      <br><br><b>Información perros</b><br>
+      Hoja de cálculo con la información detallada de los perros del refugio. 
+      <strong><i>Consulta obligatoria antes de las salidas.</i></strong>
+    link: https://docs.google.com/spreadsheets/d/1eezDi9HIZ8MhbP2WoPjK5kcQ0-yG-R_Lt0N_JWFUN5w/edit?usp=sharing
 
   - term: Evento
     fullName:
