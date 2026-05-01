@@ -1,0 +1,121 @@
+label:
+  title: Glosario
+  subtitle: Términos y abreviaturas usados en la fundación
+  searchPlaceholder: Buscar término...
+  noResults: No se encontraron resultados
+
+categories:
+  Refugio/Protectora: Refugio/Protectora
+  Plataforma: Plataforma
+  Rol: Rol
+  Evento: Evento
+
+entries:
+  - term: SO
+    fullName: Segundas Oportunidades
+    category: Refugio/Protectora
+    definition: >
+      Refugio de animales ubicado cerca de l'Arboç, Tarragona, que acoge
+      tanto perros como animales de granja. Es uno de los refugios donde los
+      voluntarios de Fundación Patas Arriba acuden regularmente a ayudar. 
+      Responsable de las salidas Silvia Speroni
+
+  - term: ASS
+    fullName: Animals Sense Sostre
+    category: Refugio/Protectora
+    definition: >
+      Refugio ubicado en VALLIRANA donde hace casi 10 años que colaboramos,
+      es como nuestra segunda casa y gestionamos todo el tema de voluntariado
+      los viernes y domingos y eventos donde necesitan ayuda.
+      <br><br><b>Información perros</b><br>
+      Hoja de cálculo con la información detallada de los perros del refugio. 
+      <strong><i>Consulta obligatoria antes de las salidas.</i></strong>
+    link: https://docs.google.com/spreadsheets/d/1eezDi9HIZ8MhbP2WoPjK5kcQ0-yG-R_Lt0N_JWFUN5w/edit?usp=sharing
+
+  - term: Evento
+    fullName:
+    category: Plataforma
+    definition: >
+      Actividad organizada por la fundación donde los voluntarios pueden
+      participar. Cada evento tiene fecha, ubicación, descripción de la actividad.
+
+  - term: Grupo de Coches
+    fullName:
+    category: Plataforma
+    definition: >
+      Sistema para coordinar el transporte compartido entre voluntarios que
+      asisten a un mismo evento. Un conductor crea un grupo indicando las
+      plazas disponibles y los demás voluntarios pueden unirse. Dentro del grupo se pueden mandar mensajes. 
+
+  - term: Organizador
+    fullName:
+    category: Rol
+    definition: >
+      Voluntario con permisos especiales para crear y gestionar eventos,
+      activar usuarios nuevos y ver la lista completa de voluntarios
+      registrados. Responsable ese dia
+
+  - term: Jornada de Adopción
+    fullName:
+    category: Evento
+    definition: >
+      Evento especial donde se presentan animales disponibles para adopción al
+      público. Los voluntarios ayudan con la logística, atención al público y
+      cuidado de los animales durante la jornada.
+
+  - term: Salida con empresa
+    fullName:
+    category: Evento
+    definition: >
+      Jornada de voluntariado donde una empresa viene a hacer una jornada de
+      teambuilding. Puede ser viernes o domingo.
+
+  - term: Salida con estudiantes
+    fullName:
+    category: Evento
+    definition: >
+      Salidas donde se hace una jornada de voluntariado pero también vienen
+      estudiantes para hacer horas de voluntariado.
+
+  - term: Recogida de pienso
+    fullName:
+    category: Evento
+    definition: >
+      Evento en el que durante todo un día estamos en la puerta de un
+      supermercado pidiendo alimentos y productos de limpieza para los perros
+      y gatos.
+
+  - term: Paseo largo de montaña
+    fullName:
+    category: Evento
+    definition: >
+      Cuando viene una empresa o algún colegio, se hace un paseo de más de
+      una hora para aprovechar la jornada.
+
+  - term: Día Feliz
+    fullName:
+    category: Evento
+    definition: >
+      Salida fuera del refugio que puede ser a la playa, la ciudad o alguna
+      montaña, donde los perros disfrutan de un día diferente lejos del
+      estrés de la protectora. Responsable Eliana Profeta.
+
+  - term: Mercadillo
+    fullName:
+    category: Evento
+    definition: >
+      Evento donde se venden productos de segunda mano. Responsable Elisabeth
+      Kossman.
+
+  - term: Badagats
+    fullName:
+    category: Refugio/Protectora
+    definition: >
+      Protectora de gatos ubicada en Badalona.
+
+  - term: Usuario
+    fullName:
+    category: Plataforma
+    definition: >
+      Miembro del equipo de Patas Arriba. Al hacer clic aparece el nombre y
+      el teléfono de contacto.

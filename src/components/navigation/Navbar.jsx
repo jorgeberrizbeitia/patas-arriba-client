@@ -27,6 +27,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import InfoIcon from "@mui/icons-material/Info";
 import HomeIcon from "@mui/icons-material/Home";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 import { useState, useContext } from "react";
 import { AuthContext } from "@context/auth.context";
@@ -149,7 +150,7 @@ function Navbar() {
             <ListItem disablePadding>
               <ListItemButton onClick={() => navigate("/glossary")}>
                 <ListItemIcon>
-                  <CalendarMonthIcon />
+                  <MenuBookIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Glosario"} />
               </ListItemButton>
