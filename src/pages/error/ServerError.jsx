@@ -1,4 +1,4 @@
-import { Player } from '@lottiefiles/react-lottie-player';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import animationNotFound from "@assets/animations/animation-error.json"
 import GoBack from '@components/navigation/GoBack';
 import Typography from '@mui/material/Typography';
@@ -15,14 +15,13 @@ function ServerError() {
 
     <Typography variant='body'>Intenta nuevamente, si el problema persiste, contacta a un admin</Typography>
 
-    <Player
+    <DotLottieReact
       autoplay
       loop
-      src={animationNotFound}
+      data={animationNotFound}
       style={{ height: '250px', width: '300px' }}
-    >
-    </Player>
-  
+    />
+
   </>
   )
 }

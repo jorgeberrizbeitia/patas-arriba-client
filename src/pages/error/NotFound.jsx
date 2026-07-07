@@ -1,4 +1,4 @@
-import { Player } from '@lottiefiles/react-lottie-player';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import animationNotFound from "@assets/animations/animation-not-found.json"
 import GoBack from '@components/navigation/GoBack';
 import Typography from '@mui/material/Typography';
@@ -13,14 +13,13 @@ function NotFound() {
 
       <br />
 
-      <Player
+      <DotLottieReact
         autoplay
         loop
-        src={animationNotFound}
+        data={animationNotFound}
         style={{ height: '250px', width: '300px' }}
-      >
-      </Player>
-    
+      />
+
     </>
   )
 }

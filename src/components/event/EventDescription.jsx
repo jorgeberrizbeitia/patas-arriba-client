@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Typography from '@mui/material/Typography'
 import Alert from "@mui/material/Alert";
 
-import Linkify from "react-linkify";
+import Linkify from "linkify-react";
 
 function EventDescription({event}) {
 
@@ -33,8 +33,8 @@ function EventDescription({event}) {
           <Collapse in={showDescription}>
 
             <Box display="flex" flexDirection="column" alignItems="center" p={3}>
-              <Linkify>
-                <Typography variant="body2" color="initial" style={{ whiteSpace: 'pre-wrap', textAlign: "start", wordBreak: 'break-word',}}>{event.description}</Typography>  
+              <Linkify options={{ target: "_blank", rel: "noopener noreferrer" }}>
+                <Typography variant="body2" color="initial" style={{ whiteSpace: 'pre-wrap', textAlign: "start", wordBreak: 'break-word',}}>{event.description}</Typography>
               </Linkify>
             </Box>
 
