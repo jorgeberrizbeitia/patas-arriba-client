@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-07-08
+
+### Mobile-first design system applied (monorepo issue #34)
+
+- **New token theme in `src/theme.js`** built from the foundation's real
+  branding: coral `#EA5347` primary / amber `#EFB666` secondary, Staatliches
+  display headings (h1/h2), named `surface`/`brand`/`category`/`avatar`
+  palette tokens, warm near-black text (the old navy `#173A5E` is gone), and
+  touch-sized component defaults (Button 48px, IconButton 44px, card/chip/
+  input radii). `main.jsx` slims down to the entry point; `CssBaseline` now
+  paints the warm off-white canvas.
+- **`App.css` overrides removed** — the `!important` font-size block and the
+  html rem-inflation media queries are superseded by `theme.components` and
+  `clamp()` display headings. Components using the deleted palette keys
+  (`gray.*`, `primary.lighterSaturation`) migrated to named tokens; Glossary
+  chips now share the app-wide `palette.category` vocabulary.
+- **BottomNavigation replaces the hamburger drawer** as primary navigation:
+  Inicio/Acceso/Registro for visitors, Inicio/Eventos/Perfil/Más when logged
+  in, with Glosario, Cerrar Sesión and the organizer destinations in the Más
+  sheet. Navbar shrinks to the top identity strip.
+- **"Crear Evento" FAB** on the event list for organizers/admins.
+- **Mobile keyboards**: `inputMode` on email, phone, and numeric fields.
+- **Accessibility**: aria-labels on icon-only buttons; `aria-expanded` on
+  the three collapse toggles.
+- **Responsive layout fixes**: percentage-width button rows wrap or stack,
+  Signup phone fields stack on phones, Home logo caps at 100% width, GoBack
+  is a plain arrow + label, auth links are proper text Buttons, message list
+  height leaves room on small screens.
+- Test-first where behavior changed: new suites for BottomNav, the EventList
+  FAB, Signup keyboard hints, Message menu accessibility, and the
+  EventDescription disclosure (30 tests total now pass).
+
 ## 2026-05-03
 
 ### Vitest + React Testing Library test harness
