@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
 import Navbar from "@components/navigation/Navbar.jsx"
+import BottomNav from "@components/navigation/BottomNav.jsx"
 import OnlyPrivate from "@components/auth/OnlyPrivate.jsx"
 import OnlyAnon from './components/auth/OnlyAnon'
 import OnlyOrganizerOrAdmin from './components/auth/OnlyOrganizerOrAdmin'
@@ -38,7 +39,8 @@ function App() {
 
       <Navbar />
       
-      <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+      {/* pb clears the fixed BottomNav so nothing hides behind it */}
+      <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", alignItems:"center", pb: 10}}>
 
         <Routes>
 
@@ -76,6 +78,8 @@ function App() {
         </Routes>
 
       </Container>
+
+      <BottomNav />
 
     </>
   )

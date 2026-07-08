@@ -1,218 +1,44 @@
+// The top identity strip: who is signed in and a shortcut to their profile.
+// Primary navigation is NOT here — it lives in BottomNav (issue #34,
+// Change 1), which replaced the old hamburger drawer this component used to
+// own. What remains is deliberately thin: on a phone the top of the screen
+// is the hardest place to reach, so nothing essential may live here.
+
 import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import EventIcon from '@mui/icons-material/Event';
-import CloseIcon from '@mui/icons-material/Close';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import GroupIcon from '@mui/icons-material/Group';
-import Chip from '@mui/material/Chip';
-
-import { Link } from "react-router-dom";
-
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import LoginIcon from "@mui/icons-material/Login";
-import InfoIcon from "@mui/icons-material/Info";
-import HomeIcon from "@mui/icons-material/Home";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-
-import { useState, useContext } from "react";
-import { AuthContext } from "@context/auth.context";
-import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@context/auth.context";
 import UserIcon from "@components/user/UserIcon";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const { isLoggedIn, isOrganizerOrAdmin, isAdmin, loggedUser } =
+    useContext(AuthContext);
 
-  const navigate = useNavigate()
-  const { authenticateUser, isLoggedIn, isOrganizerOrAdmin, isAdmin, loggedUser} = useContext(AuthContext)
-
-  const [open, setOpen] = useState(false);
-
-  const toggleDrawer = (newOpen) => () => setOpen(newOpen);
-
-  const handleLogout = async () => {
-    
-    localStorage.removeItem("authToken")
-    await authenticateUser()
-    navigate("/")
-
-  };
+  if (!isLoggedIn) {
+    return null;
+  }
 
   return (
-    <nav>
-      <Box sx={{display: "flex", justifyContent: "space-between"}}>
-        <Button onClick={toggleDrawer(true)}>
-          {open ? <MenuOpenIcon /> : <MenuIcon />}
-        </Button>
-        {isLoggedIn && <>
-          <Box>
-            <Typography variant="caption">{loggedUser.username}</Typography>
-            {isAdmin && <Typography variant="caption">, Admin</Typography>}
-            {!isAdmin && isOrganizerOrAdmin && <Typography variant="caption">, Organizador</Typography>}
-            <Tooltip title="Ver Perfil">
-                <IconButton onClick={() => navigate("/user/own")}>
-                <UserIcon size="small" user={loggedUser}/>
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </>}
-        
-      </Box>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-        >
-
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={toggleDrawer(false)}>
-                <ListItemIcon>
-                  <CloseIcon />
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-          </List>
-
-          <Divider />
-
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/")}>
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Inicio"} />
-              </ListItemButton>
-            </ListItem>
-          </List>
-
-          {!isLoggedIn && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/signup")}>
-                <ListItemIcon>
-                  <LockOpenIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Registro"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {!isLoggedIn && <List>
-            <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate("/login")}>
-                  <ListItemIcon>
-                    <LoginIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Acceso"} />
-                </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {isLoggedIn && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/user/own")}>
-                <ListItemIcon>
-                  <AccountBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Tu Perfil"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {isLoggedIn && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/event")}>
-                <ListItemIcon>
-                  <CalendarMonthIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Eventos"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {isLoggedIn && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/glossary")}>
-                <ListItemIcon>
-                  <MenuBookIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Glosario"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {isOrganizerOrAdmin && <Divider><Chip label="Organizador" size="small" /></Divider>}
-
-          {isOrganizerOrAdmin && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/event/create")}>
-                <ListItemIcon>
-                  <AddBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Crear Evento"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {isOrganizerOrAdmin && <List>
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => navigate("/user")}>
-                <ListItemIcon>
-                  <GroupIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Ver Usuarios"} />
-              </ListItemButton>
-            </ListItem>
-          </List>}
-
-          {/* <Divider />
-
-          <List>
-            <ListItem disablePadding>
-              <Link
-                to="/about"
-                style={{ textDecoration: "none", color: "inherit", width: "100%" }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>
-                    <InfoIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Sobre nosotros"} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          </List> */}
-
-          {isLoggedIn && <Divider />}
-
-          {isLoggedIn && <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Cerrar Sesión"} />
-            </ListItemButton>
-          </ListItem>}
-        </Box>
-      </Drawer>
-
-    </nav>
+    <Box
+      component="header"
+      sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", px: 1 }}
+    >
+      <Typography variant="caption">{loggedUser.username}</Typography>
+      {isAdmin && <Typography variant="caption">, Admin</Typography>}
+      {!isAdmin && isOrganizerOrAdmin && (
+        <Typography variant="caption">, Organizador</Typography>
+      )}
+      <Tooltip title="Ver Perfil">
+        <IconButton aria-label="Ver perfil" onClick={() => navigate("/user/own")}>
+          <UserIcon size="small" user={loggedUser} />
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 }
 
