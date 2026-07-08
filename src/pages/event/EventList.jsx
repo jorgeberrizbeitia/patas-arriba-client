@@ -1,18 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import service from "@service/config";
 import Loading from "@components/ui/Loading";
 import EventCard from "@components/event/EventCard";
+import { AuthContext } from "@context/auth.context";
+import { SHADOW } from "../../theme";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 
 import { useNavigate } from "react-router-dom";
 
 function EventList() {
 
   const navigate = useNavigate()
+  const { isOrganizerOrAdmin } = useContext(AuthContext)
 
   const [isLoading, setIsLoading] = useState(true);
   const [events, setEvents] = useState([]);
@@ -70,6 +75,28 @@ function EventList() {
       {isLoading ? <Loading /> : eventsToDisplay.map((event) => <EventCard key={event._id} event={event}/>)}
 
       {!isLoading && eventsToDisplay.length === 0 && <Typography>No se han encontrado eventos</Typography>}
+
+      {/* Creating an event is THE organizer action on this screen, so it
+          floats within thumb reach instead of hiding in a menu (spec FR-7).
+          Volunteers never see it — the /event/create route rejects them. */}
+      {isOrganizerOrAdmin && (
+        <Fab
+          color="primary"
+          variant="extended"
+          aria-label="Crear evento"
+          onClick={() => navigate("/event/create")}
+          sx={{
+            position: "fixed",
+            // Sits above the fixed BottomNav (56px) plus a comfortable gap.
+            bottom: 88,
+            right: 24,
+            boxShadow: SHADOW.fab,
+          }}
+        >
+          <AddIcon sx={{ mr: 1 }} />
+          Crear evento
+        </Fab>
+      )}
 
     </>
   );
