@@ -1,16 +1,18 @@
+/* Global CSS is kept to the few things the MUI theme cannot express — see
+   src/theme.js for everything visual. The old !important font/size overrides
+   and the html rem-inflation media queries are gone: component sizing now
+   comes from theme.components, and type scales via the theme's clamp()
+   headings instead of inflating the root font on wide screens. */
+
 #root {
   margin: 0 auto;
-  padding: 0 rem;
   text-align: center;
 }
 
-html {
-  font-size: 16px;
-}
-
 a:visited {
-  /* //* weird but with mui and rect-router-dom links */
-  color: #EFB665
+  /* //* weird but with mui and react-router-dom links — brand coral, matches
+     palette.primary.main in src/theme.js */
+  color: #EA5347;
 }
 
 .remove-margin {
@@ -19,11 +21,11 @@ a:visited {
 }
 
 hr {
-  /* //* better than mui Divider */ 
+  /* //* better than mui Divider */
   margin: 20px;
   border: none;
-  border-top: 1px solid #EFB665;
-  width: 100%; 
+  border-top: 1px solid #E8E8E4; /* surface.line in src/theme.js */
+  width: 100%;
   max-width: 650px;
 }
 
@@ -32,49 +34,3 @@ hr {
   display: flex;
   flex-direction: column;
 }
-
-.MuiAlert-root {
-  /* //* To manually adjust the font size of all Alerts. It will use the same value as captions */
-  font-size: 0.75rem !important;
-}
-
-.MuiButton-containedSizeSmall, .MuiButton-outlinedSizeSmall, .MuiButton-textSizeSmall {
-  font-size: 0.625rem !important;
-}
-
-.MuiButton-containedSizeMedium, .MuiButton-outlinedSizeMedium, .MuiButton-textSizeMedium {
-  font-size: 0.75rem !important;
-}
-
-.MuiButton-containedSizeLarge, .MuiButton-outlinedSizeLarge, .MuiButton-textSizeLarge {
-  font-size: 0.825rem !important;
-}
-
-.MuiChip-sizeMedium {
-  font-size: 0.75rem !important;
-}
-
-@media (min-width: 600px) {
-  html {
-    font-size: 19px;
-  }
-}
-
-@media (min-width: 960px) {
-  html {
-    font-size: 22px;
-  }
-}
-
-@media (min-width: 1280px) {
-  html {
-    font-size: 25px;
-  }
-}
-
-@media (min-width: 1920px) {
-  html {
-    font-size: 28px;
-  }
-}
-

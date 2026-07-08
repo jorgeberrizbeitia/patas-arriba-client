@@ -27,7 +27,7 @@ function CarGroupCard({eachCarGroup, setSelectedCarGroupId, selectedCarGroupId})
   const occupancyAvailable = roomAvailable - passengers.length
   
   return (
-    <Card sx={{bgcolor: "gray.transparent", width:"100%"}}>
+    <Card sx={{bgcolor: "surface.subtle", width:"100%"}}>
       <CardHeader
         avatar={ <UserIcon user={owner} size="small" caption/> }
         

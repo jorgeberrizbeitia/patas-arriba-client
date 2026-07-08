@@ -55,7 +55,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
     timeFrameChip = <Chip label="Hoy" variant='filled' color="info"/>
   } else {
-    timeFrameChip = <Chip label="Pasado" variant='filled' sx={{bgcolor: "gray.main", color: "white"}}/>
+    timeFrameChip = <Chip label="Pasado" variant='filled' sx={{bgcolor: "grey.600", color: "white"}}/>
   }
 
   let cornerTimeFrameChip;
@@ -64,7 +64,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
     cornerTimeFrameChip = <CornerChip label="Es Hoy" bgcolor="info.main" color="white" side={"left"}/>
   } else {
-    cornerTimeFrameChip = <CornerChip label="Pasado" bgcolor="gray.main" color="white" side={"left"}/>
+    cornerTimeFrameChip = <CornerChip label="Pasado" bgcolor="grey.600" color="white" side={"left"}/>
   }
 
   return (

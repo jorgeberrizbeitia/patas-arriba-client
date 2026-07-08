@@ -24,7 +24,7 @@ function AttendeeCarGroupCard({attendee}) {
   
   return (
     <Box 
-      bgcolor="gray.transparent"
+      bgcolor="surface.subtle"
       width="100%" 
       height="70px" 
       display="flex" 

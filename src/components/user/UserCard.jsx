@@ -33,7 +33,7 @@ function UserCard({user}) {
   }
 
   return (
-    <Card sx={{bgcolor: "gray.transparent", width:"100%"}}>
+    <Card sx={{bgcolor: "surface.subtle", width:"100%"}}>
       <CardHeader 
       avatar={
         <UserIcon user={user} size="small"/>

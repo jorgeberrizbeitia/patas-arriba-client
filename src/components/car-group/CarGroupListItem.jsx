@@ -34,7 +34,7 @@ function CarGroupListItem({carGroup}) {
   const occupancyAvailable = roomAvailable - passengers.length
   
   return (
-    <Card sx={{bgcolor: "gray.transparent", width:"100%"}}>
+    <Card sx={{bgcolor: "surface.subtle", width:"100%"}}>
       <CardHeader
         avatar={ 
           <Box display="flex" flexDirection="column">

@@ -15,6 +15,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/roboto": "^5.0.12",
+    "@fontsource/staatliches": "^5.2.8",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@mui/icons-material": "^7.3.9",
     "@mui/lab": "^7.0.1-beta.23",

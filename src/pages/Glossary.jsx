@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,12 +13,25 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SearchIcon from "@mui/icons-material/Search";
 
 import glossary from "@data/glossary.es.yaml";
+import { catColor } from "../theme";
 
-const categoryColors = {
-  "Refugio/Protectora": "info",
-  Plataforma: "warning",
-  Rol: "secondary",
-  Evento: "primary",
+// Glossary's Spanish labels normalise onto the app-wide category slugs in
+// palette.category — one shared color vocabulary with events, instead of the
+// old trick of overloading semantic colors (info/warning/...) per category.
+const categorySlugs = {
+  "Refugio/Protectora": "refugio",
+  Plataforma: "plataforma",
+  Rol: "rol",
+  Evento: "evento",
+};
+
+// Chip color from the category swatch: filled chips get the swatch with its
+// own contrastText; outlined chips borrow the swatch for border + text.
+const chipSx = (category, filled) => {
+  const c = catColor(categorySlugs[category]);
+  return filled
+    ? { bgcolor: c.main, color: c.contrastText, borderColor: c.main }
+    : { color: c.main, borderColor: c.main };
 };
 
 function Glossary() {
@@ -29,21 +42,21 @@ function Glossary() {
 
   const categoryKeys = [...new Set(entries.map((e) => e.category))];
 
-  const filtered = useMemo(() => {
-    const lower = search.toLowerCase();
-    return entries
-      .filter((entry) => {
-        const matchesSearch =
-          !search ||
-          entry.term.toLowerCase().includes(lower) ||
-          (entry.fullName && entry.fullName.toLowerCase().includes(lower)) ||
-          entry.definition.toLowerCase().includes(lower);
-        const matchesCategory =
-          !selectedCategory || entry.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-      })
-      .sort((a, b) => a.term.localeCompare(b.term, "es"));
-  }, [search, selectedCategory, entries]);
+  // No useMemo: the glossary is a static handful of entries, and the React
+  // Compiler memoizes this on its own (the manual memo actually blocked it).
+  const lower = search.toLowerCase();
+  const filtered = entries
+    .filter((entry) => {
+      const matchesSearch =
+        !search ||
+        entry.term.toLowerCase().includes(lower) ||
+        (entry.fullName && entry.fullName.toLowerCase().includes(lower)) ||
+        entry.definition.toLowerCase().includes(lower);
+      const matchesCategory =
+        !selectedCategory || entry.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => a.term.localeCompare(b.term, "es"));
 
   return (
     <div>
@@ -80,7 +93,7 @@ function Glossary() {
             key={catKey}
             label={categories[catKey]}
             size="small"
-            color={categoryColors[catKey] || "default"}
+            sx={chipSx(catKey, selectedCategory === catKey)}
             variant={selectedCategory === catKey ? "filled" : "outlined"}
             onClick={() =>
               setSelectedCategory(selectedCategory === catKey ? null : catKey)
@@ -128,7 +141,7 @@ function Glossary() {
               <Chip
                 label={categories[entry.category]}
                 size="small"
-                color={categoryColors[entry.category] || "default"}
+                sx={chipSx(entry.category, false)}
                 variant="outlined"
               />
             </Box>

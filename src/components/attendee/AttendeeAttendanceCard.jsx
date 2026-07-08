@@ -43,7 +43,7 @@ function AttendeeAttendanceCard({attendee, setAttendees}) {
   const getColorForValue = (value) => {
     switch (value) {
       case 'pending':
-        return 'gray.main';
+        return 'text.secondary';
       case 'show':
         return 'success.main'
       case 'no-show':
@@ -57,7 +57,7 @@ function AttendeeAttendanceCard({attendee, setAttendees}) {
   
   return (
     <Box 
-      bgcolor="gray.transparent"
+      bgcolor="surface.subtle"
       width="100%" 
       height="70px" 
       display="flex" 
@@ -84,7 +84,7 @@ function AttendeeAttendanceCard({attendee, setAttendees}) {
         value={attendance.value}
         onChange={handleAttendance}
       >
-        <MenuItem value="pending" sx={{ color: 'gray.main' }}>Pendiente</MenuItem>
+        <MenuItem value="pending" sx={{ color: 'text.secondary' }}>Pendiente</MenuItem>
         <MenuItem value="show" sx={{ color: 'success.main' }}>Si asistió</MenuItem>
         <MenuItem value="no-show" sx={{ color: 'error.main' }}>No asistió</MenuItem>
         <MenuItem value="excused" sx={{ color: 'warning.main' }}>Excusado</MenuItem>

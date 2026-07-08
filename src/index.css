@@ -1,9 +1,8 @@
 :root {
   /* color-scheme: light dark; */
   /* color: rgba(255, 255, 255, 0.87); */
-  
-  background-color: #F5F5F5;
-  /* background-color: #E0E9F3; */
+
+  /* background comes from the theme (background.default) via CssBaseline */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

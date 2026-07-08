@@ -27,7 +27,7 @@ function EventCarGroupInfoCard({myCarGroup}) {
           ¡Ya tienes un coche asignado!
         </Typography>
 
-        <Card sx={{bgcolor: "gray.transparent", width: "100%"}}>
+        <Card sx={{bgcolor: "surface.subtle", width: "100%"}}>
         <CardHeader
           avatar={<DirectionsCarIcon color="success"/>}
           title={myCarGroup.owner._id == loggedUserId ? "Tu coche" : `Coche de ${myCarGroup.owner.username}`}
