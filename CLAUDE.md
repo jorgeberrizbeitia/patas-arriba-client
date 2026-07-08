@@ -62,8 +62,11 @@ npm run preview
    - Routes organized by access level (public, anon, admin, private)
 
 4. **Theming**:
-   - Custom Material-UI theme with color palette defined in main.jsx
-   - Foundation branding colors (primary: #EFB665)
+   - Design-system theme lives in `src/theme.js` (imported by main.jsx) — named
+     `surface`/`brand`/`category`/`avatar` tokens; style with tokens, never raw hex
+   - Foundation branding: primary is coral #EA5347, secondary amber #EFB666;
+     Staatliches for h1/h2 display headings, Roboto for body/UI
+   - Token provenance + WCAG checks: `docs/design-tokens-issue-14.md` in the monorepo
 
 5. **API Communication**:
    - Centralized Axios instance in service/config.js
