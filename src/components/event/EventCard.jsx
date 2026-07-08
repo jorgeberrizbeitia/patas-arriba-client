@@ -78,6 +78,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
         title={<Typography variant="h4" sx={{px: "8%"}}>{event.title}</Typography>}
         action={(fromDetails && isOrganizerOrAdmin) && 
           <IconButton 
+            aria-label="Editar evento"
             onClick={() => navigate(`/event/${event._id}/edit`)} 
             color="primary"
             sx={{width: "50px", height: "50px"}}

@@ -121,6 +121,7 @@ function Login() {
           sx={{ width: "100%" }}
           margin="normal"
           required
+          slotProps={{ htmlInput: { inputMode: "email" } }}
           error={credential.hasUserInteracted && credential.error !== null} // can display and any error exists
           helperText={credential.error}
         />

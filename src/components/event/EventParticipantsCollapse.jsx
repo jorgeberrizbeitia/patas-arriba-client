@@ -22,7 +22,11 @@ function EventParticipantsCollapse({attendees}) {
           sx={{textAlign: "start", pl:5}}
           subheader={`Ver Participantes: ${attendees.length}`}
           action={
-            <IconButton onClick={() => setShowParticipants(!showParticipants)}>
+            <IconButton
+              aria-label="Mostrar participantes"
+              aria-expanded={showParticipants}
+              onClick={() => setShowParticipants(!showParticipants)}
+            >
               {showParticipants ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           }

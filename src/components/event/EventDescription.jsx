@@ -25,7 +25,11 @@ function EventDescription({event}) {
           <CardHeader
             subheader={`Info Organización del evento`}
             action={
-              <IconButton onClick={() => setshowDescription(!showDescription)}>
+              <IconButton
+                aria-label="Mostrar información del evento"
+                aria-expanded={showDescription}
+                onClick={() => setshowDescription(!showDescription)}
+              >
                 {showDescription ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             }

@@ -97,6 +97,7 @@ function PasswordForget() {
           fullWidth
           margin="normal"
           required
+          slotProps={{ htmlInput: { inputMode: "email" } }}
           error={email.hasUserInteracted && email.error !== null} // can display and any error exists
           helperText={email.error}
         />

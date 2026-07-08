@@ -239,6 +239,7 @@ function Signup() {
           fullWidth
           margin="normal"
           required
+          slotProps={{ htmlInput: { inputMode: "email" } }}
           error={email.hasUserInteracted && email.error !== null} // can display and any error exists
           helperText={email.error}
         />
@@ -295,6 +296,7 @@ function Signup() {
             onChange={handlePhoneNumber}
             sx={{ width: "55%" }}
             required
+            slotProps={{ htmlInput: { inputMode: "tel" } }}
             error={phoneNumber.hasUserInteracted && phoneNumber.error !== null}
             helperText={phoneNumber.error}
           />

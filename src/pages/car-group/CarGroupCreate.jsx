@@ -114,6 +114,7 @@ function CarGroupCreate() {
         margin="normal"
         type="number"
         required
+        slotProps={{ htmlInput: { inputMode: "numeric" } }}
         error={roomAvailable.hasUserInteracted && roomAvailable.error !== null}
         helperText={roomAvailable.error}
       />

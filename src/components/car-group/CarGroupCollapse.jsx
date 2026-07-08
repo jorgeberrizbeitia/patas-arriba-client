@@ -24,7 +24,11 @@ function EventParticipantsCollapse({carGroups}) {
         sx={{textAlign: "start", pl: 5}}
           subheader={`Ver Coches: ${carGroups.length}`}
           action={
-            <IconButton onClick={() => setShowCarGroups(!showCarGroups)}>
+            <IconButton
+              aria-label="Mostrar coches"
+              aria-expanded={showCarGroups}
+              onClick={() => setShowCarGroups(!showCarGroups)}
+            >
               {showCarGroups ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           }
