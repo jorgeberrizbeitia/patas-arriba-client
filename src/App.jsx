@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
-import Navbar from "@components/navigation/Navbar.jsx"
 import BottomNav from "@components/navigation/BottomNav.jsx"
 import OnlyPrivate from "@components/auth/OnlyPrivate.jsx"
 import OnlyAnon from './components/auth/OnlyAnon'
@@ -37,8 +36,8 @@ function App() {
   return (
     <>
 
-      <Navbar />
-      
+      {/* No global top bar (v6 pattern, issue #34 O4): screens own their
+          headers via PageHeader; primary navigation is the BottomNav. */}
       {/* pb clears the fixed BottomNav so nothing hides behind it */}
       <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", alignItems:"center", pb: 10}}>
 
