@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
@@ -162,8 +163,8 @@ function Login() {
 
       <br />
 
-      <Link style={{marginBottom: "20px"}} to="/password-forget">¿Olvidaste tu contraseña?</Link>
-      <Link style={{marginBottom: "20px"}} to="/signup">Si no tienes cuenta, registrate aqui</Link>
+      <Button component={Link} variant="text" to="/password-forget">¿Olvidaste tu contraseña?</Button>
+      <Button component={Link} variant="text" sx={{mb: 2}} to="/signup">Si no tienes cuenta, registrate aqui</Button>
     </>
   );
 }

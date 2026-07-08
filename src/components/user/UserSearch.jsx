@@ -15,7 +15,7 @@ function UserSearch({searchQuery, setSearchQuery}) {
         onChange={(e) => setSearchQuery(e.target.value)}
         InputProps={{
           sx: {
-            height: '40px', // Custom height
+            height: '48px', // Material touch-target minimum
             '& .MuiOutlinedInput-input': {
               padding: '12px', // Adjust padding to center the text
             },

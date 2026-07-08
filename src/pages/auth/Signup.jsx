@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import countryPhoneCode from "@data/country-phone-code.json";
 
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
@@ -268,7 +269,7 @@ function Signup() {
           helperText={fullName.error}
         />
 
-        <Box sx={{ marginTop: "8px", marginBottom: "8px" }}>
+        <Box sx={{ marginTop: "8px", marginBottom: "8px", display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 1 }}>
           <TextField
             select
             label="Código"
@@ -276,7 +277,7 @@ function Signup() {
             fullWidth
             value={phoneCode.value}
             onChange={handlePhoneCode}
-            sx={{ width: "45%" }}
+            sx={{ width: { xs: "100%", sm: "45%" } }}
             required
           >
             {countryPhoneCode.map((e, i) => (
@@ -294,7 +295,7 @@ function Signup() {
             fullWidth
             value={phoneNumber.value}
             onChange={handlePhoneNumber}
-            sx={{ width: "55%" }}
+            sx={{ width: { xs: "100%", sm: "55%" } }}
             required
             slotProps={{ htmlInput: { inputMode: "tel" } }}
             error={phoneNumber.hasUserInteracted && phoneNumber.error !== null}
@@ -371,7 +372,7 @@ function Signup() {
 
       <br />
 
-      <Link style={{marginBottom: "20px"}} to="/login">Si ya tienes cuenta, accede aqui</Link>
+      <Button component={Link} variant="text" sx={{mb: 2}} to="/login">Si ya tienes cuenta, accede aqui</Button>
     </>
   );
 }

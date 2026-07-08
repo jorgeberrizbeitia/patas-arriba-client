@@ -53,34 +53,35 @@ function EventEdit() {
 
       <Typography variant="h5" color="initial" gutterBottom>¿Que quieres editar el evento?</Typography>
 
-      <Box display="flex" flexDirection="row" justifyContent="space-evenly">
+      {/* 2x2 on phones, one row when there is room — fixed 20% widths cramp below 360px */}
+      <Box display="flex" flexWrap="wrap" justifyContent="center" gap={1} width="100%">
 
         <Button 
           onClick={() => setEditType(1)} 
           variant={editType === 1 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "20%", height: 60}}
+          sx={{ flex: { xs: "1 1 40%", sm: "1 1 0" } }}
         > Info básica</Button>
 
         <Button 
           onClick={() => setEditType(2)} 
           variant={editType === 2 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "20%", height: 60}}
+          sx={{ flex: { xs: "1 1 40%", sm: "1 1 0" } }}
         > Info org.</Button>
 
         <Button 
           onClick={() => setEditType(3)} 
           variant={editType === 3 ? "contained" : "outlined"} 
           color="warning" 
-          sx={{width: "20%", height: 60}}
+          sx={{ flex: { xs: "1 1 40%", sm: "1 1 0" } }}
         >Estado</Button>
 
         <Button 
           onClick={() => setEditType(4)} 
           variant={editType === 4 ? "contained" : "outlined"} 
           color="error" 
-          sx={{width: "20%", height: 60}}
+          sx={{ flex: { xs: "1 1 40%", sm: "1 1 0" } }}
         >Eliminar</Button>
 
       </Box>

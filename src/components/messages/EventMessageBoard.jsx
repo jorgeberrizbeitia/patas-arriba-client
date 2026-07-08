@@ -148,7 +148,7 @@ function EventMessageBoard({eventOrCarGroup, messages, setMessages, type}) {
 
       <Alert severity='info' sx={{textAlign: "start"}}>Si tienes alguna duda, envía un mensaje y {type === "event" ? "alguno de los organizadores o participantes" : "el dueño del coche u otro pasajero"} te responderá. Recuerda refrescar o volver luego a la página para ver las respuestas.</Alert>
 
-      <List ref={listRef} sx={{ height: 300, overflowY: 'auto', overflowX: "hidden", bgcolor: 'surface.muted', borderRadius: 1, width: "100%"}}>
+      <List ref={listRef} sx={{ maxHeight: { xs: 200, sm: 300 }, overflowY: 'auto', overflowX: "hidden", bgcolor: 'surface.muted', borderRadius: 1, width: "100%"}}>
         <Box>
           {messages.length === 0 && <Typography variant="body1" color="initial" sx={{pt: 1}}>No hay mensajes</Typography>}
 

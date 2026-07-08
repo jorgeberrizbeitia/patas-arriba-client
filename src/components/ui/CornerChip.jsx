@@ -5,9 +5,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 function CornerChip({label, bgcolor, color, side}) {
 
-  const isSmallScreen = useMediaQuery('(width > 960px)');
+  const isSmallScreen = useMediaQuery('(max-width: 960px)');
 
-  const rightSideBottom = isSmallScreen ? -15 : -25; // odd position for big screen if not used
+  const rightSideBottom = isSmallScreen ? -25 : -15; // desktop needs less offset
 
     return (
       <Box

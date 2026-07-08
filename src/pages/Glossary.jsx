@@ -92,8 +92,7 @@ function Glossary() {
           <Chip
             key={catKey}
             label={categories[catKey]}
-            size="small"
-            sx={chipSx(catKey, selectedCategory === catKey)}
+            sx={{ ...chipSx(catKey, selectedCategory === catKey), height: 40, px: 0.5 }}
             variant={selectedCategory === catKey ? "filled" : "outlined"}
             onClick={() =>
               setSelectedCategory(selectedCategory === catKey ? null : catKey)

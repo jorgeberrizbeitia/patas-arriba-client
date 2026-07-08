@@ -22,7 +22,7 @@ function Home() {
       { !isLoggedIn ? (
         <>
 
-          <img src={logo} alt="logo" width={"300px"}/>
+          <img src={logo} alt="logo" style={{ width: 300, maxWidth: "100%" }}/>
 
           <Box mt={2}>
             <Typography variant="body1" color="initial">En esta página podrás ver y participar en eventos de la fundación Patas Arriba</Typography>

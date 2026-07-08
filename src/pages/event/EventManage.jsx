@@ -60,27 +60,28 @@ function EventManage() {
 
       <br />
 
-      <Box display="flex" flexDirection="row" justifyContent="space-evenly" paddingBottom={2}>
+      {/* stacked full-width on phones — three 32% columns overflow their labels */}
+      <Box display="flex" flexWrap="wrap" gap={1} paddingBottom={2} width="100%">
         
         {event.hasCarOrganization && <Button 
           onClick={() => setManageType(1)} 
           variant={manageType === 1 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "32%", height: 60}}
+          sx={{ flex: { xs: "1 1 100%", sm: "1 1 0" } }}
         > Participantes por coches</Button>}
 
         {event.hasTaskAssignments && <Button 
           onClick={() => setManageType(2)} 
           variant={manageType === 2 ? "contained" : "outlined"} 
           color="info" 
-          sx={{width: "32%", height: 60}}
+          sx={{ flex: { xs: "1 1 100%", sm: "1 1 0" } }}
         > Asignar tareas</Button>}
 
         <Button 
           onClick={() => setManageType(3)} 
           variant={manageType === 3 ? "contained" : "outlined"} 
           color="info"
-          sx={{width: "32%", height: 60}}
+          sx={{ flex: { xs: "1 1 100%", sm: "1 1 0" } }}
         > Marcar asistencia</Button>
 
       </Box>

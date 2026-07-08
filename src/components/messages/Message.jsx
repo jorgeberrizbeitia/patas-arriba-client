@@ -68,7 +68,7 @@ function Message({message, type, handleDelete, eventOrCarGroup}) {
 
           {isSender && !isDeleted && (
             <>
-              <IconButton aria-label="Opciones del mensaje" onClick={handleMenuOpen} size='small' sx={{p: 0, borderRadius: 2}}>
+              <IconButton aria-label="Opciones del mensaje" onClick={handleMenuOpen} sx={{borderRadius: 2}}>
                 <MoreVertIcon />
               </IconButton>
               <Menu

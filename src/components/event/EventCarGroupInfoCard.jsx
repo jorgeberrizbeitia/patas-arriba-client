@@ -57,13 +57,13 @@ function EventCarGroupInfoCard({myCarGroup}) {
           Si 48 horas antes del evento no has seleccionado la forma de ir al evento, es posible que seas removido. ¡Asegurate de buscar coche disponible o indicar que vas en tu coche!
         </Alert>
 
-        <Box display="flex" justifyContent="space-evenly" width="100%">
+        <Box display="flex" flexDirection={{ xs: "column", sm: "row" }} justifyContent="space-evenly" gap={1} width="100%">
 
-          <Button variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
+          <Button variant="contained" color="info" sx={{ width: { xs: "100%", sm: "40%" } }} onClick={() => navigate(`/event/${eventId}/add-car-group`)}>
             Voy con mi coche
           </Button>
 
-          <Button variant="contained" color="info" sx={{width: "40%"}} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
+          <Button variant="contained" color="info" sx={{ width: { xs: "100%", sm: "40%" } }} onClick={() => navigate(`/event/${eventId}/search-car-group`)}>
             Buscar coche
           </Button>
           
