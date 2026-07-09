@@ -26,9 +26,11 @@
   foot, sharing the logout contract with the Más sheet via a new `useLogout`
   hook.
 - **Anonymous auth funnel (monorepo #36)**: logged-out visitors get no
-  bottom bar — the landing's Regístrate/Inicia Sesión buttons are the only
-  path in, and login/signup use the top-bar back arrow. The auth splash
-  joins the design system (Staatliches wordmark, warm canvas, typo fixed).
+  bottom bar, and the landing IS the login screen (v6 direction) — wordmark,
+  inline login form (extracted to `LoginForm`), forgot-password link and a
+  single Regístrate path. The /login page is gone (route redirects to /);
+  the auth splash joins the design system (Staatliches wordmark, warm
+  canvas, typo fixed).
 - **Card affordance + motion**: tappable event cards show a right-edge
   chevron, and list↔details navigation morphs the card via the View
   Transitions API (`useTransitionNavigate` hook — manual wrapper because

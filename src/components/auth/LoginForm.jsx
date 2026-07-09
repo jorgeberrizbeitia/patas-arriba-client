@@ -1,7 +1,14 @@
+// The login form, extracted from the old /login page so the landing can
+// embed it (issue #34, v6 "welcome + login in one screen"). Owns exactly the
+// credential/password fields and the submit contract: store the token,
+// re-authenticate the context, land on "/". The surrounding page owns
+// everything else (branding, forgot-password and register links) — this
+// component stays embeddable anywhere.
+
 import { useState, useEffect, useContext } from "react";
 import validateField from "@utils/validateField";
 import service from "@service/config";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "@context/auth.context";
 
 import Box from "@mui/material/Box";
@@ -9,12 +16,11 @@ import TextField from "@mui/material/TextField";
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
 
-function Login() {
+function LoginForm() {
   const navigate = useNavigate();
   const { authenticateUser } = useContext(AuthContext);
 
@@ -45,7 +51,7 @@ function Login() {
   };
 
   useEffect(() => {
-    // this useEffect CDU will verify when all fields were touched and have no errors and allow submit
+    // submit unlocks once both fields were touched and carry no errors
 
     const allFormStates = [credential, password];
 
@@ -62,7 +68,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true)
-    
+
     try {
       const response = await service.post("/auth/login", {
         credential: credential.value,
@@ -94,70 +100,62 @@ function Login() {
   };
 
   return (
-    <>
+    <Box
+      component="form"
+      noValidate
+      autoComplete="on"
+      display="flex"
+      flexDirection="column"
+      width="100%"
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        label="Correo Electronico o Nombre de Usuario"
+        variant="outlined"
+        value={credential.value}
+        onChange={handleCredential}
+        sx={{ width: "100%" }}
+        margin="normal"
+        required
+        slotProps={{ htmlInput: { inputMode: "email" } }}
+        error={credential.hasUserInteracted && credential.error !== null} // can display and any error exists
+        helperText={credential.error}
+      />
 
-      <Box
-        component="form"
-        noValidate
-        autoComplete="on"
-        display="flex"
-        flexDirection="column"
-        width="100%" 
-        onSubmit={handleSubmit}
-      >
-        <TextField
-          label="Correo Electronico o Nombre de Usuario"
-          variant="outlined"
-          value={credential.value}
-          onChange={handleCredential}
-          sx={{ width: "100%" }}
-          margin="normal"
-          required
-          slotProps={{ htmlInput: { inputMode: "email" } }}
-          error={credential.hasUserInteracted && credential.error !== null} // can display and any error exists
-          helperText={credential.error}
-        />
+      <TextField
+        label="Contraseña"
+        type={showPassword ? "text" : "password"}
+        variant="outlined"
+        value={password.value}
+        onChange={handlePassword}
+        margin="normal"
+        fullWidth
+        required
+        error={password.hasUserInteracted && password.error !== null}
+        helperText={password.error}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowPassword(!showPassword)}
+                onMouseDown={(e) => e.preventDefault()}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
 
-        <TextField
-          label="Contraseña"
-          type={showPassword ? "text" : "password"}
-          variant="outlined"
-          value={password.value}
-          onChange={handlePassword}
-          margin="normal"
-          fullWidth
-          required
-          error={password.hasUserInteracted && password.error !== null}
-          helperText={password.error}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={(e) => e.preventDefault()}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+      <LoadingButton loading={isSending} variant="contained" size="large" type="submit" disabled={!canSubmit}>
+        Accede
+      </LoadingButton>
 
-        <LoadingButton loading={isSending} variant="contained" type="submit" disabled={!canSubmit}>
-          Accede
-        </LoadingButton>
-
-        {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
-      </Box>
-
-      <br />
-
-      <Button component={Link} variant="text" to="/password-forget">¿Olvidaste tu contraseña?</Button>
-      <Button component={Link} variant="text" sx={{mb: 2}} to="/signup">Si no tienes cuenta, registrate aqui</Button>
-    </>
+      {serverError && <Alert sx={{mt: 2}} severity="error">{serverError}</Alert>}
+    </Box>
   );
 }
 
-export default Login;
+export default LoginForm;

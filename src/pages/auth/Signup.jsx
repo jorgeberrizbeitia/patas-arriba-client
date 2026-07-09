@@ -363,7 +363,7 @@ function Signup() {
 
       <br />
 
-      <Button component={Link} variant="text" sx={{mb: 2}} to="/login">Si ya tienes cuenta, accede aqui</Button>
+      <Button component={Link} variant="text" sx={{mb: 2}} to="/">Si ya tienes cuenta, accede aqui</Button>
     </>
   );
 }

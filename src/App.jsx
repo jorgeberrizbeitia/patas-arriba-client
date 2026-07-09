@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import './App.css'
 
 import TopBar from "@components/navigation/TopBar.jsx"
@@ -11,7 +11,6 @@ import OnlyOrganizerOrAdmin from './components/auth/OnlyOrganizerOrAdmin'
 import Home from '@pages/Home'
 import About from '@pages/About'
 import Signup from '@pages/auth/Signup'
-import Login from '@pages/auth/Login'
 import PasswordForget from '@pages/auth/PasswordForget'
 import PasswordReset from '@pages/auth/PasswordReset'
 import NotFound from '@pages/error/NotFound'
@@ -53,7 +52,8 @@ function App() {
 
           {/* //* anon routes */}
           <Route path="/signup" element={<OnlyAnon> <Signup /> </OnlyAnon>}/>
-          <Route path="/login" element={<OnlyAnon> <Login /> </OnlyAnon>}/>
+          {/* login lives on the landing now — keep old links working */}
+          <Route path="/login" element={<Navigate to="/" replace />}/>
           <Route path="/password-forget" element={<OnlyAnon> <PasswordForget /> </OnlyAnon>}/>
           <Route path="/password-reset/:token" element={<OnlyAnon> <PasswordReset /> </OnlyAnon>}/>
 
