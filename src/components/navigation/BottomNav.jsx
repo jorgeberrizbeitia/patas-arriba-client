@@ -8,10 +8,10 @@
 //
 // There is no Inicio tab when logged in — Home duplicated the events list,
 // so "/" redirects to /event (see HomeGate) and Eventos IS home. Every role
-// gets the same 4-item bar: the organizer-only destinations (Ver Usuarios,
-// Crear Evento) are occasional tasks, so they live in the "Más" sheet with
-// Cerrar Sesión. The FAB on the event list covers the frequent organizer
-// action (Change 2), so nothing high-traffic is buried here.
+// gets the same 4-item bar: Ver Usuarios (organizer-only, occasional)
+// lives in the "Más" sheet with Cerrar Sesión; creating an event belongs to
+// the FAB on the event list (Change 2), so nothing high-traffic is buried
+// here.
 //
 // Layout padding for the fixed bar is App's concern; the title bar is
 // TopBar's.
@@ -19,6 +19,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "@context/auth.context";
+import useLogout from "@utils/useLogout";
 
 import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
@@ -38,14 +39,13 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import GroupIcon from "@mui/icons-material/Group";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoggedIn, isOrganizerOrAdmin, authenticateUser } =
-    useContext(AuthContext);
+  const { isLoggedIn, isOrganizerOrAdmin } = useContext(AuthContext);
+  const logout = useLogout();
 
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -69,9 +69,7 @@ function BottomNav() {
 
   const handleLogout = async () => {
     setMoreOpen(false);
-    localStorage.removeItem("authToken");
-    await authenticateUser();
-    navigate("/");
+    await logout();
   };
 
   return (
@@ -130,14 +128,6 @@ function BottomNav() {
         PaperProps={{ sx: { borderTopLeftRadius: 16, borderTopRightRadius: 16 } }}
       >
         <List>
-          {isOrganizerOrAdmin && (
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => go("/event/create")}>
-                <ListItemIcon><AddBoxIcon /></ListItemIcon>
-                <ListItemText primary="Crear Evento" />
-              </ListItemButton>
-            </ListItem>
-          )}
           {isOrganizerOrAdmin && (
             <ListItem disablePadding>
               <ListItemButton onClick={() => go("/user")}>

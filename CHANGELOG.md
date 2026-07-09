@@ -21,6 +21,10 @@
   organizer link, and no longer crash the details page for volunteers
   (`event.owner._id` null guard); the Más sheet gets the design-system
   rounded top corners.
+- **Pre-PR tweaks**: Crear Evento leaves the Más sheet (the events-list FAB
+  is its single home); the profile page gains a Cerrar Sesión button at its
+  foot, sharing the logout contract with the Más sheet via a new `useLogout`
+  hook.
 - **Card affordance + motion**: tappable event cards show a right-edge
   chevron, and list↔details navigation morphs the card via the View
   Transitions API (`useTransitionNavigate` hook — manual wrapper because

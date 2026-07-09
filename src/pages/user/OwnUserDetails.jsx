@@ -13,6 +13,8 @@ import UserIcon from "@components/user/UserIcon";
 import Alert from "@mui/material/Alert";
 import formatDate from "@utils/formatDate.js"
 import NotificationSettings from "@components/user/NotificationSettings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import useLogout from "@utils/useLogout";
 
 function OwnUserDetails() {
 
@@ -20,6 +22,7 @@ function OwnUserDetails() {
   const { isOrganizerOrAdmin } = useContext(AuthContext)
 
   const [propertyToEdit, setPropertyToEdit] = useState(null)
+  const logout = useLogout()
 
   const { email, username, fullName, phoneCode, phoneNumber, createdAt } = loggedUser
 
@@ -100,6 +103,17 @@ function OwnUserDetails() {
 
       <hr/>
       <NotificationSettings/>
+
+      <Button
+        variant="outlined"
+        color="error"
+        fullWidth
+        startIcon={<LogoutIcon />}
+        onClick={logout}
+        sx={{ mt: 3 }}
+      >
+        Cerrar Sesión
+      </Button>
     </>
   )
 }

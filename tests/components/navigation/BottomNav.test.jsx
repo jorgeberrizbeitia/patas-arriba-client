@@ -121,7 +121,7 @@ describe("BottomNav — logged-in volunteer", () => {
 });
 
 describe("BottomNav — organizer/admin", () => {
-  it("offers Ver Usuarios and Crear Evento in Más", async () => {
+  it("offers Ver Usuarios in Más — Crear Evento lives on the events FAB", async () => {
     const user = userEvent.setup();
     renderNav({ isLoggedIn: true, isOrganizerOrAdmin: true });
 
@@ -129,8 +129,8 @@ describe("BottomNav — organizer/admin", () => {
 
     const sheet = within(await screen.findByRole("list"));
     expect(sheet.getByText("Ver Usuarios")).toBeInTheDocument();
-    expect(sheet.getByText("Crear Evento")).toBeInTheDocument();
     expect(sheet.getByText("Cerrar Sesión")).toBeInTheDocument();
+    expect(sheet.queryByText("Crear Evento")).not.toBeInTheDocument();
     expect(sheet.queryByText("Glosario")).not.toBeInTheDocument();
   });
 });
