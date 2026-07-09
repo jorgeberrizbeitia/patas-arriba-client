@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 
 import service from "@service/config";
 import Loading from "@components/ui/Loading";
-import PageHeader from "@components/ui/PageHeader";
 import EventCard from "@components/event/EventCard";
 import { AuthContext } from "@context/auth.context";
 import { SHADOW } from "../../theme";
@@ -55,9 +54,7 @@ function EventList() {
   return (
     <>
 
-      <PageHeader title="Eventos" />
-
-      <Box display="flex" gap="20px">
+      <Box display="flex" gap="20px" mt={2}>
         <Button onClick={() => setTimeFrame("upcoming")} sx={{width: "120px"}} variant={timeFrame === "upcoming" ? "contained" : "outlined"} color="primary">
           Próximos
         </Button>

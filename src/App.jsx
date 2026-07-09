@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 
+import TopBar from "@components/navigation/TopBar.jsx"
 import BottomNav from "@components/navigation/BottomNav.jsx"
 import OnlyPrivate from "@components/auth/OnlyPrivate.jsx"
 import OnlyAnon from './components/auth/OnlyAnon'
@@ -36,8 +37,10 @@ function App() {
   return (
     <>
 
-      {/* No global top bar (v6 pattern, issue #34 O4): screens own their
-          headers via PageHeader; primary navigation is the BottomNav. */}
+      {/* Standard MUI scaffold: title-only AppBar on top (no identity/role/
+          avatar — those live on Perfil), BottomNav below (issue #34 S5). */}
+      <TopBar />
+
       {/* pb clears the fixed BottomNav so nothing hides behind it */}
       <Container maxWidth="sm" sx={{display:"flex", flexDirection:"column", alignItems:"center", pb: 10}}>
 
