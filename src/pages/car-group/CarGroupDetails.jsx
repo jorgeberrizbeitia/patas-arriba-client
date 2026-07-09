@@ -1,7 +1,6 @@
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import GoBack from "@components/navigation/GoBack";
 
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
@@ -72,10 +71,7 @@ function CarGroupDetails() {
 
   return (
     <>
-
-      <GoBack to={`/event/${event._id}`} caption="evento"/> 
       
-      <Typography variant="h4" color="initial" gutterBottom>Detalles del grupo de coche</Typography>
 
       {/* //todo organize below details into components */}
 

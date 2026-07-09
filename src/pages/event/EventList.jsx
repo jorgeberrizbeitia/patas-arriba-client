@@ -6,8 +6,8 @@ import EventCard from "@components/event/EventCard";
 import { AuthContext } from "@context/auth.context";
 import { SHADOW } from "../../theme";
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -54,15 +54,17 @@ function EventList() {
   return (
     <>
 
-      <Box display="flex" gap="20px" mt={2}>
-        <Button onClick={() => setTimeFrame("upcoming")} sx={{width: "120px"}} variant={timeFrame === "upcoming" ? "contained" : "outlined"} color="primary">
-          Próximos
-        </Button>
-
-        <Button onClick={() => setTimeFrame("past")} sx={{width: "120px"}} variant={timeFrame === "past" ? "contained" : "outlined"} color="primary">
-          Pasados
-        </Button>
-      </Box>
+      {/* One control, two states: a filter is a toggle, not two CTAs */}
+      <ToggleButtonGroup
+        value={timeFrame}
+        exclusive
+        onChange={(e, value) => value && setTimeFrame(value)}
+        color="primary"
+        sx={{ mt: 2 }}
+      >
+        <ToggleButton value="upcoming" sx={{ px: 3 }}>Próximos</ToggleButton>
+        <ToggleButton value="past" sx={{ px: 3 }}>Pasados</ToggleButton>
+      </ToggleButtonGroup>
       
       <br />
 

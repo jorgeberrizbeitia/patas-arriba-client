@@ -8,7 +8,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from "@mui/material/Alert";
 
 import validateField from "@utils/validateField";
-import GoBack from "@components/navigation/GoBack";
 
 import service from "@service/config";
 
@@ -69,8 +68,6 @@ function PasswordForget() {
   return (
     <>
 
-      <GoBack to="/"/>
-
       <Box
         component="form"
         noValidate
@@ -80,10 +77,6 @@ function PasswordForget() {
         width="100%" 
         onSubmit={handleSubmit}
       >
-
-        <Typography variant="h4" gutterBottom>
-          Solicitar recuperación de contraseña
-        </Typography>
 
         <Typography variant="p" gutterBottom>
           Indica el correo electrónico de tu usuario. Ahí serán enviadas las instrucciones de recuperación de contraseña.

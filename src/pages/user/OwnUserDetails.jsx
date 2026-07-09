@@ -9,7 +9,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import UpdateSingleField from "@components/user/UpdateSingleField";
 import UpdateUserIcon from "@components/user/UpdateUserIcon";
 import UserIcon from "@components/user/UserIcon";
-import GoBack from "@components/navigation/GoBack";
 import Alert from "@mui/material/Alert";
 import formatDate from "@utils/formatDate.js"
 import NotificationSettings from "@components/user/NotificationSettings";
@@ -25,8 +24,6 @@ function OwnUserDetails() {
 
   return (
     <>
-
-      <GoBack to={-1}/>
 
       <UserIcon size="big" user={loggedUser}/>
 

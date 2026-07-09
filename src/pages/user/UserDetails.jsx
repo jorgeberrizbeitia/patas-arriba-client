@@ -10,7 +10,6 @@ import capitalizeAll from '@utils/capitalizeAll'
 import Typography from '@mui/material/Typography'
 import { AuthContext } from '@context/auth.context'
 import UserIcon from '@components/user/UserIcon'
-import GoBack from '@components/navigation/GoBack'
 import formatDate from '@utils/formatDate'
 
 function UserDetails() {
@@ -55,8 +54,6 @@ function UserDetails() {
 
   return (
     <>
-
-      <GoBack to={-1}/>
       
       <Card sx={{width: "100%"}}>
         <CardHeader

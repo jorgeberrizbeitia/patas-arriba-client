@@ -35,9 +35,9 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   let statusChip;
   if (event.status === "open" && eventDateStartOfDay >= todayStartOfDay) {
-    statusChip = <Chip label="Estado: Abierto" variant='filled' color="primary"/>
+    statusChip = <Chip label="Estado: Abierto" variant='outlined' color="success"/>
   } else if (event.status === "closed") {
-    statusChip = <Chip label="Estado: Cerrado" variant='filled' color="warning"/>
+    statusChip = <Chip label="Estado: Cerrado" variant='outlined' color="warning"/>
   } else if (event.status === "cancelled") {
     statusChip = <Chip label="Estado: Cancelado" variant='filled' color="error"/>
   }
@@ -51,7 +51,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   let timeFrameChip;
   if (eventDateStartOfDay > todayStartOfDay) {
-    timeFrameChip = <Chip label="Próximo" variant='filled' color="primary"/>
+    timeFrameChip = <Chip label="Próximo" variant='outlined'/>
   } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
     timeFrameChip = <Chip label="Hoy" variant='filled' color="info"/>
   } else {
@@ -60,7 +60,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   let cornerTimeFrameChip;
   if (eventDateStartOfDay > todayStartOfDay) {
-    cornerTimeFrameChip = <CornerChip label="Próximo" bgcolor="primary.main" color="black" side={"left"}/>
+    cornerTimeFrameChip = <CornerChip label="Próximo" bgcolor="brand.tealDeep" color="white" side={"left"}/>
   } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
     cornerTimeFrameChip = <CornerChip label="Es Hoy" bgcolor="info.main" color="white" side={"left"}/>
   } else {

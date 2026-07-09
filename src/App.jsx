@@ -3,6 +3,7 @@ import './App.css'
 
 import TopBar from "@components/navigation/TopBar.jsx"
 import BottomNav from "@components/navigation/BottomNav.jsx"
+import HomeGate from "@components/navigation/HomeGate.jsx"
 import OnlyPrivate from "@components/auth/OnlyPrivate.jsx"
 import OnlyAnon from './components/auth/OnlyAnon'
 import OnlyOrganizerOrAdmin from './components/auth/OnlyOrganizerOrAdmin'
@@ -46,8 +47,8 @@ function App() {
 
         <Routes>
 
-          {/* //* public routes */}
-          <Route path="/" element={<Home />}/>
+          {/* //* public routes — logged-in users go straight to Eventos */}
+          <Route path="/" element={<HomeGate><Home /></HomeGate>}/>
           {/* <Route path="/about" element={<About />}/> */}
 
           {/* //* anon routes */}

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 import service from "@service/config";
 
-import GoBack from "@components/navigation/GoBack";
 
 // MUI Components
 import Box from "@mui/material/Box";
@@ -89,8 +88,6 @@ function CarGroupCreate() {
   return (
     <>
 
-    <GoBack to={`/event/${eventId}`}/>      
-
     <Box 
       component="form" 
       noValidate 
@@ -99,10 +96,6 @@ function CarGroupCreate() {
       flexDirection="column"
       width="100%"
     >
-
-      <Typography variant="h6" gutterBottom>
-        Crea un grupo de coche
-      </Typography>
 
       <Alert severity="info" sx={{my: 1}}>Todos los campos se pueden modificar luego</Alert>
 

@@ -11,7 +11,6 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import validateField from "@utils/validateField";
-import GoBack from "@components/navigation/GoBack";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -117,11 +116,6 @@ function PasswordReset() {
   return (
     <>
 
-      <GoBack to="/"/>
-
-      <Typography variant="h4" gutterBottom>
-        Recuperar contraseña
-      </Typography>
 
       <Typography variant="p" gutterBottom>
         Indica tu nueva contraseña y confirmala. Recuerda almacenarla en un lugar seguro.

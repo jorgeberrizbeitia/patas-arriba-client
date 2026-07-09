@@ -1,4 +1,3 @@
-import GoBack from '@components/navigation/GoBack';
 import Loading from '@components/ui/Loading';
 import service from '@service/config';
 import { useEffect, useState } from 'react'
@@ -51,8 +50,6 @@ function EventManage() {
 
   return (
     <>
-    
-      <GoBack to={`/event/${eventId}`} caption="evento"/> 
 
       <Typography variant="h4" color="text" gutterBottom>¿Como quieres gestionar los participantes del evento: {event.title}, de fecha: {formatDate(event.date)}?</Typography>
 

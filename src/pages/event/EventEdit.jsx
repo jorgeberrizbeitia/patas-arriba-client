@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import service from "@service/config";
 
-import GoBack from "@components/navigation/GoBack";
 import Loading from "@components/ui/Loading"
 import EventEditForm from "@components/event/EventEditForm";
 import EventEditStatus from "@components/event/EventEditStatus";
@@ -48,8 +47,6 @@ function EventEdit() {
 
   return (
     <>
-
-      <GoBack to={-1}/> 
 
       <Typography variant="h5" color="initial" gutterBottom>¿Que quieres editar el evento?</Typography>
 

@@ -11,7 +11,6 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import CarGroupCard from "../../components/car-group/CarGroupCard";
-import GoBack from "@components/navigation/GoBack";
 
 function CarGroupSearch () {
 
@@ -63,8 +62,6 @@ function CarGroupSearch () {
   
   return (
     <>
-
-      <GoBack to={`/event/${eventId}`} />
       
       {carGroups.length === 0 ? <>
         <Alert severity="warning">No hay coches disponibles por los momentos, intenta volver luego</Alert>

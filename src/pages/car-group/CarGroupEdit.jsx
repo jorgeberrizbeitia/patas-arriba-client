@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import service from "@service/config";
 
-import GoBack from "@components/navigation/GoBack";
 import Loading from "@components/ui/Loading"
 import CarGroupEditForm from "@components/car-group/CarGroupEditForm";
 import CarGroupDelete from "@components/car-group/CarGroupDelete";
@@ -46,8 +45,6 @@ function CarGroupEdit() {
 
   return (
     <>
-
-      <GoBack to={`/car-group/${carGroup._id}`} caption="volver"/>     
 
       <Typography variant="h5" color="initial" gutterBottom>¿Como quieres editar el grupo de coche?</Typography>
 

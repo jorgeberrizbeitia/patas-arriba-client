@@ -5,7 +5,7 @@
 // each kind of visitor sees and where each tap lands — the regression that
 // matters when navigation is rebuilt.
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthContext } from "@context/auth.context";
@@ -62,13 +62,14 @@ describe("BottomNav — anonymous visitor", () => {
 });
 
 describe("BottomNav — logged-in volunteer", () => {
-  it("shows Inicio, Eventos, Perfil, Más and no anon items", () => {
+  it("shows Eventos, Glosario, Perfil, Más — no Inicio and no anon items", () => {
     renderNav({ isLoggedIn: true });
 
-    expect(screen.getByRole("button", { name: "Inicio" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Eventos" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Glosario" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Perfil" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Más" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Inicio" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Acceso" })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Registro" })).not.toBeInTheDocument();
   });
@@ -82,16 +83,27 @@ describe("BottomNav — logged-in volunteer", () => {
     expect(screen.getByTestId("location")).toHaveTextContent("/event");
   });
 
-  it("offers Glosario and Cerrar Sesión in Más, but no organizer items", async () => {
+  it("navigates to /glossary when Glosario is tapped", async () => {
+    const user = userEvent.setup();
+    renderNav({ isLoggedIn: true });
+
+    await user.click(screen.getByRole("button", { name: "Glosario" }));
+
+    expect(screen.getByTestId("location")).toHaveTextContent("/glossary");
+  });
+
+  it("offers only Cerrar Sesión in Más — Glosario lives in the bar now", async () => {
     const user = userEvent.setup();
     renderNav({ isLoggedIn: true });
 
     await user.click(screen.getByRole("button", { name: "Más" }));
 
-    expect(await screen.findByText("Glosario")).toBeInTheDocument();
-    expect(screen.getByText("Cerrar Sesión")).toBeInTheDocument();
-    expect(screen.queryByText("Ver Usuarios")).not.toBeInTheDocument();
-    expect(screen.queryByText("Crear Evento")).not.toBeInTheDocument();
+    // Scope to the sheet's list — "Glosario" also exists as a bar tab.
+    const sheet = within(await screen.findByRole("list"));
+    expect(sheet.getByText("Cerrar Sesión")).toBeInTheDocument();
+    expect(sheet.queryByText("Glosario")).not.toBeInTheDocument();
+    expect(sheet.queryByText("Ver Usuarios")).not.toBeInTheDocument();
+    expect(sheet.queryByText("Crear Evento")).not.toBeInTheDocument();
   });
 
   it("logs out from Más: clears the token and re-authenticates", async () => {
@@ -115,9 +127,10 @@ describe("BottomNav — organizer/admin", () => {
 
     await user.click(screen.getByRole("button", { name: "Más" }));
 
-    expect(await screen.findByText("Ver Usuarios")).toBeInTheDocument();
-    expect(screen.getByText("Crear Evento")).toBeInTheDocument();
-    expect(screen.getByText("Glosario")).toBeInTheDocument();
-    expect(screen.getByText("Cerrar Sesión")).toBeInTheDocument();
+    const sheet = within(await screen.findByRole("list"));
+    expect(sheet.getByText("Ver Usuarios")).toBeInTheDocument();
+    expect(sheet.getByText("Crear Evento")).toBeInTheDocument();
+    expect(sheet.getByText("Cerrar Sesión")).toBeInTheDocument();
+    expect(sheet.queryByText("Glosario")).not.toBeInTheDocument();
   });
 });

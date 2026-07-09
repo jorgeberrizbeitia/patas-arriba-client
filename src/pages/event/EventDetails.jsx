@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import service from "@service/config"
 
 import Loading from "@components/ui/Loading";
-import GoBack from "@components/navigation/GoBack";
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
@@ -106,8 +105,6 @@ function EventDetails() {
 
   return (
     <>
-
-      <GoBack to={`/event`}/> 
 
       {event.status === "cancelled" && <>
         <Typography variant="h3" color="error" gutterBottom>Este evento ha sido cancelado</Typography>

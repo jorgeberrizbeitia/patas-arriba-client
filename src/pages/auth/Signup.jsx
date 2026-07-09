@@ -1,4 +1,3 @@
-import logo from "@assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 
 import countryPhoneCode from "@data/country-phone-code.json";
@@ -7,7 +6,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -19,7 +17,6 @@ import { useEffect, useState } from "react";
 import service from "@service/config";
 
 import validateField from "@utils/validateField";
-import GoBack from "@components/navigation/GoBack";
 
 function Signup() {
   const navigate = useNavigate();
@@ -217,8 +214,6 @@ function Signup() {
   return (
     <>
 
-      <GoBack to="/"/>
-
       <Box
         component="form"
         noValidate
@@ -228,10 +223,6 @@ function Signup() {
         width="100%" 
         onSubmit={handleSubmit}
       >
-        <Typography variant="h4" gutterBottom>
-          Registro
-        </Typography>
-
         <TextField
           label="Correo Electronico"
           variant="outlined"

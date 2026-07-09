@@ -55,12 +55,11 @@ function UserList() {
       {/* //* this will make the hr longer than the mui Container */}
       
       {pendingUsers.length > 0 && <>
-        <Typography variant="h1" gutterBottom>Por aprobación</Typography>
+        <Typography variant="h5" gutterBottom>Por aprobación</Typography>
         {pendingUsers}
         <hr />
       </>}
 
-      <Typography variant="h1" gutterBottom>Usuarios</Typography>
 
       <UserSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
 

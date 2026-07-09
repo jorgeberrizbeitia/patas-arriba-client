@@ -159,10 +159,6 @@ function EventCreate() {
       width="100%"
       onSubmit={handleSubmit}
     >
-      <Typography variant="h4" gutterBottom>
-        Crear Evento
-      </Typography>
-
       <TextField
         select
         label="Categoria"

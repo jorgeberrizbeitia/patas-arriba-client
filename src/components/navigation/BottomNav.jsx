@@ -1,19 +1,20 @@
-// The app's primary navigation: a fixed bottom bar (issue #34, Change 1).
-// On a phone-first PWA the main destinations must be thumb-reachable and
-// always visible — the old hamburger drawer hid them behind a tap, which is
-// why it's gone. What each visitor sees:
+// The app's primary navigation: a fixed bottom bar (issue #34, Change 1;
+// items revised 2026-07-09). On a phone-first PWA the main destinations
+// must be thumb-reachable and always visible — the old hamburger drawer hid
+// them behind a tap, which is why it's gone. What each visitor sees:
 //
 //   anonymous:  Inicio · Acceso · Registro
-//   logged in:  Inicio · Eventos · Perfil · Más
+//   logged in:  Eventos · Glosario · Perfil · Más
 //
-// Every role gets the same 4-item bar: five items get tight on narrow
-// phones, and the organizer-only destinations (Ver Usuarios, Crear Evento)
-// are occasional tasks, so they live in the "Más" sheet together with
-// Glosario and Cerrar Sesión. The FAB on the event list covers the frequent
-// organizer action (Change 2), so nothing high-traffic is buried here.
+// There is no Inicio tab when logged in — Home duplicated the events list,
+// so "/" redirects to /event (see HomeGate) and Eventos IS home. Every role
+// gets the same 4-item bar: the organizer-only destinations (Ver Usuarios,
+// Crear Evento) are occasional tasks, so they live in the "Más" sheet with
+// Cerrar Sesión. The FAB on the event list covers the frequent organizer
+// action (Change 2), so nothing high-traffic is buried here.
 //
-// This component deliberately does NOT render a top bar — the identity strip
-// stays in Navbar. Layout padding for the fixed bar is App's concern.
+// Layout padding for the fixed bar is App's concern; the title bar is
+// TopBar's.
 
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -56,6 +57,7 @@ function BottomNav() {
     if (path === "/") return "/";
     if (path === "/login" || path === "/signup") return path;
     if (path.startsWith("/event")) return "/event";
+    if (path === "/glossary") return "/glossary";
     if (path === "/user/own") return "/user/own";
     return null;
   })();
@@ -95,7 +97,9 @@ function BottomNav() {
             navigate(value);
           }}
         >
-          <BottomNavigationAction label="Inicio" value="/" icon={<HomeIcon />} />
+          {!isLoggedIn && (
+            <BottomNavigationAction label="Inicio" value="/" icon={<HomeIcon />} />
+          )}
           {!isLoggedIn && (
             <BottomNavigationAction label="Acceso" value="/login" icon={<LoginIcon />} />
           )}
@@ -104,6 +108,9 @@ function BottomNav() {
           )}
           {isLoggedIn && (
             <BottomNavigationAction label="Eventos" value="/event" icon={<CalendarMonthIcon />} />
+          )}
+          {isLoggedIn && (
+            <BottomNavigationAction label="Glosario" value="/glossary" icon={<MenuBookIcon />} />
           )}
           {isLoggedIn && (
             <BottomNavigationAction label="Perfil" value="/user/own" icon={<AccountBoxIcon />} />
@@ -132,12 +139,6 @@ function BottomNav() {
               </ListItemButton>
             </ListItem>
           )}
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => go("/glossary")}>
-              <ListItemIcon><MenuBookIcon /></ListItemIcon>
-              <ListItemText primary="Glosario" />
-            </ListItemButton>
-          </ListItem>
           <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon><LogoutIcon /></ListItemIcon>

@@ -60,10 +60,7 @@ function Glossary() {
 
   return (
     <div>
-      <hr style={{ maxWidth: "initial" }} />
-
       <Box sx={{ mb: 1 }}>
-        <Typography variant="h1">{label.title}</Typography>
         <Typography variant="body2" color="text.secondary">
           {label.subtitle}
         </Typography>

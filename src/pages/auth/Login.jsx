@@ -1,4 +1,3 @@
-import logo from "@assets/images/logo.png";
 import { useState, useEffect, useContext } from "react";
 import validateField from "@utils/validateField";
 import service from "@service/config";
@@ -7,7 +6,6 @@ import { AuthContext } from "@context/auth.context";
 
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -15,7 +13,6 @@ import Button from "@mui/material/Button";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Alert from "@mui/material/Alert";
-import GoBack from "@components/navigation/GoBack";
 
 function Login() {
   const navigate = useNavigate();
@@ -99,8 +96,6 @@ function Login() {
   return (
     <>
 
-      <GoBack to="/"/>
-
       <Box
         component="form"
         noValidate
@@ -110,10 +105,6 @@ function Login() {
         width="100%" 
         onSubmit={handleSubmit}
       >
-        <Typography variant="h4" gutterBottom>
-          Acceso
-        </Typography>
-
         <TextField
           label="Correo Electronico o Nombre de Usuario"
           variant="outlined"
