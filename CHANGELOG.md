@@ -21,6 +21,11 @@
   organizer link, and no longer crash the details page for volunteers
   (`event.owner._id` null guard); the Más sheet gets the design-system
   rounded top corners.
+- **Card affordance + motion**: tappable event cards show a right-edge
+  chevron, and list↔details navigation morphs the card via the View
+  Transitions API (`useTransitionNavigate` hook — manual wrapper because
+  the app mounts a plain BrowserRouter; graceful no-op on Firefox,
+  disabled under prefers-reduced-motion).
 
 ## 2026-07-08
 

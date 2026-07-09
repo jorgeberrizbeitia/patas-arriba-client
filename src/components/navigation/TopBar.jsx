@@ -11,7 +11,8 @@
 // no back control — they are roots; every other screen is a detail or flow
 // you arrived at from somewhere, so it gets the arrow.
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import useTransitionNavigate from "@utils/useTransitionNavigate";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -61,7 +62,7 @@ const BAR_DESTINATIONS = new Set([
 
 function TopBar() {
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useTransitionNavigate();
   const showBack = !BAR_DESTINATIONS.has(location.pathname);
 
   return (

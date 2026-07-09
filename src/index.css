@@ -1,3 +1,12 @@
+/* View transitions (list card → details morph) respect reduced motion —
+   the browser does not do this for us. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 :root {
   /* color-scheme: light dark; */
   /* color: rgba(255, 255, 255, 0.87); */

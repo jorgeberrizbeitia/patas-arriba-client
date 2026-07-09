@@ -6,10 +6,12 @@ import CardActionArea from "@mui/material/CardActionArea";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import EditIcon from '@mui/icons-material/Edit';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from "@mui/material/IconButton";
 import Link from '@mui/material/Link';
 
 import { useNavigate } from 'react-router-dom';
+import useTransitionNavigate from '@utils/useTransitionNavigate';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
 import CornerChip from '@components/ui/CornerChip';
@@ -21,6 +23,7 @@ import formatDate from "@utils/formatDate.js"
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   const navigate = useNavigate()
+  const transitionNavigate = useTransitionNavigate()
   const {loggedUserId, isOrganizerOrAdmin} = useContext(AuthContext)
 
   const eventDateStartOfDay = new Date(event.date)
@@ -76,7 +79,9 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
             <Typography variant="icon">editar</Typography>
           </IconButton>}
       />
-      <CardContent>
+      {/* Wider symmetric padding on the list keeps centered text clear of
+          the chevron without shifting its axis. */}
+      <CardContent sx={{ px: fromDetails ? 2 : 5 }}>
 
         <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Categoria:</Typography>
@@ -129,15 +134,37 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   );
 
   return (
-    <Card raised={fromDetails ? false : true} sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
+    <Card
+      raised={fromDetails ? false : true}
+      sx={{
+        minHeight: "230px",
+        width: "100%",
+        position: 'relative',
+        mb: "20px",
+        // Same name on the list card and its details card: browsers with the
+        // View Transitions API morph one into the other on navigation.
+        viewTransitionName: `event-card-${event._id}`,
+      }}
+    >
 
       {cornerTimeFrameChip}
 
       {fromDetails ? (
         cardBody
       ) : (
-        <CardActionArea onClick={() => navigate(`/event/${event._id}`)}>
+        <CardActionArea onClick={() => transitionNavigate(`/event/${event._id}`)}>
           {cardBody}
+          {/* Disclosure affordance: the whole card navigates, the chevron
+              says so. */}
+          <ChevronRightIcon
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "text.secondary",
+            }}
+          />
         </CardActionArea>
       )}
 
