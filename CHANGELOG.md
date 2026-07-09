@@ -25,6 +25,10 @@
   is its single home); the profile page gains a Cerrar Sesión button at its
   foot, sharing the logout contract with the Más sheet via a new `useLogout`
   hook.
+- **Anonymous auth funnel (monorepo #36)**: logged-out visitors get no
+  bottom bar — the landing's Regístrate/Inicia Sesión buttons are the only
+  path in, and login/signup use the top-bar back arrow. The auth splash
+  joins the design system (Staatliches wordmark, warm canvas, typo fixed).
 - **Card affordance + motion**: tappable event cards show a right-edge
   chevron, and list↔details navigation morphs the card via the View
   Transitions API (`useTransitionNavigate` hook — manual wrapper because

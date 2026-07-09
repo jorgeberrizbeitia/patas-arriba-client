@@ -40,24 +40,13 @@ function renderNav(auth) {
 }
 
 describe("BottomNav — anonymous visitor", () => {
-  it("shows exactly Inicio, Acceso, Registro", () => {
+  it("renders no bar at all — anonymous users get the auth funnel (issue #36)", () => {
     renderNav({ isLoggedIn: false });
 
-    expect(screen.getByRole("button", { name: "Inicio" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Acceso" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Registro" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Eventos" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Perfil" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Más" })).not.toBeInTheDocument();
-  });
-
-  it("navigates to /login when Acceso is tapped", async () => {
-    const user = userEvent.setup();
-    renderNav({ isLoggedIn: false });
-
-    await user.click(screen.getByRole("button", { name: "Acceso" }));
-
-    expect(screen.getByTestId("location")).toHaveTextContent("/login");
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(screen.queryByText("Inicio")).not.toBeInTheDocument();
+    expect(screen.queryByText("Acceso")).not.toBeInTheDocument();
+    expect(screen.queryByText("Registro")).not.toBeInTheDocument();
   });
 });
 

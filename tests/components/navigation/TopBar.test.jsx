@@ -72,13 +72,17 @@ describe("TopBar — back navigation (issue #34 revision 2026-07-09)", () => {
     ["/car-group/xyz"],
     ["/user/someone-else"],
     ["/password-forget"],
+    // The auth funnel (issue #36): anonymous users have no bottom bar, so
+    // login/signup rely on the top-bar arrow to get back to the landing.
+    ["/login"],
+    ["/signup"],
   ])("shows a back arrow on the detail/flow screen %s", (path) => {
     renderAt(path);
 
     expect(screen.getByRole("button", { name: /volver/i })).toBeInTheDocument();
   });
 
-  it.each([["/"], ["/event"], ["/glossary"], ["/user/own"], ["/user"], ["/login"], ["/signup"]])(
+  it.each([["/"], ["/event"], ["/glossary"], ["/user/own"], ["/user"]])(
     "shows no back arrow on the bar destination %s",
     (path) => {
       renderAt(path);

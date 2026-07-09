@@ -56,8 +56,6 @@ const BAR_DESTINATIONS = new Set([
   "/glossary",
   "/user/own",
   "/user",
-  "/login",
-  "/signup",
 ]);
 
 function TopBar() {

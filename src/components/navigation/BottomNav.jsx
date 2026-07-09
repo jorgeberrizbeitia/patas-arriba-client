@@ -3,7 +3,8 @@
 // must be thumb-reachable and always visible — the old hamburger drawer hid
 // them behind a tap, which is why it's gone. What each visitor sees:
 //
-//   anonymous:  Inicio · Acceso · Registro
+//   anonymous:  nothing — the landing page IS the funnel (issue #36); its
+//               Regístrate / Inicia Sesión buttons are the only path in
 //   logged in:  Eventos · Glosario · Perfil · Más
 //
 // There is no Inicio tab when logged in — Home duplicated the events list,
@@ -31,9 +32,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
-import HomeIcon from "@mui/icons-material/Home";
-import LoginIcon from "@mui/icons-material/Login";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -49,13 +47,17 @@ function BottomNav() {
 
   const [moreOpen, setMoreOpen] = useState(false);
 
+  // Anonymous visitors get the auth funnel, not an app shell — the landing
+  // page's own CTAs are the only way in (issue #36).
+  if (!isLoggedIn) {
+    return null;
+  }
+
   // The bar highlights a destination, not an exact URL: any event page keeps
   // "Eventos" lit, only the own-profile page lights "Perfil" (other /user/*
   // pages are reached from Más and have no tab of their own).
   const currentValue = (() => {
     const path = location.pathname;
-    if (path === "/") return "/";
-    if (path === "/login" || path === "/signup") return path;
     if (path.startsWith("/event")) return "/event";
     if (path === "/glossary") return "/glossary";
     if (path === "/user/own") return "/user/own";
@@ -95,27 +97,10 @@ function BottomNav() {
             navigate(value);
           }}
         >
-          {!isLoggedIn && (
-            <BottomNavigationAction label="Inicio" value="/" icon={<HomeIcon />} />
-          )}
-          {!isLoggedIn && (
-            <BottomNavigationAction label="Acceso" value="/login" icon={<LoginIcon />} />
-          )}
-          {!isLoggedIn && (
-            <BottomNavigationAction label="Registro" value="/signup" icon={<LockOpenIcon />} />
-          )}
-          {isLoggedIn && (
-            <BottomNavigationAction label="Eventos" value="/event" icon={<CalendarMonthIcon />} />
-          )}
-          {isLoggedIn && (
-            <BottomNavigationAction label="Glosario" value="/glossary" icon={<MenuBookIcon />} />
-          )}
-          {isLoggedIn && (
-            <BottomNavigationAction label="Perfil" value="/user/own" icon={<AccountBoxIcon />} />
-          )}
-          {isLoggedIn && (
-            <BottomNavigationAction label="Más" value="more" icon={<MoreHorizIcon />} />
-          )}
+          <BottomNavigationAction label="Eventos" value="/event" icon={<CalendarMonthIcon />} />
+          <BottomNavigationAction label="Glosario" value="/glossary" icon={<MenuBookIcon />} />
+          <BottomNavigationAction label="Perfil" value="/user/own" icon={<AccountBoxIcon />} />
+          <BottomNavigationAction label="Más" value="more" icon={<MoreHorizIcon />} />
         </BottomNavigation>
       </Paper>
 

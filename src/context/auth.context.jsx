@@ -5,6 +5,7 @@ import service from "@service/config";
 
 import dogSleepingGif from "../assets/animations/dog-sleeping.gif"
 import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
 // 1. componente que transmite el contexto
 const AuthContext = createContext()
@@ -98,15 +99,28 @@ function AuthWrapper(props) {
   }, [])
 
   if (isAuthenticating) {
-    // return <Loading />
-    //TODO move this to it's own component
+    // The waking-up splash: brand wordmark (Staatliches via the theme's h1)
+    // over the warm canvas, with the sleeping-dog mascot kept on purpose.
     return (
-    <>
-      <Typography variant="h2" marginTop={4}>Estas accediento a</Typography>
-      <Typography variant="h1" marginBottom={3} fontWeight={"bold"} color={"primary"} >Patas Arriba</Typography>
-      <img src={dogSleepingGif} alt="dog-sleeping" width={"260px"}/>
-      <Typography variant="h5" marginTop={3}>Espera unos segundos, me estoy despertando</Typography>
-    </>
+      <Box
+        sx={{
+          minHeight: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+          px: 3,
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">Estás accediendo a</Typography>
+        <Typography variant="h1" sx={{ color: "brand.black" }}>Patas Arriba</Typography>
+        <img src={dogSleepingGif} alt="dog-sleeping" style={{ width: 220, maxWidth: "80%" }}/>
+        <Typography variant="body2" color="text.secondary">
+          Espera unos segundos, me estoy despertando…
+        </Typography>
+      </Box>
     )
   }
 
