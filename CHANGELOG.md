@@ -19,9 +19,10 @@
 - **BottomNavigation replaces the hamburger drawer** as primary navigation:
   Inicio/Acceso/Registro for visitors, Inicio/Eventos/Perfil/Más when logged
   in, with Glosario, Cerrar Sesión and the organizer destinations in the Más
-  sheet. There is no global top bar (v6 pattern): screens own their headers
-  via the new `PageHeader` (greeting + display title + avatar profile
-  shortcut, first used on the events list); the old Navbar is deleted.
+  sheet. The top of the screen is a title-only sticky AppBar (`TopBar`,
+  screen title in the brand display face) with deliberately no identity
+  chrome — no username, role, avatar or overflow; identity lives on the
+  Perfil screen. The old Navbar identity strip is deleted.
 - **"Crear Evento" FAB** on the event list for organizers/admins.
 - **Mobile keyboards**: `inputMode` on email, phone, and numeric fields.
 - **Accessibility**: aria-labels on icon-only buttons; `aria-expanded` on
