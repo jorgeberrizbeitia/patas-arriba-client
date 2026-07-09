@@ -28,7 +28,9 @@
 - **Anonymous auth funnel (monorepo #36)**: logged-out visitors get no
   bottom bar, and the landing IS the login screen (v6 direction) — wordmark,
   inline login form (extracted to `LoginForm`), forgot-password link and a
-  single Regístrate path. The /login page is gone (route redirects to /);
+  single Regístrate path — with the foundation's official logo SVG
+  (fundacionpatasarriba.com footer asset) as the hero instead of a
+  hand-set wordmark. The /login page is gone (route redirects to /);
   the auth splash joins the design system (Staatliches wordmark, warm
   canvas, typo fixed).
 - **Card affordance + motion**: tappable event cards show a right-edge
