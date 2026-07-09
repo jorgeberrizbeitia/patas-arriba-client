@@ -121,7 +121,14 @@ function BottomNav() {
         </BottomNavigation>
       </Paper>
 
-      <Drawer anchor="bottom" open={moreOpen} onClose={() => setMoreOpen(false)}>
+      <Drawer
+        anchor="bottom"
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        // Rounded top corners: the sheet follows the design system's radius
+        // scale instead of MUI's square default.
+        PaperProps={{ sx: { borderTopLeftRadius: 16, borderTopRightRadius: 16 } }}
+      >
         <List>
           {isOrganizerOrAdmin && (
             <ListItem disablePadding>

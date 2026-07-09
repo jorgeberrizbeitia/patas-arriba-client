@@ -118,9 +118,9 @@ function EventDetails() {
       
       <EventCard event={event} fromDetails totalRoomAvailableInCarGroups={totalRoomAvailableInCarGroups}/>
 
-      {(isAdmin || loggedUserId == event.owner._id) && <>
+      {(isAdmin || loggedUserId == event.owner?._id) && <>
         <Button 
-          variant="contained"
+          variant="outlined"
           color="primary" 
           onClick={() => navigate(`/event/${event._id}/manage`)}
           > Gestiona los participantes</Button>

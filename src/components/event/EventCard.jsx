@@ -2,8 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
+import CardActionArea from "@mui/material/CardActionArea";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import EditIcon from '@mui/icons-material/Edit';
@@ -35,11 +34,11 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   let statusChip;
   if (event.status === "open" && eventDateStartOfDay >= todayStartOfDay) {
-    statusChip = <Chip label="Estado: Abierto" variant='outlined' color="success"/>
+    statusChip = <Chip label="Abierto" variant='outlined' color="success"/>
   } else if (event.status === "closed") {
-    statusChip = <Chip label="Estado: Cerrado" variant='outlined' color="warning"/>
+    statusChip = <Chip label="Cerrado" variant='outlined' color="warning"/>
   } else if (event.status === "cancelled") {
-    statusChip = <Chip label="Estado: Cancelado" variant='filled' color="error"/>
+    statusChip = <Chip label="Cancelado" variant='filled' color="error"/>
   }
 
   // let categoryChip = <Chip label={`Categoria: ${capitalizeAll(event.category)}`} variant='outlined' color="info"/>
@@ -47,15 +46,6 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   let joinedChip;
   if (hasUserJoinedFromList || hasUserJoinedFromDetails) {
     joinedChip = <Chip label="Apuntado" variant='filled' color="success"/>
-  }
-
-  let timeFrameChip;
-  if (eventDateStartOfDay > todayStartOfDay) {
-    timeFrameChip = <Chip label="Próximo" variant='outlined'/>
-  } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
-    timeFrameChip = <Chip label="Hoy" variant='filled' color="info"/>
-  } else {
-    timeFrameChip = <Chip label="Pasado" variant='filled' sx={{bgcolor: "grey.600", color: "white"}}/>
   }
 
   let cornerTimeFrameChip;
@@ -67,12 +57,12 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
     cornerTimeFrameChip = <CornerChip label="Pasado" bgcolor="grey.600" color="white" side={"left"}/>
   }
 
-  return (
-    <Card raised={fromDetails ? false : true} sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
-      
-      {cornerTimeFrameChip}
-
-      <CardHeader 
+  // On the list the WHOLE card opens the details — the biggest tap target
+  // on the screen, instead of a small text button. Details mode renders the
+  // same body unwrapped (it contains its own interactive elements).
+  const cardBody = (
+    <>
+      <CardHeader
         sx={{ pl: (fromDetails && isOrganizerOrAdmin) ? 7.5 : 2}}
         // * above is to account for the icon on the right side when user is organizer or admin
         title={<Typography variant="h4" sx={{px: "8%"}}>{event.title}</Typography>}
@@ -120,26 +110,36 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
             <Typography variant="span" color="initial"> {totalRoomAvailableInCarGroups}</Typography>
           </Typography>}
 
-        {fromDetails && <Typography variant="body2" color="text.secondary" gutterBottom>
+        {/* owner can be null (deleted user / legacy row) — render nothing
+            rather than a blank link */}
+        {fromDetails && event.owner && <Typography variant="body2" color="text.secondary" gutterBottom>
           <Typography variant="span" color="initial" fontWeight="bold">Organizado por:</Typography>
-          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner?.username}</Link>
+          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner.username}</Link>
         </Typography>}
 
         <br />
 
         <Box display="flex" justifyContent="center" gap="5px">
-          {timeFrameChip}
           {statusChip}
           {joinedChip}
         </Box>
 
       </CardContent>
+    </>
+  );
 
-      {!fromDetails && 
-        <CardActions sx={{ justifyContent: 'center'}}>
-          <Button onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
-        </CardActions>
-      }
+  return (
+    <Card raised={fromDetails ? false : true} sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
+
+      {cornerTimeFrameChip}
+
+      {fromDetails ? (
+        cardBody
+      ) : (
+        <CardActionArea onClick={() => navigate(`/event/${event._id}`)}>
+          {cardBody}
+        </CardActionArea>
+      )}
 
     </Card>
   );

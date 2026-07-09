@@ -117,10 +117,9 @@ const theme = createTheme({
     h6: { fontSize: "0.9375rem", fontWeight: 600 },
     button: { textTransform: "none", fontWeight: 600 },
     // Pre-existing app idiom, not part of the v6 system: the tiny captions
-    // under icon buttons ("guardar", "refrescar mensajes"). Kept so the 13
-    // existing usages don't silently lose their sizing; candidates for
-    // rethinking in the touch-target pass.
-    icon: { fontSize: "0.5rem" },
+    // under icon buttons ("guardar", "refrescar mensajes"). Raised from the
+    // original 0.5rem (8px — illegible on a phone) to caption size.
+    icon: { fontSize: "0.75rem" },
   },
   shape: { borderRadius: RADII.md },
   // Radius scale for one-off sx use; component defaults below already apply

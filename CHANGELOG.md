@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-07-09
+
+### UI review round (monorepo issue #34 follow-through)
+
+- **Navigation restructure**: the Inicio tab is gone — `/` redirects
+  logged-in users to `/event` (Home stays as the anonymous landing) and the
+  bar becomes Eventos/Glosario/Perfil/Más. Back navigation moved into the
+  top bar (arrow on detail/flow screens only); the in-page GoBack component
+  and page titles duplicating the top bar are deleted.
+- **Events screen hierarchy**: Próximos/Pasados is an exclusive toggle;
+  informational chips no longer wear the CTA coral (teal corner banner,
+  outlined state chips, "Estado:" prefix dropped); the whole event card is
+  the tap target (the "ver mas detalles" button is gone); the organizer CTA
+  on details is outlined so the viewer CTA owns the coral.
+- **Profile**: compact header (avatar + identity side by side), edit
+  affordances switch from warning-amber to primary, icon-button captions
+  raised from 8px to legible caption size app-wide.
+- **Fixes**: events with a deleted/absent owner no longer render a blank
+  organizer link, and no longer crash the details page for volunteers
+  (`event.owner._id` null guard); the Más sheet gets the design-system
+  rounded top corners.
+
 ## 2026-07-08
 
 ### Mobile-first design system applied (monorepo issue #34)

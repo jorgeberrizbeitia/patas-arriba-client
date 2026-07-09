@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { AuthContext } from "../../context/auth.context";
 import capitalizeAll from "@utils/capitalizeAll";
 import IconButton from '@mui/material/IconButton'
+import Button from '@mui/material/Button'
 import EditIcon from '@mui/icons-material/Edit';
 import UpdateSingleField from "@components/user/UpdateSingleField";
 import UpdateUserIcon from "@components/user/UpdateUserIcon";
@@ -25,24 +26,29 @@ function OwnUserDetails() {
   return (
     <>
 
-      <UserIcon size="big" user={loggedUser}/>
+      {/* Compact header: avatar + identity side by side, so the editable
+          fields land above the fold instead of below a 200px portrait. */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2, width: "100%", textAlign: "start", mt: 2 }}>
+        <UserIcon size="medium" user={loggedUser}/>
+        <Box>
+          <Typography variant="h3">{username}</Typography>
+          <Typography variant="body2" color="text.secondary">{capitalizeAll(fullName)}</Typography>
+          <Button size="small" variant="text" startIcon={<EditIcon />} onClick={() => setPropertyToEdit("icon")}>
+            Cambiar imagen
+          </Button>
+        </Box>
+      </Box>
 
-      <IconButton size="small" color={"warning"} onClick={() => setPropertyToEdit("icon")}>
-        <EditIcon />
-        <Typography variant="caption" color="main">Cambiar imagen</Typography>
-      </IconButton>
-
-      {/* //todo edit icon at the top right of the picture */}
       {propertyToEdit === "icon" && <UpdateUserIcon setPropertyToEdit={setPropertyToEdit} />}
 
       <hr />
 
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="body1" gutterBottom>
         <span>Usuario: </span>
         <span>{username}</span>
-        <IconButton color={"warning"} onClick={() => setPropertyToEdit("username")}>
+        <IconButton aria-label="Cambiar usuario" color="primary" onClick={() => setPropertyToEdit("username")}>
           <EditIcon />
-          <Typography variant="caption" color="main">Cambiar</Typography>
+          <Typography variant="icon">Cambiar</Typography>
         </IconButton>
         { propertyToEdit === "username" && <>
           <UpdateSingleField
@@ -53,12 +59,12 @@ function OwnUserDetails() {
         </>}
       </Typography>
 
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="body1" gutterBottom>
         <span>Nombre: </span>
         <span>{capitalizeAll(fullName)}</span>
-        <IconButton color={"warning"} onClick={() => setPropertyToEdit("fullName")}>
+        <IconButton aria-label="Cambiar nombre" color="primary" onClick={() => setPropertyToEdit("fullName")}>
           <EditIcon />
-          <Typography variant="caption" color="main">Cambiar</Typography>
+          <Typography variant="icon">Cambiar</Typography>
         </IconButton>
         { propertyToEdit === "fullName" && <>
           <UpdateSingleField
