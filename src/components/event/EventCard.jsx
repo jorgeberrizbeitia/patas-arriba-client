@@ -16,8 +16,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/auth.context';
-import capitalizeAll from '@utils/capitalizeAll';
-
+import EVENT_CATEGORIES from '@utils/eventCategories';
 
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
@@ -39,12 +38,22 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
   const chipSx = { size: 'small', variant: 'outlined', sx: { fontSize: '0.7rem', fontWeight: 600, height: 30, borderRadius: '999px', border: '1.5px solid', '& .MuiChip-label': { px: 1.5 } } };
 
+  const category = EVENT_CATEGORIES.find(c => c.value === event.category);
+
   const cardBody = (
     <CardContent sx={{ p: 2, pb: '16px !important' }}>
 
       {/* Chips + organizer */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1, mb: 1.5 }}>
         <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+          {category && (
+            <Chip
+              label={category.label}
+              size="small"
+              variant="outlined"
+              sx={{ ...chipSx.sx, border: `1.5px solid ${category.color}`, color: category.color }}
+            />
+          )}
           {isUpcoming  && <Chip label="Próximo"   {...chipSx} color="primary" />}
           {isToday     && <Chip label="Hoy"        {...chipSx} color="info" />}
           {isPast      && <Chip label="Pasado"     {...chipSx} />}
@@ -89,7 +98,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
         <Typography variant="body2" color="text.secondary">{event.location}</Typography>
       </Box>
 
-      {/* Date + Time on same line */}
+      {/* Date + Time */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
         <CalendarTodayIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
         <Typography variant="body2" color="text.secondary">
@@ -107,7 +116,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
         </Box>
       )}
 
-      {/* Car spots */}
+      {/* Cars */}
       {totalRoomAvailableInCarGroups !== undefined && event.status !== 'cancelled' && event.hasCarOrganization && (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
           <DirectionsCarIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
@@ -115,7 +124,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
         </Box>
       )}
 
-    {/* Details link */}
+    {/* Details */}
       {!fromDetails && (
         <Typography
           variant="body2"
