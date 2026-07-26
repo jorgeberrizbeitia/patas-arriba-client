@@ -15,7 +15,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../../context/auth.context';
+import { AuthContext } from '@context/auth.context.jsx';
 import EVENT_CATEGORIES from '@utils/eventCategories';
 
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
