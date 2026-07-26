@@ -54,9 +54,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
               sx={{ ...chipSx.sx, border: `1.5px solid ${category.color}`, color: category.color }}
             />
           )}
-          {isUpcoming  && <Chip label="Próximo"   {...chipSx} color="primary" />}
           {isToday     && <Chip label="Hoy"        {...chipSx} color="info" />}
-          {isPast      && <Chip label="Pasado"     {...chipSx} />}
           {event.status === 'open'      && !isPast && <Chip label="Abierto"   {...chipSx} color="primary" />}
           {event.status === 'closed'               && <Chip label="Cerrado"   {...chipSx} color="warning" />}
           {event.status === 'cancelled'            && <Chip label="Cancelado" {...chipSx} color="error" />}
