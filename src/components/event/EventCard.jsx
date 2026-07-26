@@ -139,13 +139,7 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   return (
     <Card
       elevation={0}
-      sx={{
-        width: '100%',
-        mb: 2,
-        borderRadius: 4,
-        border: '1.5px solid',
-        borderColor: 'divider',
-      }}
+      sx={{width: '100%', mb: 2, borderRadius: 4, border: '1.5px solid', borderColor: 'divider'}}
     >
       {fromDetails ? cardBody : (
         <CardActionArea onClick={() => navigate(`/event/${event._id}`)}>
