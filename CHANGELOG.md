@@ -1,5 +1,26 @@
 # Changelog
 
+## 2026-07-07
+
+### Replace React 19-incompatible dependencies
+
+- **Event detail page no longer renders blank for described events (#31).**
+  Swapped the unmaintained `react-linkify@1.0.0-alpha` for the maintained
+  `linkify-react` (+ `linkifyjs`) in `EventDescription.jsx`. Under the React 19
+  / Vite 8 toolchain the old default import resolved to an object, so
+  `<Linkify>` threw React error #130 and blanked the whole event-detail screen
+  for admins and attendees of any event that had a description. Added
+  `EventDescription.test.jsx` pinning the contract: a described event renders,
+  and bare URLs become clickable links. Links now open in a new tab
+  (`target="_blank" rel="noopener noreferrer"`) so the PWA stays mounted.
+- **404 / 500 animations moved to a React 19-native Lottie player (#16).**
+  Replaced `@lottiefiles/react-lottie-player` (peer-capped at React 16–18) with
+  `@lottiefiles/dotlottie-react` in `NotFound.jsx` and `ServerError.jsx`, passing
+  the imported animation JSON via `data`.
+- **Removed the `legacy-peer-deps=true` workaround** from `.npmrc`. It existed
+  only to force-install the two packages above under React 19; with both gone a
+  clean `npm install` resolves peer dependencies without it.
+
 ## 2026-05-03
 
 ### Vitest + React Testing Library test harness
