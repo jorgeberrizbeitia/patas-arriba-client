@@ -1,23 +1,22 @@
 import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
-import EditIcon from '@mui/icons-material/Edit';
+import Typography from '@mui/material/Typography';
 import IconButton from "@mui/material/IconButton";
 import Link from '@mui/material/Link';
 
+import EditIcon from '@mui/icons-material/Edit';
+import PlaceIcon from '@mui/icons-material/Place';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import PeopleIcon from '@mui/icons-material/People';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { AuthContext } from '../../context/auth.context';
-import CornerChip from '@components/ui/CornerChip';
-import capitalizeAll from '@utils/capitalizeAll';
-import formatDate from "@utils/formatDate.js"
-
-
+import { AuthContext } from '@context/auth.context.jsx';
+import EVENT_CATEGORIES from '@utils/eventCategories';
 
 function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
 
@@ -25,121 +24,128 @@ function EventCard({event, fromDetails, totalRoomAvailableInCarGroups}) {
   const {loggedUserId, isOrganizerOrAdmin} = useContext(AuthContext)
 
   const eventDateStartOfDay = new Date(event.date)
-  eventDateStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  eventDateStartOfDay.setHours(0, 0, 0, 0);
   const todayStartOfDay = new Date()
-  todayStartOfDay.setHours(0, 0, 0, 0); // Set the time to the beginning of the day
+  todayStartOfDay.setHours(0, 0, 0, 0);
 
-  const hasUserJoinedFromList = event.attendees.includes(loggedUserId) // attendees without populate (from event list) 
-  const hasUserJoinedFromDetails = event.attendees.some((attendee) => attendee?.user?._id == loggedUserId) // attendees with populate (from event details)
-  //todo improve above code
+  const hasUserJoined =
+    event.attendees.includes(loggedUserId) ||
+    event.attendees.some((attendee) => attendee?.user?._id === loggedUserId);
 
-  let statusChip;
-  if (event.status === "open" && eventDateStartOfDay >= todayStartOfDay) {
-    statusChip = <Chip label="Estado: Abierto" variant='filled' color="primary"/>
-  } else if (event.status === "closed") {
-    statusChip = <Chip label="Estado: Cerrado" variant='filled' color="warning"/>
-  } else if (event.status === "cancelled") {
-    statusChip = <Chip label="Estado: Cancelado" variant='filled' color="error"/>
-  }
+  const isUpcoming = eventDateStartOfDay > todayStartOfDay;
+  const isToday = eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString();
+  const isPast = !isUpcoming && !isToday;
 
-  // let categoryChip = <Chip label={`Categoria: ${capitalizeAll(event.category)}`} variant='outlined' color="info"/>
+  const chipSx = { size: 'small', variant: 'outlined', sx: { fontSize: '0.7rem', fontWeight: 600, height: 30, borderRadius: '999px', border: '1.5px solid', '& .MuiChip-label': { px: 1.5 } } };
 
-  let joinedChip;
-  if (hasUserJoinedFromList || hasUserJoinedFromDetails) {
-    joinedChip = <Chip label="Apuntado" variant='filled' color="success"/>
-  }
+  const category = EVENT_CATEGORIES.find(c => c.value === event.category);
 
-  let timeFrameChip;
-  if (eventDateStartOfDay > todayStartOfDay) {
-    timeFrameChip = <Chip label="Próximo" variant='filled' color="primary"/>
-  } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
-    timeFrameChip = <Chip label="Hoy" variant='filled' color="info"/>
-  } else {
-    timeFrameChip = <Chip label="Pasado" variant='filled' sx={{bgcolor: "gray.main", color: "white"}}/>
-  }
+  const cardBody = (
+    <CardContent sx={{ p: 2, pb: '16px !important' }}>
 
-  let cornerTimeFrameChip;
-  if (eventDateStartOfDay > todayStartOfDay) {
-    cornerTimeFrameChip = <CornerChip label="Próximo" bgcolor="primary.main" color="black" side={"left"}/>
-  } else if (eventDateStartOfDay.toDateString() === todayStartOfDay.toDateString()) {
-    cornerTimeFrameChip = <CornerChip label="Es Hoy" bgcolor="info.main" color="white" side={"left"}/>
-  } else {
-    cornerTimeFrameChip = <CornerChip label="Pasado" bgcolor="gray.main" color="white" side={"left"}/>
-  }
+      {/* Chips + organizer */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1, mb: 1.5 }}>
+        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+          {category && (
+            <Chip
+              label={category.label}
+              size="small"
+              variant="outlined"
+              sx={{ ...chipSx.sx, border: `1.5px solid ${category.color}`, color: category.color }}
+            />
+          )}
+          {isToday     && <Chip label="Hoy"        {...chipSx} color="info" />}
+          {event.status === 'open'      && !isPast && <Chip label="Abierto"   {...chipSx} color="primary" />}
+          {event.status === 'closed'               && <Chip label="Cerrado"   {...chipSx} color="warning" />}
+          {event.status === 'cancelled'            && <Chip label="Cancelado" {...chipSx} color="error" />}
+          {hasUserJoined                           && <Chip label="Apuntado"  {...chipSx} color="success" />}
+        </Box>
+        {event.owner?.username && (
+          <Typography variant="caption" color="text.secondary" sx={{ flexShrink: 0 }}>
+            por{' '}
+            <Link
+              color="info.main"
+              onClick={(e) => { e.stopPropagation(); navigate(`/user/${event.owner._id}`); }}
+              sx={{ cursor: 'pointer', fontSize: 'inherit' }}
+            >
+              {event.owner.username}
+            </Link>
+          </Typography>
+        )}
+      </Box>
+
+      {/* Title + edit */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 1, mb: 1.25 }}>
+        <Typography fontWeight={700} sx={{ fontSize: '1.1rem', lineHeight: 1.3 }}>
+          {event.title}
+        </Typography>
+        {fromDetails && isOrganizerOrAdmin && (
+          <IconButton
+            onClick={(e) => { e.stopPropagation(); navigate(`/event/${event._id}/edit`); }}
+            size="small"
+            sx={{ color: 'text.secondary', flexShrink: 0, mt: -0.25 }}
+          >
+            <EditIcon sx={{ fontSize: 18 }} />
+          </IconButton>
+        )}
+      </Box>
+
+      {/* Location */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
+        <PlaceIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
+        <Typography variant="body2" color="text.secondary">{event.location}</Typography>
+      </Box>
+
+      {/* Date + Time */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
+        <CalendarTodayIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
+        <Typography variant="body2" color="text.secondary">
+          {new Date(event.date).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}
+          {' · '}
+          {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </Typography>
+      </Box>
+
+      {/* Participants */}
+      {event.status !== 'cancelled' && (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
+          <PeopleIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
+          <Typography variant="body2" color="text.secondary">{event.attendees.length} participantes</Typography>
+        </Box>
+      )}
+
+      {/* Cars */}
+      {totalRoomAvailableInCarGroups !== undefined && event.status !== 'cancelled' && event.hasCarOrganization && (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.6 }}>
+          <DirectionsCarIcon sx={{ fontSize: 18, color: 'text.secondary', flexShrink: 0 }} />
+          <Typography variant="body2" color="text.secondary">{totalRoomAvailableInCarGroups} plazas en coche disponibles</Typography>
+        </Box>
+      )}
+
+    {/* Details */}
+      {!fromDetails && (
+        <Typography
+          variant="body2"
+          fontWeight={600}
+          sx={{ mt: 1.5, textAlign: 'center', color: 'primary.darker', cursor: 'pointer' }}
+        >
+          Ver más detalles
+        </Typography>
+      )}
+
+    </CardContent>
+  );
 
   return (
-    <Card raised={fromDetails ? false : true} sx={{ minHeight: "230px", width: "100%", position: 'relative', mb: "20px" }}>
-      
-      {cornerTimeFrameChip}
-
-      <CardHeader 
-        sx={{ pl: (fromDetails && isOrganizerOrAdmin) ? 7.5 : 2}}
-        // * above is to account for the icon on the right side when user is organizer or admin
-        title={<Typography variant="h4" sx={{px: "8%"}}>{event.title}</Typography>}
-        action={(fromDetails && isOrganizerOrAdmin) && 
-          <IconButton 
-            onClick={() => navigate(`/event/${event._id}/edit`)} 
-            color="primary"
-            sx={{width: "50px", height: "50px"}}
-          ><EditIcon/>
-            <Typography variant="icon">editar</Typography>
-          </IconButton>}
-      />
-      <CardContent>
-
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Categoria:</Typography>
-          <Typography variant="span" color="initial"> {capitalizeAll(event.category)}</Typography>
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Lugar:</Typography>
-          <Typography variant="span" color="initial"> {event.location}</Typography>
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Fecha:</Typography>
-          <Typography variant="span" color="initial"> {formatDate(event.date, "event")}</Typography>
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Hora:</Typography>
-          <Typography variant="span" color="initial"> {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </Typography>
-        </Typography>
-
-        {event.status !== "cancelled" && <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Participantes:</Typography>
-          <Typography variant="span" color="initial"> {event.attendees.length}</Typography>
-        </Typography>}
-
-        {(totalRoomAvailableInCarGroups !== undefined && event.status !== "cancelled" && event.hasCarOrganization)&& 
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            <Typography variant="span" color="initial" fontWeight="bold">Plazas en coche disponibles:</Typography>
-            <Typography variant="span" color="initial"> {totalRoomAvailableInCarGroups}</Typography>
-          </Typography>}
-
-        {fromDetails && <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Typography variant="span" color="initial" fontWeight="bold">Organizado por:</Typography>
-          <Link color="info.main" onClick={() => navigate(`/user/${event.owner._id}`)}> {event.owner?.username}</Link>
-        </Typography>}
-
-        <br />
-
-        <Box display="flex" justifyContent="center" gap="5px">
-          {timeFrameChip}
-          {statusChip}
-          {joinedChip}
-        </Box>
-
-      </CardContent>
-
-      {!fromDetails && 
-        <CardActions sx={{ justifyContent: 'center'}}>
-          <Button onClick={() => navigate(`/event/${event._id}`)}>ver mas detalles</Button>
-        </CardActions>
-      }
-
+    <Card
+      elevation={0}
+      sx={{width: '100%', mb: 2, borderRadius: 4, border: '1.5px solid', borderColor: 'divider'}}
+    >
+      {fromDetails ? cardBody : (
+        <CardActionArea onClick={() => navigate(`/event/${event._id}`)}>
+          {cardBody}
+        </CardActionArea>
+      )}
     </Card>
   );
 }

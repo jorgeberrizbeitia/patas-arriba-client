@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import service from "@service/config";
 
 import validateField from "@utils/validateField";
+import EVENT_CATEGORIES from "@utils/eventCategories";
 
 // MUI Components
 import Box from "@mui/material/Box";
@@ -173,10 +174,7 @@ function EventEditForm({ event }) {
         error={category.hasUserInteracted && category.error !== null} // can display and any error exists
         helperText={title.error}
       >
-        <MenuItem value={"protectora"}>Protectora</MenuItem>
-        <MenuItem value={"recogida"}>Recogida</MenuItem>
-        <MenuItem value={"mercadillo"}>Mercadillo</MenuItem>
-        <MenuItem value={"otro"}>Otro</MenuItem>
+        {EVENT_CATEGORIES.map(c => <MenuItem key={c.value} value={c.value}>{c.label}</MenuItem>)}
       </TextField>
 
       <TextField
